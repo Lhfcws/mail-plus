@@ -1,0 +1,6 @@
+与Socket和ServerSocket对应，NIO提供了SocketChannel和ServerSocketChannel对应，这两种通道同时支持一般的阻塞模式和更高效的非阻塞模式。
+客户端通过SocketChannel.open()方法打开一个Socket通道，如果此时提供了SocketAddress参数，则会自动开始连接，否则需要主动调用connect()方法连接，创建连接后，可以像一般的Channel一样的用Buffer进行读写，这都是阻塞模式的。
+服务器端通过ServerSocketChannel.open()创建，并使用bind()方法绑定到一个监听地址上，最后调用accept()方法阻塞等待客户端连接。当客户端连接后会返回一个SocketChannel以实现与客户端的读写交互。
+总的来说，阻塞模式即是net包I/O的翻版，只是采用Channel和Buffer实现而已。
+2.多路复用套接字通道(Selector实现的非阻塞式IO)
+套接字通道多路复用的思想是创建一个Selector，将多个通道对它进行注册，当套接字有关注的事件发生时，可以选出这个通道进行操作。
