@@ -1,7 +1,7 @@
 package edu.sysu.lhfcws.mailplus.server.cli;
 
-import edu.sysu.lhfcws.mailplus.server.cli.util.AdvCli;
-import edu.sysu.lhfcws.mailplus.server.cli.util.CliRunner;
+import edu.sysu.lhfcws.mailplus.commons.util.AdvCli;
+import edu.sysu.lhfcws.mailplus.commons.util.CliRunner;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 

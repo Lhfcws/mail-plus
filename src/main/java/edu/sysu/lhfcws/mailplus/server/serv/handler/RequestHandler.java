@@ -1,15 +1,10 @@
 package edu.sysu.lhfcws.mailplus.server.serv.handler;
 
-import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.io.req.DeleteRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
-import edu.sysu.lhfcws.mailplus.commons.models.Email;
-import edu.sysu.lhfcws.mailplus.server.protocols.SMTPProtocolSender;
-import edu.sysu.lhfcws.mailplus.server.protocols.SMTPSender;
-import edu.sysu.lhfcws.mailplus.server.util.RequestQueue;
 
 /**
  * Request handler.
@@ -42,7 +37,7 @@ public class RequestHandler {
     }
 
     private Response handleSendRequest(SendRequest req, Response res) {
-        RequestQueue.getRQ(Consts.SRQ).enQueue(req);
+//        RequestQueue.getRQ(Consts.SRQ).enQueue(req);
         res.setStatus(Response.ResponseStatus.WAITING);
         return res;
     }

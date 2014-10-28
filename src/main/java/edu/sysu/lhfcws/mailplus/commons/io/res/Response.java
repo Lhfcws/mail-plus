@@ -10,11 +10,14 @@ public class Response extends AuthObject {
 
     protected long resID;     // equals to reqID if it is a requested response.
     protected ResponseStatus status;
+    protected String msg;
 
     public Response() {
+        this.msg = "";
     }
 
     public Response(ResponseStatus status, String authCode) {
+        this();
         this.authCode = authCode;
         this.status = status;
         this.resID = -1;
@@ -36,11 +39,20 @@ public class Response extends AuthObject {
         this.resID = resID;
     }
 
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
     @Override
     public String toString() {
         return "Response{" +
                 "resID=" + resID +
                 ", status=" + status +
+                ", msg='" + msg + '\'' +
                 '}';
     }
 

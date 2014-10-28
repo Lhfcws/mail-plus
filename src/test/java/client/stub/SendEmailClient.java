@@ -21,7 +21,7 @@ public class SendEmailClient {
 
         email.setFrom("lhfcws@163.com");
         email.addTo("397923807@qq.com");
-        email.setTitle("Fake Email from MailPlus");
+        email.setSubject("Fake Email from MailPlus");
         email.setContent("Please ignore this email. This is a test email.");
 
         return email;

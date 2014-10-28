@@ -16,7 +16,7 @@ public class MailPlusServer {
     private static Log LOG = LogFactory.getLog(MailPlusServer.class);
     private Thread serverListenerThread;
     private ServerListener serverListener;
-    private SendServer sendServer;
+    private SMTPServer SMTPServer;
 
     private static MailPlusServer server = null;
 
@@ -77,8 +77,8 @@ public class MailPlusServer {
     public void startSendServer() {
         Preconditions.checkArgument(this.serverListener != null);
 
-        this.sendServer = new SendServer(this.serverListener);
-        this.sendServer.start();
+        this.SMTPServer = new SMTPServer(this.serverListener);
+        this.SMTPServer.start();
 
         LOG.info("New SendServer started.");
     }

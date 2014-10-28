@@ -4,7 +4,7 @@ import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
-import edu.sysu.lhfcws.mailplus.server.serv.SendServer;
+import edu.sysu.lhfcws.mailplus.server.serv.SMTPServer;
 import edu.sysu.lhfcws.mailplus.server.util.RequestQueue;
 
 /**
@@ -16,12 +16,12 @@ public class SRQWatcher extends AdvRunnable {
 
     public static final int WATCH_INTERVAL = 500;
     private RequestQueue srq;
-    private SendServer sendServer;
+    private SMTPServer SMTPServer;
 
-    public SRQWatcher(String name, SendServer sendServer) {
+    public SRQWatcher(String name, SMTPServer SMTPServer) {
         super(name);
         this.srq = RequestQueue.getRQ(Consts.SRQ);
-        this.sendServer = sendServer;
+        this.SMTPServer = SMTPServer;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class SRQWatcher extends AdvRunnable {
             }
 
             SendRequest req = (SendRequest) request;
-            this.sendServer.dispatch(req);
+            this.SMTPServer.dispatch(req);
         }
     }
 }

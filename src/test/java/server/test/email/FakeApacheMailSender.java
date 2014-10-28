@@ -5,6 +5,7 @@ import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
+import server.test.TestConsts;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,10 +21,10 @@ public class FakeApacheMailSender {
         SimpleEmail email = new SimpleEmail();
 
         email.setHostName("smtp.163.com");
-        email.setAuthentication("lhfcws", "lhfcws82283086");//邮件服务器验证：用户名/密码
+        email.setAuthentication(TestConsts.mail, TestConsts.password);//邮件服务器验证：用户名/密码
         email.setCharset("UTF-8");// 必须放在前面，否则乱码
-        email.addTo("lhfcws@163.com");
-        email.setFrom("lhfcws@163.com", "EmailTester");
+        email.addTo(TestConsts.mail);
+        email.setFrom(TestConsts.mail, "EmailTester");
         email.setSubject("subject中文");
         email.setMsg("msg中文");
 

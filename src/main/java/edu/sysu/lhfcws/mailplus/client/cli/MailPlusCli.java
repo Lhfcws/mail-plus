@@ -1,16 +1,15 @@
-package edu.sysu.lhfcws.mailplus.server.cli;
+package edu.sysu.lhfcws.mailplus.client.cli;
 
-import edu.sysu.lhfcws.mailplus.commons.util.AdvCli;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.windows.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.util.CliRunner;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 
 /**
- * Initialization in the first using.
  * @author lhfcws
- * @time 14-10-26.
+ * @time 14-10-28.
  */
-public class DeployCli implements CliRunner {
+public class MailPlusCli implements CliRunner {
     @Override
     public Options initOptions() {
         Options options = new Options();
@@ -24,13 +23,10 @@ public class DeployCli implements CliRunner {
 
     @Override
     public void start(CommandLine cmdLine) {
-        // mkdir path if not existed
-
-        // create sqlite tables
-
-    }
-
-    public static void main(String[] args) {
-        AdvCli.initRunner(args, "deploy", new DeployCli());
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new MainWindow().start();
+            }
+        });
     }
 }

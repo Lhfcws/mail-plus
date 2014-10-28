@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.server.serv.execute;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
+import edu.sysu.lhfcws.mailplus.server.serv.POP3Server;
 import edu.sysu.lhfcws.mailplus.server.serv.SMTPServer;
 import edu.sysu.lhfcws.mailplus.server.util.MultiRequestQueues;
 
@@ -10,17 +11,17 @@ import java.util.List;
 
 /**
  * @author lhfcws
- * @time 14-10-25.
+ * @time 14-10-28.
  */
-public class SMTPRQsWatcher extends AdvRunnable {
+public class POP3RQsWatcher extends AdvRunnable {
 
     public static final int WATCH_INTERVAL = 500;
-    private SMTPServer SMTPServer;
+    private POP3Server pop3Server;
     private MultiRequestQueues multiRequestQueues;
 
-    public SMTPRQsWatcher(String name, SMTPServer SMTPServer) {
+    public POP3RQsWatcher(String name, POP3Server pop3Server) {
         super(name);
-        this.SMTPServer = SMTPServer;
+        this.pop3Server = pop3Server;
         this.multiRequestQueues = new MultiRequestQueues();
     }
 
@@ -34,7 +35,6 @@ public class SMTPRQsWatcher extends AdvRunnable {
                 Request req = this.multiRequestQueues.deQueue(smtp);
                 if (req == null)
                     continue;
-                SMTPServer.send((SendRequest) req);
             }
 
             try {

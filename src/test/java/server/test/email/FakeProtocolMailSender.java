@@ -1,12 +1,12 @@
 package server.test.email;
 
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
-import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.models.Email;
 import edu.sysu.lhfcws.mailplus.commons.models.MailUser;
-import edu.sysu.lhfcws.mailplus.server.protocols.SMTPProtocolSender;
-import edu.sysu.lhfcws.mailplus.server.protocols.SMTPSender;
+import edu.sysu.lhfcws.mailplus.server.protocols.SMTPClient;
+import edu.sysu.lhfcws.mailplus.server.protocols.SMTPProtocolClient;
 import edu.sysu.lhfcws.mailplus.server.serv.handler.RequestHandler;
+import server.test.TestConsts;
 
 /**
  * @author lhfcws
@@ -21,7 +21,8 @@ public class FakeProtocolMailSender {
 
         email.setFrom("lhfcws@163.com");
         email.addTo("lhfcws@163.com");
-        email.setTitle("Testemail");
+        email.addCc("397923807@qq.com");
+        email.setSubject("Testemail");
         email.setContent("This is a test");
 
         return email;
@@ -30,8 +31,8 @@ public class FakeProtocolMailSender {
     private MailUser initMailUser() {
         MailUser mailUser = new MailUser();
 
-        mailUser.setMailAddr("lhfcws@163.com");
-        mailUser.setPassword("lhfcws82283086");
+        mailUser.setMailAddr(TestConsts.mail);
+        mailUser.setPassword(TestConsts.password);
 //        mailUser.setSmtpHost("0.0.0.0");
         mailUser.setSmtpHost("smtp.163.com");
         mailUser.setPop3Host("pop3.163.com");
@@ -49,9 +50,9 @@ public class FakeProtocolMailSender {
         sendRequest.setMailUser(mailUser);
 
         System.out.println("Ready to send.");
-        SMTPSender smtpSender = new SMTPProtocolSender(email, mailUser);
+        SMTPClient smtpClient = new SMTPProtocolClient(email, mailUser);
         System.out.println("Sending...");
-        boolean ret = smtpSender.send();
+        boolean ret = smtpClient.send();
         System.out.println("Email sended. Result : " + ret);
     }
 

@@ -3,6 +3,7 @@ package server.test.socket;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.io.CommonSocket;
 import org.apache.commons.codec.binary.Base64;
+import server.test.TestConsts;
 
 import java.io.IOException;
 
@@ -16,8 +17,8 @@ public class RemoteConnectTest {
     private static int cnt = 0;
 
     public void start() throws IOException {
-        String username = "lhfcws@163.com";
-        String password = "lhfcws82283086";
+        String username = TestConsts.mail;
+        String password = TestConsts.password;
 
         socket.connect("smtp.163.com", 25);
         String res;

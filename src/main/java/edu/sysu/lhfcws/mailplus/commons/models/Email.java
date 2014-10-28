@@ -1,10 +1,12 @@
 package edu.sysu.lhfcws.mailplus.commons.models;
 
 import com.google.common.base.Preconditions;
+import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.validate.PatternValidater;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.Serializable;
-import java.net.URL;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,100 +22,21 @@ public class Email implements Serializable {
     private String from;
     private List<String> to;
     private List<String> cc;
-    private String title;
+    private String subject;
     private String content;
-    private String localAttachment;
-    private URL remoteAttachment;
+    private Date date;
+    private List<Attachment> attachments;
+    private EmailType emailType;
+    private String encoding;
 
 
-    /**
-     * This constructor is for RPC.
-     */
     public Email() {
         this.id = -1;
         this.to = new LinkedList<String>();
         this.cc = new LinkedList<String>();
-        this.localAttachment = null;
-        this.remoteAttachment = null;
-    }
-
-    public Email(int id, String from, List<String> to, List<String> cc, String title, String content) {
-        this();
-        this.id = id;
-        this.from = from;
-        this.to = to;
-        this.cc = cc;
-        this.title = title;
-        this.content = content;
-    }
-
-    public Email(int id, String from, List<String> to, List<String> cc, String title, String content, String localAttachment) {
-        this();
-        this.id = id;
-        this.from = from;
-        this.to = to;
-        this.cc = cc;
-        this.title = title;
-        this.content = content;
-        this.localAttachment = localAttachment;
-    }
-
-    public Email(int id, String from, List<String> to, List<String> cc, String title, String content, URL remoteAttachment) {
-        this();
-        this.id = id;
-        this.from = from;
-        this.to = to;
-        this.cc = cc;
-        this.title = title;
-        this.content = content;
-        this.remoteAttachment = remoteAttachment;
-    }
-
-    public Email(int id, String from, String to, List<String> cc, String title, String content, String localAttachment, URL remoteAttachment) {
-        this();
-        this.id = id;
-        this.from = from;
-        this.to = new LinkedList<String>();
-        this.to.add(to);
-        this.cc = cc;
-        this.title = title;
-        this.content = content;
-        this.localAttachment = localAttachment;
-        this.remoteAttachment = remoteAttachment;
-    }
-
-    public Email(int id, String from, String to, String title, String content, URL remoteAttachment) {
-        this();
-        Preconditions.checkArgument(from != null);
-        Preconditions.checkArgument(to != null);
-        Preconditions.checkArgument(title != null);
-        Preconditions.checkArgument(content != null);
-        Preconditions.checkArgument(PatternValidater.validateMailAddress(from));
-        Preconditions.checkArgument(PatternValidater.validateMailAddress(to));
-
-        this.id = id;
-        this.to.add(to);
-        this.from = from;
-        this.title = title;
-        this.content = content;
-        this.remoteAttachment = remoteAttachment;
-    }
-
-    public Email(int id, String from, String to, String title, String content, String localAttachment) {
-        this();
-        Preconditions.checkArgument(from != null);
-        Preconditions.checkArgument(to != null);
-        Preconditions.checkArgument(title != null);
-        Preconditions.checkArgument(content != null);
-        Preconditions.checkArgument(PatternValidater.validateMailAddress(from));
-        Preconditions.checkArgument(PatternValidater.validateMailAddress(to));
-
-        this.id = id;
-        this.to.add(to);
-        this.from = from;
-        this.title = title;
-        this.content = content;
-        this.localAttachment = localAttachment;
+        this.attachments = new LinkedList<Attachment>();
+        this.emailType = EmailType.PLAIN;
+        this.encoding = "utf-8";
     }
 
     public int getId() {
@@ -164,12 +87,12 @@ public class Email implements Serializable {
         this.cc.add(ccAddr);
     }
 
-    public String getTitle() {
-        return title;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getContent() {
@@ -180,33 +103,8 @@ public class Email implements Serializable {
         this.content = content;
     }
 
-    public String getLocalAttachment() {
-        return localAttachment;
-    }
-
-    public void setLocalAttachment(String localAttachment) {
-        this.localAttachment = localAttachment;
-    }
-
-    public URL getRemoteAttachment() {
-        return remoteAttachment;
-    }
-
-    public void setRemoteAttachment(URL remoteAttachment) {
-        this.remoteAttachment = remoteAttachment;
-    }
-
     public boolean hasAttachment() {
-        return this.localAttachment!= null
-                || this.remoteAttachment != null;
-    }
-
-    public boolean hasLocalAttachement() {
-        return this.localAttachment != null;
-    }
-
-    public boolean hasRemoteAttachment() {
-        return this.remoteAttachment != null;
+        return !this.attachments.isEmpty();
     }
 
     public String getMailID() {
@@ -217,18 +115,75 @@ public class Email implements Serializable {
         this.mailID = mailID;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public void addAttachment(Attachment attachment) {
+        this.attachments.add(attachment);
+    }
+
+    public EmailType getEmailType() {
+        return emailType;
+    }
+
+    public void setEmailType(EmailType emailType) {
+        this.emailType = emailType;
+    }
+
+    public String getEncoding() {
+        return encoding;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+
+    public String getBoundary() {
+        return "===" + Base64.encodeBase64String(Consts.RESET_AUTH_CODE.getBytes()) + "===";
+    }
+
     @Override
     public String toString() {
         return "Email{" +
                 "id=" + id +
-                ", mailID=" + mailID +
+                ", mailID='" + mailID + '\'' +
                 ", from='" + from + '\'' +
                 ", to=" + to +
                 ", cc=" + cc +
-                ", title='" + title + '\'' +
+                ", subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
-                ", localAttachment='" + localAttachment + '\'' +
-                ", remoteAttachment=" + remoteAttachment +
+                ", date=" + date +
+                ", attachments=" + attachments +
+                ", emailType=" + emailType +
+                ", encoding='" + encoding + '\'' +
                 '}';
+    }
+
+    // ==== EmailType
+    public static enum EmailType {
+
+        PLAIN("plain"), HTML("html");
+
+        private String value;
+        private EmailType(String v) {
+            this.value = v;
+        }
+
+        public String toString() {
+            return this.value;
+        }
     }
 }
