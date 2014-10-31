@@ -5,7 +5,7 @@ import edu.sysu.lhfcws.mailplus.commons.base.ProtocolConsts;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.QueryUtil;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.SQLite;
 import edu.sysu.lhfcws.mailplus.commons.io.CommonSocket;
-import edu.sysu.lhfcws.mailplus.commons.models.MailUser;
+import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import org.apache.commons.codec.binary.Base64;

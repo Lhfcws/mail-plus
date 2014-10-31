@@ -5,10 +5,9 @@ import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.resultset.RemoteHostResultSetHandler;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.resultset.UserResultSetHandler;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.sql.BaseDao;
-import edu.sysu.lhfcws.mailplus.commons.models.MailUser;
-import edu.sysu.lhfcws.mailplus.commons.models.RemoteHost;
+import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
+import edu.sysu.lhfcws.mailplus.commons.model.RemoteHost;
 import edu.sysu.lhfcws.mailplus.commons.validate.PatternValidater;
-import org.apache.commons.codec.binary.Base64;
 
 import java.sql.SQLException;
 

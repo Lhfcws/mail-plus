@@ -2,7 +2,7 @@ package client.stub;
 
 import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.io.InternalSocket;
-import edu.sysu.lhfcws.mailplus.commons.models.Email;
+import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

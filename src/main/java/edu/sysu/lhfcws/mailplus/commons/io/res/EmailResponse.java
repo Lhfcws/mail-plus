@@ -1,6 +1,6 @@
 package edu.sysu.lhfcws.mailplus.commons.io.res;
 
-import edu.sysu.lhfcws.mailplus.commons.models.Email;
+import edu.sysu.lhfcws.mailplus.commons.model.Email;
 
 import java.util.LinkedList;
 import java.util.List;

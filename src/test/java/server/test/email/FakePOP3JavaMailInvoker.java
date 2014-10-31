@@ -1,8 +1,8 @@
 package server.test.email;
 
 import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
-import edu.sysu.lhfcws.mailplus.commons.models.MailUser;
-import edu.sysu.lhfcws.mailplus.server.protocols.POP3JavaMailClient;
+import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
+import edu.sysu.lhfcws.mailplus.server.protocol.POP3JavaMailClient;
 import server.test.TestConsts;
 
 /**

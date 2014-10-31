@@ -1,4 +1,4 @@
-## SQL数据库设计
+D## SQL数据库设计
 
 > DB_TYPE = SQLite  
 > DB_NAME = mailplus  
@@ -22,10 +22,13 @@
 			subject varchar(512),
 			content text,
 			attachment text,
+			status int(11) NOT NULL DEFAULT 0 
+				COMMENT '0:unread, 1:readed, 2:writing, 
+					3:draft, 4:sending, 5:sended',
 			timestamp TIMESTAMP(8)
 		) ENGINE=innodb DEFAULT CHARSET=utf-8;
 		
-### EmailStatus
+### EmailStatus (Deprecated)
 
 		CREATE TABLE 'email_status' (
 			id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,

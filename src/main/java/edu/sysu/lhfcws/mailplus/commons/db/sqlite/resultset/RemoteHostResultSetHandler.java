@@ -1,6 +1,6 @@
 package edu.sysu.lhfcws.mailplus.commons.db.sqlite.resultset;
 
-import edu.sysu.lhfcws.mailplus.commons.models.RemoteHost;
+import edu.sysu.lhfcws.mailplus.commons.model.RemoteHost;
 import org.apache.commons.dbutils.ResultSetHandler;
 
 import java.sql.ResultSet;

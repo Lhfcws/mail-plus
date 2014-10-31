@@ -4,6 +4,10 @@ package swing_learn;
  * @author lhfcws
  * @time 14-10-18.
  */
+import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
+import edu.sysu.lhfcws.mailplus.client.ui.event.callback.AboutCallback;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -32,6 +36,7 @@ public class MenuSelectionManagerDemo implements ActionListener, ItemListener {
     JScrollPane scrollPane;
     String newline = "\n";
     public final static int ONE_SECOND = 1000;
+    public static JFrame frame;
 
     public JMenuBar createMenuBar() {
         JMenuBar menuBar;
@@ -49,6 +54,19 @@ public class MenuSelectionManagerDemo implements ActionListener, ItemListener {
         menu.getAccessibleContext().setAccessibleDescription(
                 "The only menu in this program that has menu items");
         menuBar.add(menu);
+
+        menuItem = new JMenuItem("test event1");
+        Events.onClick(menuItem, new AboutCallback());
+        menu.add(menuItem);
+
+        menuItem = new JMenuItem("test event2");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "About MailPlus");
+            }
+        });
+        menu.add(menuItem);
 
         //a group of JMenuItems
         menuItem = new JMenuItem("A text-only menu item",
@@ -210,8 +228,7 @@ public class MenuSelectionManagerDemo implements ActionListener, ItemListener {
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("MenuSelectionManagerDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame = new JFrame("MenuSelectionManagerDemo");
 
         //Create and set up the content pane.
         MenuSelectionManagerDemo demo = new MenuSelectionManagerDemo();

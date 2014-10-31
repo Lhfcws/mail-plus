@@ -9,6 +9,7 @@ public class Consts {
 
     // Config param
     public static final String SERVER_PORT = "SERVER_PORT";
+    public static final String HTTP_PORT = "HTTP_PORT";
 
     // Commons config
     public static final String CRLF = "\r\n";

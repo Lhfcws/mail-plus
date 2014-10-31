@@ -3,7 +3,7 @@ package edu.sysu.lhfcws.mailplus.server.serv;
 
 import com.google.common.base.Preconditions;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
-import edu.sysu.lhfcws.mailplus.server.serv.execute.ServerListener;
+import edu.sysu.lhfcws.mailplus.server.serv.executor.ServerListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

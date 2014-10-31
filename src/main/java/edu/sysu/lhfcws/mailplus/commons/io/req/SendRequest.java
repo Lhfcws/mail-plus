@@ -1,6 +1,6 @@
 package edu.sysu.lhfcws.mailplus.commons.io.req;
 
-import edu.sysu.lhfcws.mailplus.commons.models.Email;
+import edu.sysu.lhfcws.mailplus.commons.model.Email;
 
 /**
  * @author lhfcws

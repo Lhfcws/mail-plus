@@ -1,6 +1,6 @@
 package edu.sysu.lhfcws.mailplus.commons.db.sqlite.resultset;
 
-import edu.sysu.lhfcws.mailplus.commons.models.MailUser;
+import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.dbutils.ResultSetHandler;
 

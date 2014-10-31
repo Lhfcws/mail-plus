@@ -1,10 +1,10 @@
 package server.test.email;
 
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
-import edu.sysu.lhfcws.mailplus.commons.models.Email;
-import edu.sysu.lhfcws.mailplus.commons.models.MailUser;
-import edu.sysu.lhfcws.mailplus.server.protocols.SMTPClient;
-import edu.sysu.lhfcws.mailplus.server.protocols.SMTPProtocolClient;
+import edu.sysu.lhfcws.mailplus.commons.model.Email;
+import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
+import edu.sysu.lhfcws.mailplus.server.protocol.SMTPClient;
+import edu.sysu.lhfcws.mailplus.server.protocol.SMTPProtocolClient;
 import edu.sysu.lhfcws.mailplus.server.serv.handler.RequestHandler;
 import server.test.TestConsts;
 
