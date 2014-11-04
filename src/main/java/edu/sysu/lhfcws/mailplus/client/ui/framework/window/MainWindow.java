@@ -4,9 +4,15 @@ import edu.sysu.lhfcws.mailplus.client.ui.framework.menu.MenuBar;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.ContentPanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.LeftPanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.ListPanel;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.util.HTMLContainer;
+import edu.sysu.lhfcws.mailplus.client.util.EmailContentHTML;
+import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
+import edu.sysu.lhfcws.mailplus.commons.model.Email;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Main window.
@@ -14,7 +20,7 @@ import java.awt.*;
  * @author lhfcws
  * @time 14-10-28.
  */
-public class MainWindow extends JFrame {
+public class MainWindow extends AbstractWindow {
 
     private JMenuBar menuBar;
     private JSplitPane splitPane;
@@ -23,6 +29,7 @@ public class MainWindow extends JFrame {
     private ContentPanel contentPanel;
 
     private static MainWindow _window = null;
+
     public static MainWindow getInstance() {
         if (_window == null) {
             synchronized (MainWindow.class) {
@@ -36,13 +43,22 @@ public class MainWindow extends JFrame {
     }
 
     private MainWindow() {
+        super("MailPlus");
+    }
+
+    public void addMailbox(String email) {
+        leftPanel.addMailbox(email);
+    }
+
+    @Override
+    protected void init() {
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         leftPanel = new LeftPanel();
-        leftPanel.addMailbox("lhfcws@163.com");
         listPanel = new ListPanel();
         contentPanel = new ContentPanel();
     }
 
+    @Override
     public void start() {
         initMenuBar();
 
@@ -51,8 +67,6 @@ public class MainWindow extends JFrame {
         internalSplitPane.add(listPanel);
         internalSplitPane.setBorder(BorderFactory.createEmptyBorder());
         internalSplitPane.setEnabled(false);
-
-        JEditorPane contentShower = new JEditorPane("text/html", "<h1>Oh yeah</h1>");
 
         splitPane.add(internalSplitPane);
         splitPane.add(contentPanel);
@@ -70,12 +84,97 @@ public class MainWindow extends JFrame {
         splitPane.setDividerLocation(0.38);
     }
 
-    public void initMenuBar() {
+    @Override
+    public void close() {
+        _window.dispose();
+        _window = null;
+    }
+
+    public void refreshListPanel(List<Email> emailList) {
+        // ListPanel Reload DB.
+        listPanel.setVisible(false);
+        listPanel.clear();
+
+        for (Email email : emailList) {
+            EmailContentHTML emailContentHTML = new EmailContentHTML(email);
+            HTMLContainer container = new HTMLContainer(emailContentHTML.toListItemHTML());
+            container.setSize(300, 100);
+            listPanel.addItem(container);
+        }
+
+        listPanel.repaint();
+        listPanel.setVisible(true);
+    }
+
+    public void refreshInbox() {
+        Collection<Email.EmailStatus> conditions = new HashSet<Email.EmailStatus>();
+        conditions.add(Email.EmailStatus.UNREAD);
+        conditions.add(Email.EmailStatus.READED);
+
+        List<Email> list = new LinkedList<Email>();
+        try {
+            list = new EmailController().getEmailListByStatus(conditions);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        this.refreshListPanel(list);
+    }
+
+    public void refreshSendbox() {
+        Collection<Email.EmailStatus> conditions = new HashSet<Email.EmailStatus>();
+        conditions.add(Email.EmailStatus.SENDING);
+
+        List<Email> list = new LinkedList<Email>();
+        try {
+            list = new EmailController().getEmailListByStatus(conditions);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        this.refreshListPanel(list);
+    }
+
+    public void refreshDraft() {
+        Collection<Email.EmailStatus> conditions = new HashSet<Email.EmailStatus>();
+        conditions.add(Email.EmailStatus.DRAFT);
+
+        List<Email> list = new LinkedList<Email>();
+        try {
+            list = new EmailController().getEmailListByStatus(conditions);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        this.refreshListPanel(list);
+    }
+
+    public void refreshSended() {
+        Collection<Email.EmailStatus> conditions = new HashSet<Email.EmailStatus>();
+        conditions.add(Email.EmailStatus.SENDED);
+
+        List<Email> list = new LinkedList<Email>();
+        try {
+            list = new EmailController().getEmailListByStatus(conditions);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        this.refreshListPanel(list);
+    }
+
+    private void initMenuBar() {
         this.setJMenuBar(new MenuBar());
     }
 
     private void setSize() {
         leftPanel.setSize(new Dimension(180, 700));
         listPanel.setSize(new Dimension(300, 700));
+    }
+
+    // ===== Main Test
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                MainWindow.getInstance().start();
+            }
+        });
     }
 }

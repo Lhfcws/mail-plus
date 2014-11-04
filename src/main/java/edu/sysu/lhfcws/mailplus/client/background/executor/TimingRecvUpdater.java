@@ -1,9 +1,11 @@
-package edu.sysu.lhfcws.mailplus.server.serv;
+package edu.sysu.lhfcws.mailplus.client.background.executor;
 
 import com.google.gson.Gson;
+import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.io.InternalSocket;
 import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
+import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
 import edu.sysu.lhfcws.mailplus.commons.util.MailplusConfig;
 
@@ -20,13 +22,16 @@ public class TimingRecvUpdater extends AdvRunnable {
     public static final String NAME = "TimingRecvUpdater";
     public static final int UPDATE_INTERVAL = 10000;    // 10s
 
-    private InternalSocket socket;
     private ReceiveRequest req;
     private String reqMsg;
+    private InternalClient client;
 
-    public TimingRecvUpdater() {
+    public TimingRecvUpdater(InternalClient client) {
         super(NAME);
-        this.socket = new InternalSocket();
+        this.client = client;
+    }
+
+    public void initReceiveRequest() {
         this.req = new ReceiveRequest();
         this.req.setReceiveRequestType(ReceiveRequest.ReceiveRequestType.LATEST);
         this.reqMsg = (new Gson()).toJson(this.req);
@@ -35,18 +40,10 @@ public class TimingRecvUpdater extends AdvRunnable {
     @Override
     public void run() {
         int port = Integer.valueOf(MailplusConfig.getInstance().get(Consts.SERVER_PORT));
+        initReceiveRequest();
 
         while (true) {
-            try {
-                this.socket.connect("0.0.0.0", port);
-
-                this.socket.send(this.reqMsg);
-
-
-                this.socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            client.sendRequest(req, null);
 
             try {
                 Thread.sleep(UPDATE_INTERVAL);

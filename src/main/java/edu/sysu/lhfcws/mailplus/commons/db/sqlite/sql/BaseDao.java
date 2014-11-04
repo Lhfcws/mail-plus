@@ -301,20 +301,21 @@ public class BaseDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public <T> T querySingleObj(String sql, ResultSetHandler handler,
-			String params) throws SQLException {
-		T t;
-		try {
-			t = (T) queryRunner.query(sql, handler, params);
-		} catch (SQLException e) {
-			logger.debug("Error occured while attempting to find object", e);
-			throw e;
-		}
+    public <T> T querySingleObj(String sql, ResultSetHandler<T> handler,
+                                Object... params) throws SQLException {
+        T t;
+        try {
+            t = queryRunner.query(sql, handler, params);
+        } catch (SQLException e) {
+            logger.debug("Error occured while attempting to find object", e);
+            throw e;
+        }
 
-		return t;
-	}
+        return t;
+    }
 
-	/**
+
+    /**
 	 * 执行查询，将每行的结果保存到Bean中，然后将所有Bean保存到List中
 	 * 
 	 * @param <T>

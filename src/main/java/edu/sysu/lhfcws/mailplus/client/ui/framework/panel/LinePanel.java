@@ -1,4 +1,4 @@
-package edu.sysu.lhfcws.mailplus.client.ui.framework.util;
+package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +10,7 @@ import java.awt.*;
 public class LinePanel extends JPanel {
     public LinePanel() {
         this.setBorder(BorderFactory.createEmptyBorder());
-        this.setLayout(new FlowLayout());
+        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.setFont(Font.getFont(Font.MONOSPACED));
     }
 }

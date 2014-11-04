@@ -31,19 +31,19 @@ public class QueryUtil {
         String domain = hosts[1].trim();
 
         RemoteHost remoteHost = getRemoteHost(domain);
-//        return "smtp." + host;
+//        return "smtp." + domain;
         return remoteHost.getSmtpHost();
     }
 
     public static RemoteHost getRemoteHost(String domain) throws SQLException {
-        String sql = String.format("SELECT * FROM '%s' WHERE domain='?'", Consts.TBL_HOST);
-        RemoteHost remoteHost = dao.querySingleObj(sql, new RemoteHostResultSetHandler(), domain);
+        String sql = String.format("SELECT * FROM '%s' WHERE domain='%s';", Consts.TBL_HOST, domain);
+        RemoteHost remoteHost = dao.querySingleObj(sql, new RemoteHostResultSetHandler());
         return remoteHost;
     }
 
     public static MailUser getUser(String email) throws SQLException {
-        String sql = String.format("SELECT * FROM '%s' WHERE email='?'", Consts.TBL_USER);
-        MailUser user = dao.querySingleObj(sql, new UserResultSetHandler(), email);
+        String sql = String.format("SELECT * FROM '%s' WHERE email='%s';", Consts.TBL_USER, email);
+        MailUser user = dao.querySingleObj(sql, new UserResultSetHandler());
         return user;
     }
 

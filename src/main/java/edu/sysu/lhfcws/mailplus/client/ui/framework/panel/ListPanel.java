@@ -11,12 +11,25 @@ import java.awt.*;
  */
 public class ListPanel extends JPanel {
 
+    private DefaultListModel<HTMLContainer> listModel;
+    private JList<HTMLContainer> jList;
+
     public ListPanel() {
+        this.jList = new JList<HTMLContainer>();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
+        this.add(jList);
+
+        clear();
     }
 
-    public void addItem(HTMLContainer item) {
-        this.add(item);
+    public void clear() {
+        listModel.clear();
+        jList.setModel(listModel);
+    }
+
+    public void addItem(HTMLContainer container) {
+        container.setSize(300, 100);
+        listModel.addElement(container);
     }
 }

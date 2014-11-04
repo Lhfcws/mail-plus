@@ -6,6 +6,7 @@ import edu.sysu.lhfcws.mailplus.commons.db.sqlite.QueryUtil;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.SQLite;
 import edu.sysu.lhfcws.mailplus.commons.io.CommonSocket;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
+import edu.sysu.lhfcws.mailplus.commons.model.RemoteHost;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import org.apache.commons.codec.binary.Base64;
@@ -49,12 +50,12 @@ public class UserVerifier {
         Preconditions.checkArgument(unencryptedPassword != null);
 
         try {
-            MailUser mailUser = QueryUtil.getFullMailUser(email);
+            String smtpHost = QueryUtil.getSMTPHost(email);
 
-            this.socket.connect(mailUser.getSmtpHost(), ProtocolConsts.SMTP_PORT);
+            this.socket.connect(smtpHost, ProtocolConsts.SMTP_PORT);
 
             this.socketSend(
-                    ProtocolConsts.HELO, mailUser.getSmtpHost()
+                    ProtocolConsts.HELO, smtpHost
             );
             response();
 

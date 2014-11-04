@@ -139,4 +139,13 @@ public class Events {
             }
         });
     }
+
+    public static void bindKeyToButton(int keyCode, final JButton button) {
+        button.registerKeyboardAction(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.doClick();
+            }
+        }, KeyStroke.getKeyStroke(keyCode, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+    }
 }

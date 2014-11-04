@@ -2,6 +2,7 @@ package edu.sysu.lhfcws.mailplus.server.util;
 
 import com.google.common.base.Preconditions;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
+import edu.sysu.lhfcws.mailplus.commons.util.PersistentRequestQueue;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,11 +16,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MultiRequestQueues {
     private static final int COUNTDOWN_NAP = 5;
-    private ConcurrentHashMap<String, RequestQueue> pool;
+    private ConcurrentHashMap<String, PersistentRequestQueue> pool;
     private ConcurrentHashMap<String, CountDown> countDown;
 
     public MultiRequestQueues() {
-        this.pool = new ConcurrentHashMap<String, RequestQueue>();
+        this.pool = new ConcurrentHashMap<String, PersistentRequestQueue>();
         this.countDown = new ConcurrentHashMap<String, CountDown>();
     }
 
@@ -29,7 +30,7 @@ public class MultiRequestQueues {
 
         String smtp = req.getMailUser().getSmtpHost();
         if (!this.pool.containsKey(smtp)) {
-            this.pool.put(smtp, RequestQueue.getRQ(smtp));
+            this.pool.put(smtp, PersistentRequestQueue.getRQ(smtp));
         }
 
         this.pool.get(smtp).enQueue(req);

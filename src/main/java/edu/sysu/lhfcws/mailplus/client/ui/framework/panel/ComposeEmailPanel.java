@@ -1,83 +1,64 @@
-package edu.sysu.lhfcws.mailplus.client.ui.framework.window;
-
+package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
-import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Callback;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Function;
-import edu.sysu.lhfcws.mailplus.client.ui.framework.util.LinePanel;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.ComposeEmailWindow;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.EventListener;
-import java.util.HashMap;
 
 /**
- * The window that pops out for user to write email.
- *
  * @author lhfcws
- * @time 14-10-30.
+ * @time 14-11-1.
  */
-public class ComposeEmailWindow extends JFrame {
-
+public class ComposeEmailPanel extends JPanel {
     private JTextField to, cc, subject;
     private JTextArea content;
 
-    private static ComposeEmailWindow _window = null;
-
-    public static ComposeEmailWindow getInstance() {
-        if (_window == null) {
-            synchronized (ComposeEmailWindow.class) {
-                if (_window == null) {
-                    _window = new ComposeEmailWindow();
-                }
-            }
-        }
-
-        return _window;
-    }
-
-    private ComposeEmailWindow() {
-        init();
-
+    public ComposeEmailPanel() {
+        this.setBorder(BorderFactory.createTitledBorder("Compose Email"));
+//        this.setLayout(new FlowLayout());
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(new Color(235, 235, 235));
-    }
 
-    private void init() {
-
+        addToLine();
+        addCcLine();
+        addSubjectLine();
+        addContentLine();
+        addButtons();
     }
 
     private void addToLine() {
-        LinePanel subjectLine = new LinePanel();
-        subjectLine.add(new JLabel("To:   "));
-        to = new JTextField();
-        subjectLine.add(to);
-        this.add(subjectLine);
+        LinePanel linePanel = new LinePanel();
+        linePanel.add(new JLabel("To:   "));
+        to = new JTextField(44);
+        linePanel.add(to);
+        this.add(linePanel);
     }
 
     private void addCcLine() {
-        LinePanel subjectLine = new LinePanel();
-        subjectLine.add(new JLabel("Cc:   "));
-        cc = new JTextField();
-        subjectLine.add(cc);
-        this.add(subjectLine);
+        LinePanel linePanel = new LinePanel();
+        linePanel.add(new JLabel("Cc:   "));
+        cc = new JTextField(44);
+        linePanel.add(cc);
+        this.add(linePanel);
     }
 
     private void addSubjectLine() {
-        LinePanel subjectLine = new LinePanel();
-        subjectLine.add(new JLabel("Subject:   "));
-        subject = new JTextField();
-        subjectLine.add(subject);
-        this.add(subjectLine);
+        LinePanel linePanel = new LinePanel();
+        linePanel.add(new JLabel("Subject: "));
+        subject = new JTextField(42);
+        linePanel.add(subject);
+        this.add(linePanel);
     }
 
     private void addContentLine() {
         LinePanel contentLine = new LinePanel();
-        contentLine.add(new JLabel("Content:   "));
-        content = new JTextArea();
+        contentLine.add(new JLabel("Content: "));
+        content = new JTextArea(100, 42);
+        content.setBorder(BorderFactory.createEtchedBorder());
         contentLine.add(content);
         this.add(contentLine);
     }
@@ -98,6 +79,8 @@ public class ComposeEmailWindow extends JFrame {
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
                 email.setDate(new Date());
+
+                ComposeEmailWindow.getInstance().close();
             }
         });
 
@@ -112,6 +95,8 @@ public class ComposeEmailWindow extends JFrame {
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
                 email.setDate(new Date());
+
+                ComposeEmailWindow.getInstance().close();
             }
         });
 

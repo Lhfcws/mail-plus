@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.client.util;
 
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
+import edu.sysu.lhfcws.mailplus.commons.util.StringTruncator;
 
 
 /**
@@ -8,7 +9,6 @@ import edu.sysu.lhfcws.mailplus.commons.model.Email;
  * @time 14-10-29.
  */
 public class EmailContentHTML {
-
     private Email email = null;
 
     public EmailContentHTML(Email email) {
@@ -36,13 +36,21 @@ public class EmailContentHTML {
                 email.getSubject(), email.getContent());
     }
 
-    public String toListItem() {
+    public String toListItemHTML() {
         if (email == null)
             return null;
 
         String template = TemplateLoader.getInstance().get(ClientConsts.LIST_ITEM_TEMPLATE);
-        return String.format(template,
-                email.getFrom(), email.getDate(),
-                email.getSubject(), email.getContent());
+        try {
+            return String.format(template,
+                    email.getFrom(), email.getDate(),
+                    StringTruncator.truncate(email.getSubject(), 30),
+                    StringTruncator.truncate(email.getContent(), 60));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return String.format(template,
+                    email.getFrom(), email.getDate(),
+                    email.getSubject(), email.getContent());
+        }
     }
 }

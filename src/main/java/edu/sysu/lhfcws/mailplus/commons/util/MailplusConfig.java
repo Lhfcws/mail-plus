@@ -58,6 +58,11 @@ public class MailplusConfig {
         }
     }
 
+    public int getInt(String param) {
+        Preconditions.checkArgument(param != null);
+        return Integer.valueOf(this.params.get(param));
+    }
+
     public String get(String param) {
         Preconditions.checkArgument(param != null);
 

@@ -17,9 +17,9 @@ public class RemoteHostResultSetHandler implements ResultSetHandler<RemoteHost> 
         if (rs.next()) {
             RemoteHost remoteHost = new RemoteHost();
             remoteHost.setId(rs.getInt("id"));
-            remoteHost.setImapHost(rs.getString("imap_host"));
-            remoteHost.setSmtpHost(rs.getString("smtp_host"));
-            remoteHost.setPop3Host(rs.getString("pop3_host"));
+            remoteHost.setImapHost(rs.getString("imap"));
+            remoteHost.setSmtpHost(rs.getString("smtp"));
+            remoteHost.setPop3Host(rs.getString("pop3"));
             return remoteHost;
         }
         else

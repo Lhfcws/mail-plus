@@ -1,4 +1,4 @@
-package edu.sysu.lhfcws.mailplus.server.util;
+package edu.sysu.lhfcws.mailplus.commons.util;
 
 
 import com.google.common.base.Preconditions;
@@ -16,24 +16,24 @@ import java.util.HashMap;
  * @author lhfcws
  * @time 14-10-25.
  */
-public class RequestQueue {
+public class PersistentRequestQueue {
     private static Gson gson = new Gson();
-    private static HashMap<String, RequestQueue> cache = new HashMap<String, RequestQueue>();
+    private static HashMap<String, PersistentRequestQueue> cache = new HashMap<String, PersistentRequestQueue>();
 
     private BDB bdb;
 
-    public static RequestQueue getRQ(String name) {
+    public static PersistentRequestQueue getRQ(String name) {
         if (!cache.containsKey(name)) {
             synchronized (cache) {
                 if (!cache.containsKey(name)) {
-                    cache.put(name, new RequestQueue(name));
+                    cache.put(name, new PersistentRequestQueue(name));
                 }
             }
         }
         return cache.get(name);
     }
 
-    private RequestQueue(String name) {
+    private PersistentRequestQueue(String name) {
         bdb = BDB.getInstance(Consts.BDB_PATH + name);
         bdb.start();
     }

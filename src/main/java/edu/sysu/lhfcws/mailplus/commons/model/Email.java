@@ -212,7 +212,7 @@ public class Email implements Serializable {
             return value;
         }
 
-        public EmailStatus fromValue(int v) {
+        public static EmailStatus fromValue(int v) {
             switch (v) {
                 case 0: return UNREAD;
                 case 1: return READED;

@@ -1,6 +1,12 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 
+import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
+import edu.sysu.lhfcws.mailplus.commons.util.ConditionSwitcher;
+
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
@@ -18,12 +24,38 @@ public class LeftPanel extends JPanel {
     }
 
     public void addMailbox(String email) {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(String.format(" 邮箱 (%s) ", email));
-        DefaultMutableTreeNode inboxNode = new DefaultMutableTreeNode(" 收件箱 ");
-        DefaultMutableTreeNode sendboxNode = new DefaultMutableTreeNode(" 发件箱 ");
-        DefaultMutableTreeNode sendedNode = new DefaultMutableTreeNode(" 已发邮件 ");
-        DefaultMutableTreeNode draftNode = new DefaultMutableTreeNode(" 草稿箱 ");
-        DefaultMutableTreeNode binNode = new DefaultMutableTreeNode(" 垃圾箱 ");
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(String.format(" Mailbox (%s) ", email));
+        DefaultMutableTreeNode inboxNode = new DefaultMutableTreeNode(" Inbox ");
+        DefaultMutableTreeNode sendboxNode = new DefaultMutableTreeNode(" Sendbox ");
+        DefaultMutableTreeNode sendedNode = new DefaultMutableTreeNode(" Sended Mails ");
+        DefaultMutableTreeNode draftNode = new DefaultMutableTreeNode(" Draft ");
+        DefaultMutableTreeNode binNode = new DefaultMutableTreeNode(" Bin ");
+
+        final ConditionSwitcher switcher = new ConditionSwitcher();
+        switcher.addBranch(inboxNode.toString(), new Runnable() {
+            @Override
+            public void run() {
+                MainWindow.getInstance().refreshInbox();
+            }
+        });
+        switcher.addBranch(sendboxNode.toString(), new Runnable() {
+            @Override
+            public void run() {
+                MainWindow.getInstance().refreshSendbox();
+            }
+        });
+        switcher.addBranch(sendedNode.toString(), new Runnable() {
+            @Override
+            public void run() {
+                MainWindow.getInstance().refreshSended();
+            }
+        });
+        switcher.addBranch(draftNode.toString(), new Runnable() {
+            @Override
+            public void run() {
+                MainWindow.getInstance().refreshDraft();
+            }
+        });
 
         root.add(inboxNode);
         root.add(sendboxNode);
@@ -33,8 +65,16 @@ public class LeftPanel extends JPanel {
 
         DefaultTreeModel model = new DefaultTreeModel(root);
 
-        JTree tree = new JTree(model);
+        final JTree tree = new JTree(model);
         tree.setBorder(BorderFactory.createEmptyBorder());
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode selectedNode =
+                        (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                switcher.decide(selectedNode.toString());
+            }
+        });
 //        tree.setSize(new Dimension(150, 230));
 
         JScrollPane scrollPane = new JScrollPane(tree);
