@@ -97,11 +97,38 @@ public class ThreadMonitor {
             }
 
             try {
-                Thread.sleep(this.watchInterval);
+                Thread.sleep(watchInterval);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void asyncMonitor() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+
+                    Set<Map.Entry<String, Thread>> set = threadMap.entrySet();
+                    for (Map.Entry<String, Thread> entry : set) {
+                        if (!entry.getValue().isAlive()) {
+                            LOG.error(entry.getKey() + " is dead. Restarting it.");
+                            entry.getValue().stop();
+                            entry.getValue().start();
+                        }
+                    }
+
+                    try {
+                        Thread.sleep(watchInterval);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     public int getWatchInterval() {

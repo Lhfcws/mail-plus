@@ -1,8 +1,8 @@
 package client.test;
 
-import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
+import client.preparation.TestPreparation;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.DownloadEmailsWindow;
-import edu.sysu.lhfcws.mailplus.server.serv.MailPlusServer;
+import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 
 import javax.swing.*;
 
@@ -13,12 +13,11 @@ import javax.swing.*;
 public class DownloadEmailsWindowTest {
 
     public static void start() {
-        MailPlusServer server = MailPlusServer.getInstance();
-        server.start();
+        TestPreparation preparation = new TestPreparation();
+        preparation.prepare();
+        MailUser mailUser = preparation.prepareMailUser();
 
-        InternalClient client = InternalClient.getInstance();
-        client.start();
-
+        DownloadEmailsWindow.getInstance().setMailUser(mailUser);
         DownloadEmailsWindow.getInstance().start();
     }
 

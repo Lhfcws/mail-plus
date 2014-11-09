@@ -1,15 +1,18 @@
 package edu.sysu.lhfcws.mailplus.server.serv;
 
 import com.google.common.base.Preconditions;
+import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDBCounter;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
+import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.ThreadMonitor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.POP3Executor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.POP3RQsWatcher;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.ServerListener;
-import edu.sysu.lhfcws.mailplus.server.util.MultiRequestQueues;
+import edu.sysu.lhfcws.mailplus.commons.queue.MultiPersistentRequestQueues;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,18 +36,17 @@ public class POP3Server extends AdvRunnable {
     private ExecutorService threadPool;
     private ThreadMonitor threadMonitor;
     private ServerListener serverListener;
-    private MultiRequestQueues multiRequestQueues;
-
-
-    private static final String POP3_RQs_WATCHER = "POP3RQsWatcher";
+    private MultiPersistentRequestQueues multiPersistentRequestQueues;
 
     public POP3Server(ServerListener serverListener) {
         super(NAME);
+        this.scheduler = new ConcurrentHashMap<String, AdvRunnable>();
+        this.counter = new BDBCounter(Consts.BDB_PATH + NAME);
         this.serverListener = serverListener;
-        this.multiRequestQueues = new MultiRequestQueues();
+        this.multiPersistentRequestQueues = RQCenter.getMultiRQ(POP3RQsWatcher.NAME);
         this.threadPool = Executors.newCachedThreadPool();
         this.threadMonitor = new ThreadMonitor();
-        this.threadMonitor.register(new POP3RQsWatcher(POP3_RQs_WATCHER, this));
+        this.threadMonitor.register(new POP3RQsWatcher(POP3RQsWatcher.NAME, this));
     }
 
     public void start() {
@@ -57,12 +59,13 @@ public class POP3Server extends AdvRunnable {
      * @param req
      */
     public void execute(Request req) {
+        LogUtil.debug("POP3Server execute: " + req);
         String pop3Host = req.getMailUser().getPop3Host();
         this.counter.inc(pop3Host);
 
         if (scheduler.containsKey(pop3Host)) {
             // put into corresponding smtp queue
-            this.multiRequestQueues.enQueue(req);
+            this.multiPersistentRequestQueues.enQueue(req.getMailUser().getPop3Host(), req);
         } else {
             POP3Executor executor = new POP3Executor(pop3Host, this);
             executor.init(req);
@@ -78,22 +81,25 @@ public class POP3Server extends AdvRunnable {
      * @param req
      */
     public void repushRequest(Request req) {
-        this.multiRequestQueues.nap(req.getMailUser().getPop3Host());
+        LogUtil.debug("POP3Server repush: " + req);
+        this.multiPersistentRequestQueues.nap(req.getMailUser().getPop3Host());
         this.dispatch(req);
     }
 
     public void dispatch(Request req) {
         Preconditions.checkArgument(req != null);
+        LogUtil.debug("POP3Server dispatch: " + req);
 
-        this.multiRequestQueues.enQueue(req);
+        this.multiPersistentRequestQueues.enQueue(req.getMailUser().getPop3Host(), req);
     }
 
     public void finish(String pop3Host, Response res) {
+        LogUtil.debug("POP3Server finish: " + res);
         if (!Response.isAsync(res)) {
             try {
                 this.serverListener.sendResponse(res);
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtil.error(LOG, e);
             }
             this.counter.dec(pop3Host);
         }

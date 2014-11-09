@@ -20,28 +20,28 @@ public class MultiPersistentRequestQueues {
     private ConcurrentHashMap<String, PersistentRequestQueue> pool;
     private ConcurrentHashMap<String, CountDown> countDown;
 
-    public MultiPersistentRequestQueues() {
+    MultiPersistentRequestQueues() {
         this.pool = new ConcurrentHashMap<String, PersistentRequestQueue>();
         this.countDown = new ConcurrentHashMap<String, CountDown>();
     }
 
-    public void enQueue(Request req) {
+    public void enQueue(String key, Request req) {
         Preconditions.checkArgument(req != null);
         Preconditions.checkArgument(req.getMailUser() != null);
 
-        String smtp = req.getMailUser().getSmtpHost();
-        if (!this.pool.containsKey(smtp)) {
-            this.pool.put(smtp, PersistentRequestQueue.getRQ(smtp));
+        if (!this.pool.containsKey(key)) {
+            this.pool.put(key, RQCenter.getRQ(key));
+            this.countDown.put(key, new CountDown());
         }
 
-        this.pool.get(smtp).enQueue(req);
+        this.pool.get(key).enQueue(req);
     }
 
-    public Request deQueue(String smtp) {
-        Preconditions.checkArgument(smtp != null);
-        Preconditions.checkArgument(this.pool.containsKey(smtp));
+    public Request deQueue(String key) {
+        Preconditions.checkArgument(key != null);
+        Preconditions.checkArgument(this.pool.containsKey(key));
 
-        Request req = this.pool.get(smtp).deQueue();
+        Request req = this.pool.get(key).deQueue();
         if (req == null)
             return null;
         return req;
@@ -59,10 +59,10 @@ public class MultiPersistentRequestQueues {
     /**
      * If a smtp server is socket timeout,
      * then we'll make the smtpHost in nap and wait a while to retry.
-     * @param smtp
+     * @param key
      */
-    public void nap(String smtp) {
-        this.countDown.get(smtp).set(COUNTDOWN_NAP);
+    public void nap(String key) {
+        this.countDown.get(key).set(COUNTDOWN_NAP);
     }
 
     /**

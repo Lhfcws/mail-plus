@@ -189,6 +189,7 @@ public class BDB {
             String key = new String(theKey.getData());
             String value = new String(theData.getData());
             Pair<String, String> pair = new Pair<String, String>(key, value);
+            return pair;
         }
 
         return null;

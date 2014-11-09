@@ -39,11 +39,10 @@ public class DeleteRequest extends Request {
     @Override
     public String toString() {
         return "DeleteRequest{" +
-                "mailID='" + mailID + '\'' +
-                ", mailUser=" + mailUser +
-                '}';
+                "mailID=" + mailID +
+                ", deleteRequestType=" + deleteRequestType +
+                "} " + super.toString();
     }
-
 
     /**
      * DELETE_ONE: delete one mail according to mailID.

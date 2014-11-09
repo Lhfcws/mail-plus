@@ -23,10 +23,12 @@ public class DownloadEmailsPanel extends JPanel {
         progressBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
         progressBar.setStringPainted(true);
 
-        this.add(new JLabel("Downloading emails from remote server, pleae wait ..."));
+        this.add(new JLabel("Downloading emails from remote server, please wait ..."));
+        this.add(new JLabel(" "));
+        this.add(new JLabel(" "));
         this.add(progressBar);
 
-        progressBar.setPreferredSize(new Dimension(300, 50));
+        progressBar.setPreferredSize(new Dimension(270, 50));
     }
 
     public JProgressBar getProgressBar() {

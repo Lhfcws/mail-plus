@@ -2,7 +2,10 @@ package client.preparation;
 
 import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.server.serv.MailPlusServer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import server.test.TestConsts;
 
 /**
@@ -10,6 +13,8 @@ import server.test.TestConsts;
  * @time 14-11-9.
  */
 public class TestPreparation {
+    public static Log LOG = LogFactory.getLog(TestPreparation.class);
+
     public TestPreparation() {
 
     }
@@ -20,6 +25,8 @@ public class TestPreparation {
 
         InternalClient client = InternalClient.getInstance();
         client.start();
+
+        LogUtil.info(LOG, "MailPlusServer and InternalClient started.");
     }
 
     public MailUser prepareMailUser() {

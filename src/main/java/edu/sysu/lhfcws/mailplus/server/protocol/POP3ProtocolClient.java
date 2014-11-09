@@ -98,6 +98,9 @@ public class POP3ProtocolClient implements POP3Client {
         List<Integer> retrMailIDs = new LinkedList<Integer>();
         List<String> mailInfos = getResponseInLines();
         for (String mailInfo : mailInfos) {
+            if (mailInfo.startsWith("+OK"))
+                continue;
+
             String[] mailInfoArr = mailInfo.split(" ");
             String mID = mailInfoArr[0].trim();
             if (Integer.valueOf(mID) > latestMailID) {

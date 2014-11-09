@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.server.serv.executor;
 import edu.sysu.lhfcws.mailplus.commons.io.req.DeleteRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
+import edu.sysu.lhfcws.mailplus.commons.io.res.EmailResponse;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
@@ -17,7 +18,8 @@ import java.net.SocketTimeoutException;
 import java.util.List;
 
 /**
- *  The real executor that connects to POP3 server.
+ * The real executor that connects to POP3 server.
+ *
  * @author lhfcws
  * @time 14-10-27.
  */
@@ -45,29 +47,40 @@ public class POP3Executor extends AdvRunnable {
         res.setAuthCode(req.getAuthCode());
         res.setStatus(Response.ResponseStatus.SUCCEED);
 
+        LogUtil.debug("POP3Executor run: " + req);
+
         try {
             if (req.getRequestType().equals(Request.RequestType.DELETE)) {
                 DeleteRequest deleteRequest = (DeleteRequest) req;
                 pop3Client.delete(deleteRequest.getMailID());
+                pop3Server.finish(req.getMailUser().getPop3Host(), res);
             } else if (req.getRequestType().equals(Request.RequestType.RECEIVE)) {
                 ReceiveRequest receiveRequest = (ReceiveRequest) req;
+                EmailResponse emailResponse = new EmailResponse();
+                emailResponse.setResID(req.getReqID());
+                emailResponse.setAuthCode(req.getAuthCode());
+                emailResponse.setStatus(Response.ResponseStatus.SUCCEED);
+
                 if (receiveRequest.getReceiveRequestType()
                         .equals(ReceiveRequest.ReceiveRequestType.LATEST)) {
                     List<Email> list = pop3Client.receiveLatest(receiveRequest.getMailID());
+                    emailResponse.setEmails(list);
                 } else if (receiveRequest.getReceiveRequestType()
                         .equals(ReceiveRequest.ReceiveRequestType.MAIL)) {
                     Email email = pop3Client.receive(receiveRequest.getMailID());
+                    emailResponse.addEmail(email);
                 }
+
+                pop3Server.finish(req.getMailUser().getPop3Host(), emailResponse);
             }
         } catch (SocketTimeoutException e) {
             res.setStatus(Response.ResponseStatus.WAITING);
             res.setMsg(e.getMessage());
-
+            pop3Server.repushRequest(req);
         } catch (Exception e) {
             LogUtil.error(LOG, e);
             res.setStatus(Response.ResponseStatus.FAIL);
             res.setMsg(e.getMessage());
-        } finally {
             pop3Server.finish(req.getMailUser().getPop3Host(), res);
         }
     }

@@ -5,12 +5,13 @@ import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDBCounter;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
+import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
 import edu.sysu.lhfcws.mailplus.commons.util.ThreadMonitor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.SMTPExecutor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.SMTPRQsWatcher;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.ServerListener;
-import edu.sysu.lhfcws.mailplus.server.util.MultiRequestQueues;
+import edu.sysu.lhfcws.mailplus.commons.queue.MultiPersistentRequestQueues;
 
 import java.io.IOException;
 import java.util.concurrent.*;
@@ -39,25 +40,21 @@ public class SMTPServer extends AdvRunnable {
     private BDBCounter counter;
     private ThreadMonitor threadMonitor;
     private ServerListener serverListener;
-    private MultiRequestQueues multiRequestQueues;
-
-//    private static final String SRQ_WATCHER = "SRQWatcher";
-    private static final String SMTP_RQs_WATCHER = "SMTPRQsWatcher";
-
+    private MultiPersistentRequestQueues multiPersistentRequestQueues;
 
 
     public SMTPServer(ServerListener serverListener) {
         super(NAME);
         this.serverListener = serverListener;
-        this.multiRequestQueues = new MultiRequestQueues();
+        this.multiPersistentRequestQueues = RQCenter.getMultiRQ(SMTPRQsWatcher.NAME);
         this.scheduler = new ConcurrentHashMap<String, AdvRunnable>();
 
         this.threadMonitor = new ThreadMonitor();
 //        this.threadMonitor.register(new SRQWatcher(SRQ_WATCHER, this));
-        this.threadMonitor.register(new SMTPRQsWatcher(SMTP_RQs_WATCHER, this));
+        this.threadMonitor.register(new SMTPRQsWatcher(SMTPRQsWatcher.NAME, this));
 
         this.threadPool = Executors.newCachedThreadPool();
-        this.counter = new BDBCounter(Consts.BDB_PATH + "activeSmtpCounter");
+        this.counter = new BDBCounter(Consts.BDB_PATH + NAME);
     }
 
     /**
@@ -78,7 +75,7 @@ public class SMTPServer extends AdvRunnable {
 
         if (scheduler.containsKey(smtpHost)) {
             // put into corresponding smtp queue
-            this.multiRequestQueues.enQueue(req);
+            this.multiPersistentRequestQueues.enQueue(smtpHost, req);
         } else {
             SMTPExecutor executor = new SMTPExecutor(smtpHost, this);
             executor.init(req);
@@ -113,7 +110,7 @@ public class SMTPServer extends AdvRunnable {
      * @param req
      */
     public void repushRequest(SendRequest req) {
-        this.multiRequestQueues.nap(req.getMailUser().getSmtpHost());
+        this.multiPersistentRequestQueues.nap(req.getMailUser().getSmtpHost());
         this.dispatch(req);
     }
 
@@ -124,7 +121,7 @@ public class SMTPServer extends AdvRunnable {
     public void dispatch(SendRequest req) {
         Preconditions.checkArgument(req != null);
 
-        this.multiRequestQueues.enQueue(req);
+        this.multiPersistentRequestQueues.enQueue(req.getMailUser().getSmtpHost(), req);
     }
 
     @Override

@@ -27,9 +27,9 @@ public class ServerListener extends AdvRunnable {
     private InternalServerSocket internalServerSocket;
     private RequestHandler requestHandler;
 
-    public ServerListener(String name, SMTPServer smtpServer, POP3Server pop3Server) {
+    public ServerListener(String name) {
         super(name);
-        this.requestHandler = new RequestHandler(smtpServer, pop3Server);
+        this.requestHandler = new RequestHandler();
     }
 
     public InternalServerSocket getServerSocket() {

@@ -6,7 +6,8 @@ import edu.sysu.lhfcws.mailplus.client.background.executor.ClientRQWatcher;
 import edu.sysu.lhfcws.mailplus.client.util.ClientConsts;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
-import edu.sysu.lhfcws.mailplus.commons.util.PersistentRequestQueue;
+import edu.sysu.lhfcws.mailplus.commons.queue.PersistentRequestQueue;
+import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
 import edu.sysu.lhfcws.mailplus.commons.util.ThreadMonitor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,7 +40,7 @@ public class InternalClient {
     }
 
     private InternalClient() {
-        this.clientRQ = PersistentRequestQueue.getRQ(ClientConsts.CLIENT_REQ_Q);
+        this.clientRQ = RQCenter.getRQ(ClientConsts.CLIENT_REQ_Q);
         this.callbackPool = new HashMap<ResponseID, ResponseCallback>();
         this.threadPool = Executors.newCachedThreadPool();
         this.threadMonitor = new ThreadMonitor();
@@ -48,7 +49,7 @@ public class InternalClient {
 
     public void start() {
         threadMonitor.start();
-        threadMonitor.monitor();
+        threadMonitor.asyncMonitor();
     }
 
     public PersistentRequestQueue getClientRQ() {
@@ -64,8 +65,11 @@ public class InternalClient {
         this.threadPool.submit(new Runnable() {
             @Override
             public void run() {
-                ResponseCallback responseCallback = callbackPool.get(new ResponseID(res));
+                ResponseID responseID = new ResponseID(res);
+                ResponseCallback responseCallback = callbackPool.get(responseID);
                 responseCallback.callback(res);
+                if (!Response.isAsync(res))
+                    callbackPool.remove(responseID);
             }
         });
     }

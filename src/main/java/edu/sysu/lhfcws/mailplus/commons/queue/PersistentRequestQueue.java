@@ -18,22 +18,10 @@ import java.util.HashMap;
  */
 public class PersistentRequestQueue {
     private static Gson gson = new Gson();
-    private static HashMap<String, PersistentRequestQueue> cache = new HashMap<String, PersistentRequestQueue>();
 
     private BDB bdb;
 
-    public static PersistentRequestQueue getRQ(String name) {
-        if (!cache.containsKey(name)) {
-            synchronized (cache) {
-                if (!cache.containsKey(name)) {
-                    cache.put(name, new PersistentRequestQueue(name));
-                }
-            }
-        }
-        return cache.get(name);
-    }
-
-    private PersistentRequestQueue(String name) {
+    PersistentRequestQueue(String name) {
         bdb = BDB.getInstance(Consts.BDB_PATH + name);
         bdb.start();
     }
@@ -56,6 +44,6 @@ public class PersistentRequestQueue {
         if (reqJson == null)
             return null;
 
-        return gson.fromJson(reqJson, Request.class);
+        return Request.deserialize(reqJson);
     }
 }

@@ -2,9 +2,10 @@ package edu.sysu.lhfcws.mailplus.server.serv.executor;
 
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
+import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
 import edu.sysu.lhfcws.mailplus.server.serv.SMTPServer;
-import edu.sysu.lhfcws.mailplus.server.util.MultiRequestQueues;
+import edu.sysu.lhfcws.mailplus.commons.queue.MultiPersistentRequestQueues;
 
 import java.util.List;
 
@@ -14,24 +15,26 @@ import java.util.List;
  */
 public class SMTPRQsWatcher extends AdvRunnable {
 
+    public static final String NAME = "SMTPRQsWatcher";
+
     public static final int WATCH_INTERVAL = 500;
     private SMTPServer SMTPServer;
-    private MultiRequestQueues multiRequestQueues;
+    private MultiPersistentRequestQueues multiPersistentRequestQueues;
 
     public SMTPRQsWatcher(String name, SMTPServer SMTPServer) {
         super(name);
         this.SMTPServer = SMTPServer;
-        this.multiRequestQueues = new MultiRequestQueues();
+        this.multiPersistentRequestQueues = RQCenter.getMultiRQ(NAME);
     }
 
     @Override
     public void run() {
         while (true) {
-            this.multiRequestQueues.countDown();
-            List<String> availableSMTP = this.multiRequestQueues.availableKeys();
+            this.multiPersistentRequestQueues.countDown();
+            List<String> availableSMTP = this.multiPersistentRequestQueues.availableKeys();
 
             for (String smtp : availableSMTP) {
-                Request req = this.multiRequestQueues.deQueue(smtp);
+                Request req = this.multiPersistentRequestQueues.deQueue(smtp);
                 if (req == null)
                     continue;
                 SMTPServer.send((SendRequest) req);

@@ -55,8 +55,17 @@ public class DownloadEmailsExecutor extends AdvRunnable {
             this.client.sendRequest(req, new ResponseCallback() {
                 @Override
                 public void callback(Response res) {
+                    if (Response.isAsync(res))
+                        return;
+                    else if (res.getStatus().equals(Response.ResponseStatus.FAIL)) {
+                        LogUtil.error(LOG, res.getMsg());
+                        return;
+                    }
+
                     EmailResponse emailResponse = (EmailResponse) res;
                     BaseDao dao = SQLite.getDao();
+
+                    LogUtil.debug(emailResponse.toString());
 
                     int size = emailResponse.getEmails().size();
                     int progress = 0;

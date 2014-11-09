@@ -17,6 +17,7 @@ public class EmailResponse extends Response {
         super();
         this.resID = -1;
         this.emails = new LinkedList<Email>();
+        this.setResponseType(ResponseType.EMAIL);
     }
 
     public EmailResponse(Response response) {
@@ -36,5 +37,12 @@ public class EmailResponse extends Response {
 
     public void addEmail(Email email) {
         this.emails.add(email);
+    }
+
+    @Override
+    public String toString() {
+        return "EmailResponse{" +
+                "emails=" + emails +
+                "} " + super.toString();
     }
 }

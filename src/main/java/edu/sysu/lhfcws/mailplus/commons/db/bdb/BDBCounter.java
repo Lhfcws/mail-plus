@@ -16,9 +16,12 @@ public class BDBCounter {
 
     public void inc(String key) {
         synchronized (this) {
+            long cnt = 1;
             String v = this.bdb.get(key);
-            long cnt = Long.valueOf(v);
-            cnt++;
+            if (v != null) {
+                cnt = Long.valueOf(v);
+                cnt++;
+            }
             this.bdb.set(key, String.valueOf(cnt));
         }
     }

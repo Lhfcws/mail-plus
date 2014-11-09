@@ -145,7 +145,7 @@ public class EmailController {
             @Override
             public Integer handle(ResultSet rs) throws SQLException {
                 if (rs.next()) {
-                    return rs.getInt(0);
+                    return rs.getInt(1);
                 }
                 return -1;
             }

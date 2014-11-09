@@ -1,5 +1,6 @@
 package edu.sysu.lhfcws.mailplus.commons.io.req;
 
+import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.auth.AuthObject;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 
@@ -71,7 +72,7 @@ public class Request extends AuthObject {
                 ", requestType=" + requestType +
                 ", mailUser=" + mailUser +
                 ", async=" + async +
-                '}';
+                "} " + super.toString();
     }
 
     /**
@@ -84,5 +85,19 @@ public class Request extends AuthObject {
         private RequestType(int v) {
             this.value = v;
         }
+    }
+
+    public static Request deserialize(String json) {
+        Gson gson = new Gson();
+        Request rawReq = gson.fromJson(json, Request.class);
+
+        if (rawReq.getRequestType().equals(Request.RequestType.SEND))
+            return gson.fromJson(json, SendRequest.class);
+        else if (rawReq.getRequestType().equals(Request.RequestType.DELETE))
+            return gson.fromJson(json, DeleteRequest.class);
+        else if (rawReq.getRequestType().equals(Request.RequestType.RECEIVE))
+            return gson.fromJson(json, ReceiveRequest.class);
+
+        return rawReq;
     }
 }

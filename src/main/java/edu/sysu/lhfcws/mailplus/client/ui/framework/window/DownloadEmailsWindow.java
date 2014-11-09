@@ -7,6 +7,7 @@ import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.DownloadEmailsPanel;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 
 import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -50,6 +51,8 @@ public class DownloadEmailsWindow extends AbstractWindow {
         if (mailUser != null) {
             this.pack();
             this.setVisible(true);
+            this.setPreferredSize(new Dimension(400, 200));
+            this.setLocation(600, 300);
 
             this.startDownload();
         }

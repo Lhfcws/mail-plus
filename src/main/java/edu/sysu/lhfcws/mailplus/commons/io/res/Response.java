@@ -1,5 +1,6 @@
 package edu.sysu.lhfcws.mailplus.commons.io.res;
 
+import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.auth.AuthObject;
 
 /**
@@ -10,10 +11,12 @@ public class Response extends AuthObject {
 
     protected long resID;     // equals to reqID if it is a requested response.
     protected ResponseStatus status;
+    protected ResponseType responseType;
     protected String msg;
 
     public Response() {
         this.msg = "";
+        this.setResponseType(ResponseType.COMMON);
     }
 
     public Response(ResponseStatus status, String authCode) {
@@ -47,17 +50,35 @@ public class Response extends AuthObject {
         this.msg = msg;
     }
 
+    public ResponseType getResponseType() {
+        return responseType;
+    }
+
+    public void setResponseType(ResponseType responseType) {
+        this.responseType = responseType;
+    }
+
     @Override
     public String toString() {
         return "Response{" +
                 "resID=" + resID +
                 ", status=" + status +
+                ", responseType=" + responseType +
                 ", msg='" + msg + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
     public static boolean isAsync(Response res) {
         return res.status == ResponseStatus.WAITING;
+    }
+
+    public static Response deserialize(String json) {
+        Gson gson = new Gson();
+        Response rawRes = gson.fromJson(json, Response.class);
+        if (rawRes.getResponseType().equals(ResponseType.EMAIL))
+            return gson.fromJson(json, EmailResponse.class);
+
+        return rawRes;
     }
 
     /**
@@ -68,6 +89,18 @@ public class Response extends AuthObject {
 
         private int value;
         private ResponseStatus(int value) {
+            this.value = value;
+        }
+    }
+
+    /**
+     * Response type.
+     */
+    public static enum ResponseType {
+        COMMON(0), EMAIL(1);
+
+        private int value;
+        private ResponseType(int value) {
             this.value = value;
         }
     }

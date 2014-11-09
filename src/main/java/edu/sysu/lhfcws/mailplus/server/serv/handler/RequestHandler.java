@@ -7,10 +7,13 @@ import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
+import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
-import edu.sysu.lhfcws.mailplus.commons.util.PersistentRequestQueue;
+import edu.sysu.lhfcws.mailplus.commons.queue.PersistentRequestQueue;
 import edu.sysu.lhfcws.mailplus.server.serv.POP3Server;
 import edu.sysu.lhfcws.mailplus.server.serv.SMTPServer;
+import edu.sysu.lhfcws.mailplus.server.serv.executor.POP3RQsWatcher;
+import edu.sysu.lhfcws.mailplus.server.serv.executor.SMTPRQsWatcher;
 
 /**
  * Request handler.
@@ -21,17 +24,13 @@ import edu.sysu.lhfcws.mailplus.server.serv.SMTPServer;
 public class RequestHandler {
 
     private static Gson gson = new Gson();
-    private SMTPServer smtpServer;
-    private POP3Server pop3Server;
 
-    public RequestHandler(SMTPServer smtpServer, POP3Server pop3Server) {
-        this.smtpServer = smtpServer;
-        this.pop3Server = pop3Server;
+    public RequestHandler() {
     }
 
     public Response handleRequest(String json) {
         Request request = gson.fromJson(json, Request.class);
-        LogUtil.debug(request.toString());
+        LogUtil.debug("RequestHanlder handle: " + json);
         Response res = new Response();
         res.setResID(request.getReqID());
         res.setAuthCode(request.getAuthCode());
@@ -53,18 +52,22 @@ public class RequestHandler {
     }
 
     private Response handleSendRequest(SendRequest req, Response res) {
-        PersistentRequestQueue.getRQ(Consts.SRQ).enQueue(req);
+        RQCenter.getMultiRQ(SMTPRQsWatcher.NAME).enQueue(req.getMailUser().getSmtpHost(), req);
         res.setStatus(Response.ResponseStatus.WAITING);
         return res;
     }
 
     // TODO: implement handleReceiveRequest
     private Response handleReceiveRequest(ReceiveRequest req, Response res) {
+        RQCenter.getMultiRQ(POP3RQsWatcher.NAME).enQueue(req.getMailUser().getPop3Host(), req);
+        res.setStatus(Response.ResponseStatus.WAITING);
         return res;
     }
 
     // TODO: implement handleDeleteRequest
     private Response handleDeleteRequest(DeleteRequest req, Response res) {
+        RQCenter.getMultiRQ(POP3RQsWatcher.NAME).enQueue(req.getMailUser().getPop3Host(), req);
+        res.setStatus(Response.ResponseStatus.WAITING);
         return res;
     }
 }

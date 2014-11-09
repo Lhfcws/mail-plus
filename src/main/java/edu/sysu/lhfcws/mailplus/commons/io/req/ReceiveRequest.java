@@ -34,11 +34,11 @@ public class ReceiveRequest extends Request {
     @Override
     public String toString() {
         return "ReceiveRequest{" +
-                "mailID='" + mailID + '\'' +
-                ", mailUser=" + mailUser +
+                "mailID=" + mailID +
                 ", receiveRequestType=" + receiveRequestType +
-                '}';
+                "} " + super.toString();
     }
+
 
     /**
      * MAIL: retrieve a mail according to mailID.

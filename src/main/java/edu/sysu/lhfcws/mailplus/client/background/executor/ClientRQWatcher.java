@@ -5,6 +5,7 @@ import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.io.InternalSocket;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
+import edu.sysu.lhfcws.mailplus.commons.io.res.EmailResponse;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
@@ -43,10 +44,11 @@ public class ClientRQWatcher extends AdvRunnable {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LogUtil.error(LOG, e);
             }
 
             Request req = client.getClientRQ().deQueue();
+
             if (req == null)
                 continue;
 
@@ -54,10 +56,10 @@ public class ClientRQWatcher extends AdvRunnable {
                 this.socket.send(gson.toJson(req));
                 String resMsg = this.socket.receive();
 
-                Response response = gson.fromJson(resMsg, Response.class);
-                this.client.callback(response);
+                Response response = Response.deserialize(resMsg);
+                client.callback(response);
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtil.error(LOG, e);
             }
         }
     }

@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.commons.util;
 
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
+import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import org.apache.commons.lang.StringUtils;
 
 import java.text.SimpleDateFormat;

@@ -31,6 +31,6 @@ public class SendRequest extends Request {
     public String toString() {
         return "SendRequest{" +
                 "email=" + email +
-                '}';
+                "} " + super.toString();
     }
 }
