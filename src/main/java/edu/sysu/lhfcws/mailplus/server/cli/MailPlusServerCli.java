@@ -2,17 +2,15 @@ package edu.sysu.lhfcws.mailplus.server.cli;
 
 import edu.sysu.lhfcws.mailplus.commons.util.AdvCli;
 import edu.sysu.lhfcws.mailplus.commons.util.CliRunner;
+import edu.sysu.lhfcws.mailplus.server.serv.MailPlusServer;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 
 /**
  * @author lhfcws
- * @time 14-10-21.
+ * @time 14-11-6.
  */
-public class POP3ServerCli implements CliRunner {
-
-    public static String NAME = "pop3Server";
-
+public class MailPlusServerCli implements CliRunner {
     @Override
     public Options initOptions() {
         Options options = new Options();
@@ -26,14 +24,11 @@ public class POP3ServerCli implements CliRunner {
 
     @Override
     public void start(CommandLine cmdLine) {
-
+        MailPlusServer mailPlusServer = MailPlusServer.getInstance();
+        mailPlusServer.start();
     }
 
-    /**
-     * Main
-     * @param args
-     */
     public static void main(String[] args) {
-        AdvCli.initRunner(args, NAME, new POP3ServerCli());
+        AdvCli.initRunner(args, "MailPlusServer", new MailPlusServerCli());
     }
 }

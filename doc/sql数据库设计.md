@@ -16,6 +16,7 @@ D## SQL数据库设计
 
 		CREATE TABLE 'email' (
 			'id' INTEGER PRIMARY KEY AUTOINCREMENT,
+			'mail_id' int DEFAULT -1,
 			'from' varchar(32) NOT NULL, /*sender*/
 			'to' text, /*receivers, json of List<String>*/
 			'cc' text, /*cc, json of List<String>*/
@@ -25,6 +26,7 @@ D## SQL数据库设计
 			'status' int NOT NULL DEFAULT 0,
 				/*'0:unread, 1:readed, 2:writing, 
 					3:draft, 4:sending, 5:sended'*/
+			'signature' varchar(64),
 			'timestamp' TIMESTAMP(8)
 		);		
 	

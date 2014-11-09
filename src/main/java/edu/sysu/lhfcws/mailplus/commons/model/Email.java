@@ -18,7 +18,7 @@ import java.util.List;
 public class Email implements Serializable {
 
     private int id;     // id is identified by local db.
-    private String mailID; // MailID is identified by mail server.
+    private int mailID; // MailID is identified by mail server, it's not stable.
     private String from;
     private List<String> to;
     private List<String> cc;
@@ -29,6 +29,7 @@ public class Email implements Serializable {
     private EmailType emailType;
     private String encoding;
     private EmailStatus status;
+    private String signature;
 
 
     public Email() {
@@ -53,7 +54,7 @@ public class Email implements Serializable {
     }
 
     public void setFrom(String from) {
-        Preconditions.checkArgument(PatternValidater.validateMailAddress(from));
+//        Preconditions.checkArgument(PatternValidater.validateMailAddress(from));
 
         this.from = from;
     }
@@ -67,7 +68,7 @@ public class Email implements Serializable {
     }
 
     public void addTo(String toAddr) {
-        Preconditions.checkArgument(PatternValidater.validateMailAddress(toAddr));
+//        Preconditions.checkArgument(PatternValidater.validateMailAddress(toAddr));
         Preconditions.checkArgument(this.to != null);
 
         this.to.add(toAddr);
@@ -82,7 +83,7 @@ public class Email implements Serializable {
     }
 
     public void addCc(String ccAddr) {
-        Preconditions.checkArgument(PatternValidater.validateMailAddress(ccAddr));
+//        Preconditions.checkArgument(PatternValidater.validateMailAddress(ccAddr));
         Preconditions.checkArgument(this.cc != null);
 
         this.cc.add(ccAddr);
@@ -108,11 +109,11 @@ public class Email implements Serializable {
         return !this.attachments.isEmpty();
     }
 
-    public String getMailID() {
+    public int getMailID() {
         return mailID;
     }
 
-    public void setMailID(String mailID) {
+    public void setMailID(int mailID) {
         this.mailID = mailID;
     }
 
@@ -160,6 +161,14 @@ public class Email implements Serializable {
         this.status = status;
     }
 
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
     public String getBoundary() {
         return "===" + Base64.encodeBase64String(Consts.RESET_AUTH_CODE.getBytes()) + "===";
     }
@@ -168,7 +177,7 @@ public class Email implements Serializable {
     public String toString() {
         return "Email{" +
                 "id=" + id +
-                ", mailID='" + mailID + '\'' +
+                ", mailID=" + mailID +
                 ", from='" + from + '\'' +
                 ", to=" + to +
                 ", cc=" + cc +
@@ -179,6 +188,7 @@ public class Email implements Serializable {
                 ", emailType=" + emailType +
                 ", encoding='" + encoding + '\'' +
                 ", status=" + status +
+                ", signature='" + signature + '\'' +
                 '}';
     }
 

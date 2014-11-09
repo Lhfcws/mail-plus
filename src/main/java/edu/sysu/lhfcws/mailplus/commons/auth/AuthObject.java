@@ -18,6 +18,10 @@ public abstract class AuthObject implements Serializable {
         this.authCode = authCode;
     }
 
+    public void generateAuthCode() {
+        this.authCode = new AuthCodeGenerator().generateCode(this);
+    }
+
     @Override
     /**
      * This should be overrided in children classes.

@@ -34,7 +34,7 @@ public class MailplusConfig {
     private void init() {
         params = new HashMap<String, String>();
         try {
-            FileLineReader lineReader = new FileLineReader(Consts.MAILPLUS_CONFIG);
+            FileLineReader lineReader = new FileLineReader("target/classes/" + Consts.MAILPLUS_CONFIG);
 
             String line;
             while ((line = lineReader.readLine()) != null) {

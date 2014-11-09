@@ -26,7 +26,19 @@ public class InternalClient {
     private ExecutorService threadPool;
     private ThreadMonitor threadMonitor;
 
-    public InternalClient() {
+    private static InternalClient _client = null;
+
+    public static InternalClient getInstance() {
+        if (_client == null) {
+            synchronized (InternalClient.class) {
+                if (_client == null)
+                    _client = new InternalClient();
+            }
+        }
+        return _client;
+    }
+
+    private InternalClient() {
         this.clientRQ = PersistentRequestQueue.getRQ(ClientConsts.CLIENT_REQ_Q);
         this.callbackPool = new HashMap<ResponseID, ResponseCallback>();
         this.threadPool = Executors.newCachedThreadPool();

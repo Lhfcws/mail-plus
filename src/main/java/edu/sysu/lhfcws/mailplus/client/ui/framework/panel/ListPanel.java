@@ -24,7 +24,9 @@ public class ListPanel extends JPanel {
     }
 
     public void clear() {
-        listModel.clear();
+        if (listModel != null)
+            listModel.clear();
+        listModel = new DefaultListModel<HTMLContainer>();
         jList.setModel(listModel);
     }
 

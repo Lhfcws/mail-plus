@@ -6,7 +6,7 @@ package edu.sysu.lhfcws.mailplus.commons.io.req;
  */
 public class DeleteRequest extends Request {
 
-    private String mailID;
+    private int mailID;
     private DeleteRequestType deleteRequestType;
 
     public DeleteRequest() {
@@ -14,17 +14,17 @@ public class DeleteRequest extends Request {
         this.deleteRequestType = DeleteRequestType.DELETE_ONE;
     }
 
-    public DeleteRequest(String mailID) {
+    public DeleteRequest(int mailID) {
         super(RequestType.DELETE);
         this.mailID = mailID;
         this.deleteRequestType = DeleteRequestType.DELETE_ONE;
     }
 
-    public String getMailID() {
+    public int getMailID() {
         return mailID;
     }
 
-    public void setMailID(String mailID) {
+    public void setMailID(int mailID) {
         this.mailID = mailID;
     }
 

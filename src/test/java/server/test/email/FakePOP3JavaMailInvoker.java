@@ -39,6 +39,7 @@ public class FakePOP3JavaMailInvoker {
     public void start() throws Exception {
 
         POP3JavaMailClient client = new POP3JavaMailClient(initReq());
-        client.receive("2689");
+//        client.delete("2688");
+        System.out.println(client.receive(2694));
     }
 }

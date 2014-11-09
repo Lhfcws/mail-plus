@@ -30,7 +30,9 @@ import java.util.concurrent.*;
  * @author lhfcws
  * @time 14-10-24.
  */
-public class SMTPServer {
+public class SMTPServer extends AdvRunnable {
+    public static final String NAME = "SMTPServer";
+
     // key: smtpHost ; value: execute thread
     private ConcurrentHashMap<String, AdvRunnable> scheduler;
     private ExecutorService threadPool;
@@ -45,6 +47,7 @@ public class SMTPServer {
 
 
     public SMTPServer(ServerListener serverListener) {
+        super(NAME);
         this.serverListener = serverListener;
         this.multiRequestQueues = new MultiRequestQueues();
         this.scheduler = new ConcurrentHashMap<String, AdvRunnable>();
@@ -122,5 +125,10 @@ public class SMTPServer {
         Preconditions.checkArgument(req != null);
 
         this.multiRequestQueues.enQueue(req);
+    }
+
+    @Override
+    public void run() {
+        this.start();
     }
 }

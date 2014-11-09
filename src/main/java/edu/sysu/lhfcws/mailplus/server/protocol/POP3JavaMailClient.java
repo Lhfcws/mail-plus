@@ -1,7 +1,12 @@
 package edu.sysu.lhfcws.mailplus.server.protocol;
 
+import com.google.gson.Gson;
+import edu.sysu.lhfcws.mailplus.commons.base.ProtocolConsts;
+import edu.sysu.lhfcws.mailplus.commons.io.CommonSocket;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 
 import javax.mail.*;
 import java.util.LinkedList;
@@ -16,16 +21,18 @@ public class POP3JavaMailClient implements POP3Client {
 
     private Properties props;
     private Request req;
+    private CommonSocket socket;
 
     public POP3JavaMailClient(Request req) {
         this.req = req;
-        props = new Properties();
-        props.setProperty("mail.store.protocol", "pop3");
-        props.setProperty("mail.pop3.host", req.getMailUser().getPop3Host());
+        this.socket = new CommonSocket();
+        this.props = new Properties();
+        this.props.setProperty("mail.store.protocol", "pop3");
+        this.props.setProperty("mail.pop3.host", req.getMailUser().getPop3Host());
     }
 
     @Override
-    public List<Email> receiveLatest(String latestMailID) throws Exception {
+    public List<Email> receiveLatest(int latestMailID) throws Exception {
         Session session = Session.getDefaultInstance(props);
         Store store = session.getStore("pop3");
         store.connect(this.req.getMailUser().getMailAddr(), this.req.getMailUser().getPassword());
@@ -35,15 +42,16 @@ public class POP3JavaMailClient implements POP3Client {
         Message[] messages = folder.getMessages();
         List<Email> list = new LinkedList<Email>();
         for (Message msg : messages) {
-            if (latestMailID == null ||
-                    msg.getMessageNumber() > Integer.valueOf(latestMailID)) {
+            if (msg.getMessageNumber() > latestMailID) {
                 Email email = new Email();
+                email.setMailID(msg.getMessageNumber());
                 email.setFrom(parseAddress(msg.getFrom()).get(0));
                 email.setTo(parseAddress(msg.getRecipients(Message.RecipientType.TO)));
                 email.setCc(parseAddress(msg.getRecipients(Message.RecipientType.CC)));
                 email.setSubject(msg.getSubject());
                 email.setContent(msg.getContent().toString());
-                email.setDate(msg.getReceivedDate());
+                email.setDate(msg.getSentDate());
+                email.setStatus(Email.EmailStatus.UNREAD);
 
                 list.add(email);
             }
@@ -56,7 +64,7 @@ public class POP3JavaMailClient implements POP3Client {
     }
 
     @Override
-    public Email receive(String mailID) throws Exception {
+    public Email receive(int mailID) throws Exception {
         Session session = Session.getDefaultInstance(props);
         Store store = session.getStore("pop3");
         store.connect(this.req.getMailUser().getMailAddr(), this.req.getMailUser().getPassword());
@@ -64,14 +72,16 @@ public class POP3JavaMailClient implements POP3Client {
         folder.open(Folder.READ_WRITE);
 
         Email email = new Email();
-        Message msg = folder.getMessage(Integer.valueOf(mailID));
+        Message msg = folder.getMessage(mailID);
 
+        email.setMailID(msg.getMessageNumber());
         email.setFrom(parseAddress(msg.getFrom()).get(0));
         email.setTo(parseAddress(msg.getRecipients(Message.RecipientType.TO)));
         email.setCc(parseAddress(msg.getRecipients(Message.RecipientType.CC)));
         email.setSubject(msg.getSubject());
         email.setContent(msg.getContent().toString());
-        email.setDate(msg.getReceivedDate());
+        email.setDate(msg.getSentDate());
+        email.setStatus(Email.EmailStatus.READED);
 
         folder.close(true);
         store.close();
@@ -80,29 +90,61 @@ public class POP3JavaMailClient implements POP3Client {
     }
 
     @Override
-    public void delete(String mailID) throws Exception {
-        Session session = Session.getDefaultInstance(props);
-        Store store = session.getStore("pop3");
-        store.connect(this.req.getMailUser().getMailAddr(), this.req.getMailUser().getPassword());
-        Folder folder = store.getFolder("INBOX");
-        folder.open(Folder.READ_WRITE);
+    public void delete(int mailID) throws Exception {
+        socket.connect(req.getMailUser().getPop3Host(), ProtocolConsts.POP3_PORT);
+        response();
 
-        Message message = folder.getMessage(Integer.valueOf(mailID));
-        message.setFlag(Flags.Flag.DELETED, true);
-        message.saveChanges();
+        socket.send(CommonUtil.protocolStr(
+                ProtocolConsts.USER, req.getMailUser().getMailAddr()
+        ));
+        response();
 
-        folder.close(true);
-        store.close();
+        socket.send(CommonUtil.protocolStr(
+                ProtocolConsts.PASS, req.getMailUser().getPassword()
+        ));
+        response();
+
+        socket.send(CommonUtil.protocolStr(
+                ProtocolConsts.DELE, String.valueOf(mailID)
+        ));
+        response();
+
+        socket.close();
+
+        Thread.sleep(5000);
     }
 
     // =======Utils
     private List<String> parseAddress(Address[] addresses) {
         List<String> list = new LinkedList<String>();
 
-        for (Address address : addresses) {
-            list.add(address.toString());
-        }
+        if (addresses != null)
+            for (Address address : addresses) {
+                list.add(address.toString());
+            }
 
         return list;
+    }
+
+    /**
+     * @throws java.io.IOException
+     */
+    private void response() throws Exception {
+        String msg = this.getResponse();
+        if (msg.startsWith("2") || msg.startsWith("3")
+                || msg.startsWith(ProtocolConsts.RET_OK))
+            return;
+
+        throw new Exception(msg);
+    }
+
+    /**
+     * Return response message.
+     *
+     * @return String reponse message
+     * @throws Exception
+     */
+    private String getResponse() throws Exception {
+        return this.socket.receive();
     }
 }

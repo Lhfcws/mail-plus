@@ -30,7 +30,7 @@ public class POP3ProtocolClient implements POP3Client {
     }
 
     @Override
-    public List<Email> receiveLatest(String latestMailID) throws Exception {
+    public List<Email> receiveLatest(int latestMailID) throws Exception {
         this.socket.connect(req.getMailUser().getPop3Host(), ProtocolConsts.POP3_PORT);
 
         login();
@@ -41,7 +41,7 @@ public class POP3ProtocolClient implements POP3Client {
     }
 
     @Override
-    public Email receive(String mailID) throws Exception {
+    public Email receive(int mailID) throws Exception {
         this.socket.connect(req.getMailUser().getPop3Host(), ProtocolConsts.POP3_PORT);
 
         login();
@@ -52,7 +52,7 @@ public class POP3ProtocolClient implements POP3Client {
     }
 
     @Override
-    public void delete(String mailID) throws Exception {
+    public void delete(int mailID) throws Exception {
         this.socket.connect(req.getMailUser().getPop3Host(), ProtocolConsts.POP3_PORT);
 
         login();
@@ -82,32 +82,32 @@ public class POP3ProtocolClient implements POP3Client {
         response();
     }
 
-    private void dele(String mailID) throws Exception {
+    private void dele(int mailID) throws Exception {
         socketSend(
-                ProtocolConsts.DELE, mailID
+                ProtocolConsts.DELE, String.valueOf(mailID)
         );
         response();
     }
 
-    private List<Email> receiveLatestData(String latestMailID) throws Exception {
+    private List<Email> receiveLatestData(int latestMailID) throws Exception {
         socketSend(
                 ProtocolConsts.LIST, ""
         );
 
         // Get mailIDs those needs to retrieve mails
-        List<String> retrMailIDs = new LinkedList<String>();
+        List<Integer> retrMailIDs = new LinkedList<Integer>();
         List<String> mailInfos = getResponseInLines();
         for (String mailInfo : mailInfos) {
             String[] mailInfoArr = mailInfo.split(" ");
-            String mID = mailInfoArr[0];
-            if (latestMailID == null || mID.compareTo(latestMailID) == 1) {
-                retrMailIDs.add(mID);
+            String mID = mailInfoArr[0].trim();
+            if (Integer.valueOf(mID) > latestMailID) {
+                retrMailIDs.add(Integer.valueOf(mID));
             }
         }
 
         // Retrieve mails
         List<Email> result = new LinkedList<Email>();
-        for (String mailID : retrMailIDs) {
+        for (int mailID : retrMailIDs) {
             Email email = receiveData(mailID);
             result.add(email);
         }
@@ -115,9 +115,9 @@ public class POP3ProtocolClient implements POP3Client {
         return result;
     }
 
-    private Email receiveData(String mailID) throws Exception {
+    private Email receiveData(int mailID) throws Exception {
         socketSend(
-                ProtocolConsts.RETR, mailID
+                ProtocolConsts.RETR, String.valueOf(mailID)
         );
         response();
 

@@ -28,6 +28,7 @@ public class SQLTest {
         email.addTo(TestConsts.mail);
         email.setSubject("Test SQL email object");
         email.setContent("Content");
+        email.setSignature(TestConsts.mail);
 
         return email;
     }

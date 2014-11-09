@@ -1,8 +1,12 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.window;
 
 import com.google.common.base.Preconditions;
+import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.executor.DownloadEmailsExecutor;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.DownloadEmailsPanel;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
+
+import javax.swing.*;
 
 
 /**
@@ -46,6 +50,8 @@ public class DownloadEmailsWindow extends AbstractWindow {
         if (mailUser != null) {
             this.pack();
             this.setVisible(true);
+
+            this.startDownload();
         }
     }
 
@@ -53,6 +59,15 @@ public class DownloadEmailsWindow extends AbstractWindow {
     public void close() {
         _window.dispose();
         _window = null;
+    }
+
+    /**
+     * Start downloading.
+     */
+    public void startDownload() {
+        DownloadEmailsExecutor executor =
+                new DownloadEmailsExecutor(mailUser, InternalClient.getInstance(), this);
+        executor.getNewThread().start();
     }
 
     /**

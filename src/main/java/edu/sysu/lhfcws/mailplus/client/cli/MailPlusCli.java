@@ -1,5 +1,6 @@
 package edu.sysu.lhfcws.mailplus.client.cli;
 
+import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
 import edu.sysu.lhfcws.mailplus.client.background.launch.Launcher;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.LoginWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
@@ -28,7 +29,7 @@ public class MailPlusCli implements CliRunner {
     public void start(CommandLine cmdLine) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-//                MainWindow.getInstance().start();
+                InternalClient.getInstance().start();
                 LoginWindow.getInstance().start();
             }
         });

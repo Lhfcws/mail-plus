@@ -23,7 +23,8 @@ import java.util.concurrent.Executors;
  * @author lhfcws
  * @time 14-10-27.
  */
-public class POP3Server {
+public class POP3Server extends AdvRunnable {
+    public static final String NAME = "POP3Server";
     private static Log LOG = LogFactory.getLog(POP3Server.class);
 
     // key: pop3Host ; value: execute thread
@@ -38,6 +39,7 @@ public class POP3Server {
     private static final String POP3_RQs_WATCHER = "POP3RQsWatcher";
 
     public POP3Server(ServerListener serverListener) {
+        super(NAME);
         this.serverListener = serverListener;
         this.multiRequestQueues = new MultiRequestQueues();
         this.threadPool = Executors.newCachedThreadPool();
@@ -97,5 +99,10 @@ public class POP3Server {
         }
 
         this.scheduler.remove(pop3Host);
+    }
+
+    @Override
+    public void run() {
+        this.start();
     }
 }

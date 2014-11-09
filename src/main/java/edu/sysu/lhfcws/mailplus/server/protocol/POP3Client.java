@@ -14,19 +14,19 @@ public interface POP3Client {
      * Receive mails from remote POP3 server.
      * @return
      */
-    public List<Email> receiveLatest(String latestMailID) throws Exception;
+    public List<Email> receiveLatest(int latestMailID) throws Exception;
 
     /**
      * Receive the specific mail by mailID from remote POP3 server.
      * @param mailID
      * @return
      */
-    public Email receive(String mailID) throws Exception;
+    public Email receive(int mailID) throws Exception;
 
     /**
      * Delete a mail on the remote server by a given mailID.
      * @param mailID
      * @return
      */
-    public void delete(String mailID) throws Exception;
+    public void delete(int mailID) throws Exception;
 }

@@ -8,6 +8,7 @@ import edu.sysu.lhfcws.mailplus.client.ui.framework.util.HTMLContainer;
 import edu.sysu.lhfcws.mailplus.client.util.EmailContentHTML;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 
 import javax.swing.*;
 import java.awt.Dimension;
@@ -66,13 +67,15 @@ public class MainWindow extends AbstractWindow {
         internalSplitPane.add(leftPanel);
         internalSplitPane.add(listPanel);
         internalSplitPane.setBorder(BorderFactory.createEmptyBorder());
-        internalSplitPane.setEnabled(false);
+//        internalSplitPane.setEnabled(false);
+//        internalSplitPane.setDividerLocation(0.38);
 
         splitPane.add(internalSplitPane);
         splitPane.add(contentPanel);
         splitPane.setEnabled(false);
 
         this.add(splitPane);
+        refreshInbox();
 
         setSize();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,7 +83,7 @@ public class MainWindow extends AbstractWindow {
         this.pack();
         this.setVisible(true);
 
-//        internalSplitPane.setDividerLocation(0.9);
+        internalSplitPane.setDividerLocation(0.5);
         splitPane.setDividerLocation(0.38);
     }
 
@@ -91,6 +94,7 @@ public class MainWindow extends AbstractWindow {
     }
 
     public void refreshListPanel(List<Email> emailList) {
+        LogUtil.debug("refreshListPanel" + emailList);
         // ListPanel Reload DB.
         listPanel.setVisible(false);
         listPanel.clear();
@@ -98,7 +102,6 @@ public class MainWindow extends AbstractWindow {
         for (Email email : emailList) {
             EmailContentHTML emailContentHTML = new EmailContentHTML(email);
             HTMLContainer container = new HTMLContainer(emailContentHTML.toListItemHTML());
-            container.setSize(300, 100);
             listPanel.addItem(container);
         }
 

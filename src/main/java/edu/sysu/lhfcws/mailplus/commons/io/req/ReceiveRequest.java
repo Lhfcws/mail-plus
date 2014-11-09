@@ -7,19 +7,19 @@ package edu.sysu.lhfcws.mailplus.commons.io.req;
  */
 public class ReceiveRequest extends Request {
 
-    private String mailID;
+    private int mailID;
     private ReceiveRequestType receiveRequestType;
 
     public ReceiveRequest() {
         super(RequestType.RECEIVE);
-        this.mailID = null;
+        this.mailID = -1;
     }
 
-    public String getMailID() {
+    public int getMailID() {
         return mailID;
     }
 
-    public void setMailID(String mailID) {
+    public void setMailID(int mailID) {
         this.mailID = mailID;
     }
 
