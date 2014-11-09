@@ -1,31 +1,47 @@
 package edu.sysu.lhfcws.mailplus.server.serv.handler;
 
+import com.google.gson.Gson;
+import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.io.req.DeleteRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
+import edu.sysu.lhfcws.mailplus.commons.util.PersistentRequestQueue;
+import edu.sysu.lhfcws.mailplus.server.serv.POP3Server;
+import edu.sysu.lhfcws.mailplus.server.serv.SMTPServer;
 
 /**
  * Request handler.
+ *
  * @author lhfcws
  * @time 14-10-23.
  */
 public class RequestHandler {
 
-    public RequestHandler() {}
+    private static Gson gson = new Gson();
+    private SMTPServer smtpServer;
+    private POP3Server pop3Server;
 
-    public Response handleRequest(Request request) {
+    public RequestHandler(SMTPServer smtpServer, POP3Server pop3Server) {
+        this.smtpServer = smtpServer;
+        this.pop3Server = pop3Server;
+    }
+
+    public Response handleRequest(String json) {
+        Request request = gson.fromJson(json, Request.class);
+        LogUtil.debug(request.toString());
         Response res = new Response();
         res.setResID(request.getReqID());
         res.setAuthCode(request.getAuthCode());
 
         if (isRequestType(request, Request.RequestType.SEND))
-            return handleSendRequest((SendRequest) request, res);
+            return handleSendRequest(gson.fromJson(json, SendRequest.class), res);
         else if (isRequestType(request, Request.RequestType.DELETE))
-            return handleDeleteRequest((DeleteRequest)request, res);
+            return handleDeleteRequest(gson.fromJson(json, DeleteRequest.class), res);
         else if (isRequestType(request, Request.RequestType.RECEIVE))
-            return handleReceiveRequest((ReceiveRequest)request, res);
+            return handleReceiveRequest(gson.fromJson(json, ReceiveRequest.class), res);
         else {
             res.setStatus(Response.ResponseStatus.UNKNOWN_REQUEST);
             return res;
@@ -37,7 +53,7 @@ public class RequestHandler {
     }
 
     private Response handleSendRequest(SendRequest req, Response res) {
-//        RequestQueue.getRQ(Consts.SRQ).enQueue(req);
+        PersistentRequestQueue.getRQ(Consts.SRQ).enQueue(req);
         res.setStatus(Response.ResponseStatus.WAITING);
         return res;
     }

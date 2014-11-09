@@ -6,7 +6,10 @@ import edu.sysu.lhfcws.mailplus.commons.io.InternalServerSocket;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.MailplusConfig;
+import edu.sysu.lhfcws.mailplus.server.serv.POP3Server;
+import edu.sysu.lhfcws.mailplus.server.serv.SMTPServer;
 import edu.sysu.lhfcws.mailplus.server.serv.handler.RequestHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,13 +27,9 @@ public class ServerListener extends AdvRunnable {
     private InternalServerSocket internalServerSocket;
     private RequestHandler requestHandler;
 
-    public ServerListener(String name) {
+    public ServerListener(String name, SMTPServer smtpServer, POP3Server pop3Server) {
         super(name);
-        this.requestHandler = new RequestHandler();
-    }
-
-    public static Thread getThread(String name) {
-        return new Thread(new ServerListener(name), name);
+        this.requestHandler = new RequestHandler(smtpServer, pop3Server);
     }
 
     public InternalServerSocket getServerSocket() {
@@ -44,11 +43,12 @@ public class ServerListener extends AdvRunnable {
      */
     public void run() {
         try {
-            int port = Integer.valueOf(MailplusConfig.getInstance().get(Consts.SERVER_PORT));
+            int port = MailplusConfig.getInstance().getInt(Consts.SERVER_PORT);
             internalServerSocket = new InternalServerSocket(port);
 
             // block here
             internalServerSocket.accept();
+            LogUtil.debug("Server and client connection established. 0.0.0.0:" + port);
 
             while (true) {
                 String msg = internalServerSocket.receive();
@@ -83,8 +83,7 @@ public class ServerListener extends AdvRunnable {
      * @return
      */
     private Response process(String msg) {
-        Request req = gson.fromJson(msg, Request.class);
-        Response res = requestHandler.handleRequest(req);
+        Response res = requestHandler.handleRequest(msg);
         return res;
     }
 }

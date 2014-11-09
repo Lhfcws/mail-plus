@@ -1,4 +1,4 @@
-package edu.sysu.lhfcws.mailplus.commons.util;
+package edu.sysu.lhfcws.mailplus.commons.queue;
 
 
 import com.google.common.base.Preconditions;

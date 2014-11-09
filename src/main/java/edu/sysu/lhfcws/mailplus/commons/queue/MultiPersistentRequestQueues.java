@@ -1,8 +1,9 @@
-package edu.sysu.lhfcws.mailplus.server.util;
+package edu.sysu.lhfcws.mailplus.commons.queue;
 
 import com.google.common.base.Preconditions;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
-import edu.sysu.lhfcws.mailplus.commons.util.PersistentRequestQueue;
+import edu.sysu.lhfcws.mailplus.commons.queue.PersistentRequestQueue;
+import edu.sysu.lhfcws.mailplus.server.util.CountDown;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,12 +15,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author lhfcws
  * @time 14-10-25.
  */
-public class MultiRequestQueues {
+public class MultiPersistentRequestQueues {
     private static final int COUNTDOWN_NAP = 5;
     private ConcurrentHashMap<String, PersistentRequestQueue> pool;
     private ConcurrentHashMap<String, CountDown> countDown;
 
-    public MultiRequestQueues() {
+    public MultiPersistentRequestQueues() {
         this.pool = new ConcurrentHashMap<String, PersistentRequestQueue>();
         this.countDown = new ConcurrentHashMap<String, CountDown>();
     }

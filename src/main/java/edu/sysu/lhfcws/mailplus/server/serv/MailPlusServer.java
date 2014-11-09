@@ -44,7 +44,7 @@ public class MailPlusServer {
         threadMonitor.register(new POP3Server(this.serverListener));
 
         threadMonitor.start();
-        threadMonitor.monitor();
+        threadMonitor.asyncMonitor();
 
         LogUtil.info(LOG, "New ServerListener, SMTPServer, POP3Server started.");
     }
