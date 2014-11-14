@@ -94,7 +94,7 @@ public class POP3Server extends AdvRunnable {
     }
 
     public void finish(String pop3Host, Response res) {
-        LogUtil.debug("POP3Server finish: " + res);
+        LogUtil.debug("POP3Server finish: " + res.getMsg());
         if (!Response.isAsync(res)) {
             try {
                 this.serverListener.sendResponse(res);

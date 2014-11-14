@@ -35,7 +35,7 @@ public class POP3RQsWatcher extends AdvRunnable {
 
             for (String key : availableKeys) {
                 Request req = this.multiPersistentRequestQueues.deQueue(key);
-                LogUtil.debug("POP3RQsWatcher run:" + req);
+//                LogUtil.debug("POP3RQsWatcher run:" + req);
                 if (req == null)
                     continue;
                 pop3Server.execute(req);

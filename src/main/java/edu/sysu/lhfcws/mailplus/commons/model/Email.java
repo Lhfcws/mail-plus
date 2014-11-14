@@ -209,7 +209,7 @@ public class Email implements Serializable {
 
     // ==== EmailStatus
     public static enum EmailStatus {
-        ERROR(-1),
+        ERROR(-2), DELETED(-1),
         UNREAD(0), READED(1),   // Received emails
         WRITINIG(2), DRAFT(3), SENDING(4), SENDED(5);   // Written emails
 

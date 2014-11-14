@@ -1,14 +1,14 @@
 package edu.sysu.lhfcws.mailplus.server.protocol;
 
-import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.base.ProtocolConsts;
 import edu.sysu.lhfcws.mailplus.commons.io.CommonSocket;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
-import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 
 import javax.mail.*;
+import javax.mail.internet.AddressException;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -28,6 +28,7 @@ public class POP3JavaMailClient implements POP3Client {
         this.socket = new CommonSocket();
         this.props = new Properties();
         this.props.setProperty("mail.store.protocol", "pop3");
+        this.props.setProperty("mail.pop3.socketFactory.fallback", "false");
         this.props.setProperty("mail.pop3.host", req.getMailUser().getPop3Host());
     }
 
@@ -42,18 +43,33 @@ public class POP3JavaMailClient implements POP3Client {
         Message[] messages = folder.getMessages();
         List<Email> list = new LinkedList<Email>();
         for (Message msg : messages) {
-            if (msg.getMessageNumber() > latestMailID) {
-                Email email = new Email();
-                email.setMailID(msg.getMessageNumber());
-                email.setFrom(parseAddress(msg.getFrom()).get(0));
-                email.setTo(parseAddress(msg.getRecipients(Message.RecipientType.TO)));
-                email.setCc(parseAddress(msg.getRecipients(Message.RecipientType.CC)));
-                email.setSubject(msg.getSubject());
-                email.setContent(msg.getContent().toString());
-                email.setDate(msg.getSentDate());
-                email.setStatus(Email.EmailStatus.UNREAD);
+            Email email = new Email();
+            try {
+                if (msg.getMessageNumber() > latestMailID && !msg.isSet(Flags.Flag.DELETED)) {
+                    email.setMailID(msg.getMessageNumber());
+                    email.setFrom(parseAddress(msg.getFrom()).get(0));
+                    email.setTo(parseAddress(msg.getRecipients(Message.RecipientType.TO)));
+                    email.setCc(parseAddress(msg.getRecipients(Message.RecipientType.CC)));
+                    email.setSubject(msg.getSubject());
+                    email.setContent(CommonUtil.toUTF8(msg.getContent().toString()));
+                    email.setDate(msg.getSentDate());
+                    email.setStatus(Email.EmailStatus.UNREAD);
 
+                    list.add(email);
+                }
+            } catch (MessageRemovedException e) {
+                // 138
+                System.out.println("[ERROR] Removed:" + msg.getMessageNumber());
+            } catch (UnsupportedEncodingException e) {
+                // 265
+                // 2488
+                // 2701
+                System.out.println("[ERROR] Encoded:" + msg.getMessageNumber());
+                email.setContent(CommonUtil.inputStream2String(msg.getInputStream()));
                 list.add(email);
+            } catch (AddressException e) {
+                // 2439
+                System.out.println("[ERROR] Address:" + msg.getMessageNumber() + ": " + e.getMessage());
             }
         }
 
@@ -73,15 +89,20 @@ public class POP3JavaMailClient implements POP3Client {
 
         Email email = new Email();
         Message msg = folder.getMessage(mailID);
+        if (msg.isExpunged()) return null;
 
-        email.setMailID(msg.getMessageNumber());
-        email.setFrom(parseAddress(msg.getFrom()).get(0));
-        email.setTo(parseAddress(msg.getRecipients(Message.RecipientType.TO)));
-        email.setCc(parseAddress(msg.getRecipients(Message.RecipientType.CC)));
-        email.setSubject(msg.getSubject());
-        email.setContent(msg.getContent().toString());
-        email.setDate(msg.getSentDate());
-        email.setStatus(Email.EmailStatus.READED);
+        try {
+            email.setMailID(msg.getMessageNumber());
+            email.setFrom(parseAddress(msg.getFrom()).get(0));
+            email.setTo(parseAddress(msg.getRecipients(Message.RecipientType.TO)));
+            email.setCc(parseAddress(msg.getRecipients(Message.RecipientType.CC)));
+            email.setSubject(msg.getSubject());
+            email.setDate(msg.getSentDate());
+            email.setStatus(Email.EmailStatus.READED);
+            email.setContent(msg.getContent().toString());
+        } catch (UnsupportedEncodingException e) {
+            email.setContent(CommonUtil.inputStream2String(msg.getInputStream()));
+        }
 
         folder.close(true);
         store.close();

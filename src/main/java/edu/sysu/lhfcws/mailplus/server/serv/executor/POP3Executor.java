@@ -9,6 +9,7 @@ import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.server.protocol.POP3Client;
+import edu.sysu.lhfcws.mailplus.server.protocol.POP3JavaMailClient;
 import edu.sysu.lhfcws.mailplus.server.protocol.POP3ProtocolClient;
 import edu.sysu.lhfcws.mailplus.server.serv.POP3Server;
 import org.apache.commons.logging.Log;
@@ -41,13 +42,13 @@ public class POP3Executor extends AdvRunnable {
 
     @Override
     public void run() {
-        POP3Client pop3Client = new POP3ProtocolClient(req);
+        POP3Client pop3Client = new POP3JavaMailClient(req);
         Response res = new Response();
         res.setResID(req.getReqID());
         res.setAuthCode(req.getAuthCode());
         res.setStatus(Response.ResponseStatus.SUCCEED);
 
-        LogUtil.debug("POP3Executor run: " + req);
+//        LogUtil.debug("POP3Executor run: " + req);
 
         try {
             if (req.getRequestType().equals(Request.RequestType.DELETE)) {
@@ -63,6 +64,7 @@ public class POP3Executor extends AdvRunnable {
 
                 if (receiveRequest.getReceiveRequestType()
                         .equals(ReceiveRequest.ReceiveRequestType.LATEST)) {
+                    LogUtil.debug("POP3Executor run latest: " + req);
                     List<Email> list = pop3Client.receiveLatest(receiveRequest.getMailID());
                     emailResponse.setEmails(list);
                 } else if (receiveRequest.getReceiveRequestType()

@@ -48,10 +48,11 @@ public class DownloadEmailsExecutor extends AdvRunnable {
             req.setMailID(latestID);
             req.setReceiveRequestType(ReceiveRequest.ReceiveRequestType.LATEST);
             req.setMailUser(mailUser);
+            req.setMailID(2700);
             req.generateAuthCode();
 
             // Push req and callback to clientRQ
-            parent.updateProgress(0);
+            parent.updateProgress(3);
             this.client.sendRequest(req, new ResponseCallback() {
                 @Override
                 public void callback(Response res) {
@@ -69,6 +70,7 @@ public class DownloadEmailsExecutor extends AdvRunnable {
 
                     int size = emailResponse.getEmails().size();
                     int progress = 0;
+                    parent.updateProgress(5);
 
                     for (Email email : emailResponse.getEmails()) {
                         try {
@@ -79,6 +81,11 @@ public class DownloadEmailsExecutor extends AdvRunnable {
                         progress++;
                         double x = progress * 1.0 / size;
                         parent.updateProgress((int)Math.floor(x));
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                     parent.updateProgress(100);
                 }

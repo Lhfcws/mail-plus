@@ -40,6 +40,8 @@ public class PersistentRequestQueue {
         if (pair == null)
             return null;
 
+        bdb.delete(pair.fst);
+
         String reqJson = pair.snd;
         if (reqJson == null)
             return null;

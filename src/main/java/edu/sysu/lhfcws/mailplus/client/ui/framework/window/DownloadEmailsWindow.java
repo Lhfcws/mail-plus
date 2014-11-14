@@ -71,6 +71,7 @@ public class DownloadEmailsWindow extends AbstractWindow {
         DownloadEmailsExecutor executor =
                 new DownloadEmailsExecutor(mailUser, InternalClient.getInstance(), this);
         executor.getNewThread().start();
+        this.updateProgress(1);
     }
 
     /**

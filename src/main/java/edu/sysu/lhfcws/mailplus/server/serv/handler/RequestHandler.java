@@ -30,7 +30,7 @@ public class RequestHandler {
 
     public Response handleRequest(String json) {
         Request request = gson.fromJson(json, Request.class);
-        LogUtil.debug("RequestHanlder handle: " + json);
+//        LogUtil.debug("RequestHanlder handle: " + json);
         Response res = new Response();
         res.setResID(request.getReqID());
         res.setAuthCode(request.getAuthCode());
