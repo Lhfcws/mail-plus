@@ -1,12 +1,11 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.window;
 
 import com.google.common.base.Preconditions;
-import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.client.InternalClient;
 import edu.sysu.lhfcws.mailplus.client.background.executor.DownloadEmailsExecutor;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.DownloadEmailsPanel;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 
-import javax.swing.*;
 import java.awt.*;
 
 

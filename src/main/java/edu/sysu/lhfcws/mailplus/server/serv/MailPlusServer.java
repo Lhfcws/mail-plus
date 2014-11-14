@@ -3,7 +3,7 @@ package edu.sysu.lhfcws.mailplus.server.serv;
 
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.ThreadMonitor;
-import edu.sysu.lhfcws.mailplus.server.serv.executor.ServerListener;
+import edu.sysu.lhfcws.mailplus.server.serv.executor.ServerHubEnd;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -15,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class MailPlusServer {
     private static Log LOG = LogFactory.getLog(MailPlusServer.class);
-    private ServerListener serverListener;
+    private ServerHubEnd serverHubEnd;
     private ThreadMonitor threadMonitor;
 
     private static MailPlusServer server = null;
@@ -34,14 +34,18 @@ public class MailPlusServer {
         return server;
     }
 
+    public ServerHubEnd getServerHubEnd() {
+        return serverHubEnd;
+    }
+
     /**
      * Start the smtpserver, including a client listener thread and a client listener thread monitor.
      */
     public void start() {
-        this.serverListener = new ServerListener(ServerListener.PREFIX);
-        threadMonitor.register(this.serverListener);
-        threadMonitor.register(new SMTPServer(this.serverListener));
-        threadMonitor.register(new POP3Server(this.serverListener));
+        this.serverHubEnd = new ServerHubEnd();
+
+        threadMonitor.register(new SMTPServer(this.serverHubEnd));
+        threadMonitor.register(new POP3Server(this.serverHubEnd));
 
         threadMonitor.start();
         threadMonitor.asyncMonitor();

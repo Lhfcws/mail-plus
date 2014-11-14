@@ -15,7 +15,6 @@ import java.sql.SQLException;
  * @time 14-11-2.
  */
 public class UserController {
-    private static Gson gson = new Gson();
     private BaseDao dao;
 
     public UserController() {

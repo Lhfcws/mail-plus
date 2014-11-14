@@ -1,7 +1,8 @@
 package edu.sysu.lhfcws.mailplus.client.background.executor;
 
-import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.client.InternalClient;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.DownloadEmailsWindow;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.SQLite;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.sql.BaseDao;
@@ -65,8 +66,6 @@ public class DownloadEmailsExecutor extends AdvRunnable {
 
                     EmailResponse emailResponse = (EmailResponse) res;
                     BaseDao dao = SQLite.getDao();
-
-                    LogUtil.debug(emailResponse.toString());
 
                     int size = emailResponse.getEmails().size();
                     int progress = 0;

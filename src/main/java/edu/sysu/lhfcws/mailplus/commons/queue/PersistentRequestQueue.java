@@ -7,6 +7,7 @@ import com.sun.tools.javac.util.Pair;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDB;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 
 import java.util.HashMap;
 
@@ -17,7 +18,6 @@ import java.util.HashMap;
  * @time 14-10-25.
  */
 public class PersistentRequestQueue {
-    private static Gson gson = new Gson();
 
     private BDB bdb;
 
@@ -30,7 +30,7 @@ public class PersistentRequestQueue {
         Preconditions.checkArgument(bdb != null);
 
         String key = Long.toString(System.currentTimeMillis());
-        bdb.set(key, gson.toJson(req));
+        bdb.set(key, CommonUtil.GSON.toJson(req));
     }
 
     public Request deQueue() {

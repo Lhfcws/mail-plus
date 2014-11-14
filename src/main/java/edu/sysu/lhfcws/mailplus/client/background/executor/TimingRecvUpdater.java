@@ -1,29 +1,33 @@
 package edu.sysu.lhfcws.mailplus.client.background.executor;
 
-import com.google.gson.Gson;
-import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
-import edu.sysu.lhfcws.mailplus.commons.base.Consts;
-import edu.sysu.lhfcws.mailplus.commons.io.InternalSocket;
+import edu.sysu.lhfcws.mailplus.client.background.client.InternalClient;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
+import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
+import edu.sysu.lhfcws.mailplus.commons.db.sqlite.SQLite;
+import edu.sysu.lhfcws.mailplus.commons.db.sqlite.sql.BaseDao;
 import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
-import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
+import edu.sysu.lhfcws.mailplus.commons.io.res.EmailResponse;
+import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
+import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseCallback;
+import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
-import edu.sysu.lhfcws.mailplus.commons.util.MailplusConfig;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import java.io.IOException;
+import java.sql.SQLException;
 
 /**
- * TODO remove it to client package
  * Remind the RecvServer to receive new mails on a period.
  * @author lhfcws
  * @time 14-10-23.
  */
 public class TimingRecvUpdater extends AdvRunnable {
-
+    private static Log LOG = LogFactory.getLog(TimingRecvUpdater.class);
     public static final String NAME = "TimingRecvUpdater";
     public static final int UPDATE_INTERVAL = 10000;    // 10s
 
     private ReceiveRequest req;
-    private String reqMsg;
     private InternalClient client;
 
     public TimingRecvUpdater(InternalClient client) {
@@ -34,16 +38,34 @@ public class TimingRecvUpdater extends AdvRunnable {
     public void initReceiveRequest() {
         this.req = new ReceiveRequest();
         this.req.setReceiveRequestType(ReceiveRequest.ReceiveRequestType.LATEST);
-        this.reqMsg = (new Gson()).toJson(this.req);
+        this.req.generateAuthCode();
     }
 
     @Override
     public void run() {
-        int port = Integer.valueOf(MailplusConfig.getInstance().get(Consts.SERVER_PORT));
         initReceiveRequest();
 
         while (true) {
-            client.sendRequest(req, null);
+            client.sendRequest(req, new ResponseCallback() {
+                @Override
+                public void callback(Response res) {
+                    EmailController emailController = new EmailController();
+                    EmailResponse emailResponse = (EmailResponse) res;
+                    BaseDao dao = SQLite.getDao();
+
+
+                    for (Email email : emailResponse.getEmails()) {
+                        try {
+                            emailController.saveUnreadEmail(email);
+                        } catch (SQLException e) {
+                            LogUtil.error(LOG, e);
+                        }
+                    }
+
+                    if (emailResponse.getEmails().size() > 0)
+                        MainWindow.getInstance().refreshInbox();
+                }
+            });
 
             try {
                 Thread.sleep(UPDATE_INTERVAL);

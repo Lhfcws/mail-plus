@@ -1,6 +1,6 @@
 package client.preparation;
 
-import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.client.InternalClient;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.server.serv.MailPlusServer;

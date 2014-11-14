@@ -6,13 +6,12 @@ import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
  * @author lhfcws
  * @time 14-11-14.
  */
-public abstract class HubEnd extends AdvRunnable {
+public abstract class HubEnd {
 
     protected String id;
     protected Hub hub;
 
     public HubEnd(String id) {
-        super(id);
         this.id = id;
     }
 

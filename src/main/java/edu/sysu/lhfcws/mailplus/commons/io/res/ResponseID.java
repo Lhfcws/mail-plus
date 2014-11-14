@@ -1,7 +1,7 @@
 package edu.sysu.lhfcws.mailplus.commons.io.res;
 
-import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 
 /**
  * @author lhfcws
@@ -45,8 +45,12 @@ public class ResponseID {
         this.authCode = authCode;
     }
 
+    @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return "ResponseID{" +
+                "resID=" + resID +
+                ", authCode='" + authCode + '\'' +
+                '}';
     }
 
     @Override

@@ -10,10 +10,9 @@ import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
 import edu.sysu.lhfcws.mailplus.commons.util.ThreadMonitor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.SMTPExecutor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.SMTPRQsWatcher;
-import edu.sysu.lhfcws.mailplus.server.serv.executor.ServerListener;
+import edu.sysu.lhfcws.mailplus.server.serv.executor.ServerHubEnd;
 import edu.sysu.lhfcws.mailplus.commons.queue.MultiPersistentRequestQueues;
 
-import java.io.IOException;
 import java.util.concurrent.*;
 
 /**
@@ -39,13 +38,13 @@ public class SMTPServer extends AdvRunnable {
     private ExecutorService threadPool;
     private BDBCounter counter;
     private ThreadMonitor threadMonitor;
-    private ServerListener serverListener;
+    private ServerHubEnd serverHubEnd;
     private MultiPersistentRequestQueues multiPersistentRequestQueues;
 
 
-    public SMTPServer(ServerListener serverListener) {
+    public SMTPServer(ServerHubEnd serverHubEnd) {
         super(NAME);
-        this.serverListener = serverListener;
+        this.serverHubEnd = serverHubEnd;
         this.multiPersistentRequestQueues = RQCenter.getMultiRQ(SMTPRQsWatcher.NAME);
         this.scheduler = new ConcurrentHashMap<String, AdvRunnable>();
 
@@ -67,6 +66,7 @@ public class SMTPServer extends AdvRunnable {
 
     /**
      * This function will schedule when and how to send the emails.
+     *
      * @param req
      */
     public void send(SendRequest req) {
@@ -87,17 +87,13 @@ public class SMTPServer extends AdvRunnable {
 
     /**
      * Callback function no matter the sending is successful or not.
+     *
      * @param smtpHost
      * @param res
      */
     public void finish(String smtpHost, Response res) {
         if (!Response.isAsync(res)) {
-            try {
-                this.serverListener.sendResponse(res);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            this.serverHubEnd.sendResponse(res);
             this.counter.dec(smtpHost);
         }
 
@@ -107,6 +103,7 @@ public class SMTPServer extends AdvRunnable {
     /**
      * Push SendRequest back to the smtp RQ, as SMTP servers are not so stable.
      * We have to try several times.
+     *
      * @param req
      */
     public void repushRequest(SendRequest req) {
@@ -116,6 +113,7 @@ public class SMTPServer extends AdvRunnable {
 
     /**
      * Dispatch SendRequest to SMTPRequestQueues
+     *
      * @param req
      */
     public void dispatch(SendRequest req) {

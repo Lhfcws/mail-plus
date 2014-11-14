@@ -11,18 +11,18 @@ import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.ThreadMonitor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.POP3Executor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.POP3RQsWatcher;
-import edu.sysu.lhfcws.mailplus.server.serv.executor.ServerListener;
+import edu.sysu.lhfcws.mailplus.server.serv.executor.ServerHubEnd;
 import edu.sysu.lhfcws.mailplus.commons.queue.MultiPersistentRequestQueues;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
  * POP3 server.
+ *
  * @author lhfcws
  * @time 14-10-27.
  */
@@ -35,14 +35,14 @@ public class POP3Server extends AdvRunnable {
     private BDBCounter counter;
     private ExecutorService threadPool;
     private ThreadMonitor threadMonitor;
-    private ServerListener serverListener;
+    private ServerHubEnd serverHubEnd;
     private MultiPersistentRequestQueues multiPersistentRequestQueues;
 
-    public POP3Server(ServerListener serverListener) {
+    public POP3Server(ServerHubEnd serverHubEnd) {
         super(NAME);
         this.scheduler = new ConcurrentHashMap<String, AdvRunnable>();
         this.counter = new BDBCounter(Consts.BDB_PATH + NAME);
-        this.serverListener = serverListener;
+        this.serverHubEnd = serverHubEnd;
         this.multiPersistentRequestQueues = RQCenter.getMultiRQ(POP3RQsWatcher.NAME);
         this.threadPool = Executors.newCachedThreadPool();
         this.threadMonitor = new ThreadMonitor();
@@ -55,7 +55,6 @@ public class POP3Server extends AdvRunnable {
     }
 
     /**
-     *
      * @param req
      */
     public void execute(Request req) {
@@ -78,6 +77,7 @@ public class POP3Server extends AdvRunnable {
     /**
      * Push Request back to the RQ, as Remote servers are not so stable.
      * We have to try several times.
+     *
      * @param req
      */
     public void repushRequest(Request req) {
@@ -96,11 +96,7 @@ public class POP3Server extends AdvRunnable {
     public void finish(String pop3Host, Response res) {
         LogUtil.debug("POP3Server finish: " + res.getMsg());
         if (!Response.isAsync(res)) {
-            try {
-                this.serverListener.sendResponse(res);
-            } catch (IOException e) {
-                LogUtil.error(LOG, e);
-            }
+            this.serverHubEnd.sendResponse(res);
             this.counter.dec(pop3Host);
         }
 

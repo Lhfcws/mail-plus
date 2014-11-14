@@ -2,6 +2,7 @@ package edu.sysu.lhfcws.mailplus.commons.io.res;
 
 import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.auth.AuthObject;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 
 /**
  * @author lhfcws
@@ -73,10 +74,9 @@ public class Response extends AuthObject {
     }
 
     public static Response deserialize(String json) {
-        Gson gson = new Gson();
-        Response rawRes = gson.fromJson(json, Response.class);
+        Response rawRes = CommonUtil.GSON.fromJson(json, Response.class);
         if (rawRes.getResponseType().equals(ResponseType.EMAIL))
-            return gson.fromJson(json, EmailResponse.class);
+            return CommonUtil.GSON.fromJson(json, EmailResponse.class);
 
         return rawRes;
     }

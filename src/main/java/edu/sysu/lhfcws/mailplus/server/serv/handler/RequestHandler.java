@@ -8,6 +8,7 @@ import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.commons.queue.PersistentRequestQueue;
 import edu.sysu.lhfcws.mailplus.server.serv.POP3Server;
@@ -23,7 +24,7 @@ import edu.sysu.lhfcws.mailplus.server.serv.executor.SMTPRQsWatcher;
  */
 public class RequestHandler {
 
-    private static Gson gson = new Gson();
+    private static Gson gson = CommonUtil.GSON;
 
     public RequestHandler() {
     }
@@ -57,14 +58,12 @@ public class RequestHandler {
         return res;
     }
 
-    // TODO: implement handleReceiveRequest
     private Response handleReceiveRequest(ReceiveRequest req, Response res) {
         RQCenter.getMultiRQ(POP3RQsWatcher.NAME).enQueue(req.getMailUser().getPop3Host(), req);
         res.setStatus(Response.ResponseStatus.WAITING);
         return res;
     }
 
-    // TODO: implement handleDeleteRequest
     private Response handleDeleteRequest(DeleteRequest req, Response res) {
         RQCenter.getMultiRQ(POP3RQsWatcher.NAME).enQueue(req.getMailUser().getPop3Host(), req);
         res.setStatus(Response.ResponseStatus.WAITING);

@@ -1,5 +1,6 @@
 package edu.sysu.lhfcws.mailplus.commons.util;
 
+import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +21,8 @@ import java.util.regex.Pattern;
  * @time 14-10-21.
  */
 public class CommonUtil {
+
+    public static Gson GSON = new Gson();
 
     public static String toUTF8(String raw) throws UnsupportedEncodingException {
         return new String(raw.getBytes("UTF-8"), "UTF-8");

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import org.apache.commons.dbutils.ResultSetHandler;
 
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import java.util.List;
  * @time 14-11-3.
  */
 public class EmailListResultSetHandler implements ResultSetHandler<List<Email>> {
-    private static Gson gson = new Gson();
+    private static Gson gson = CommonUtil.GSON;
 
     @Override
     public List<Email> handle(ResultSet rs) throws SQLException {

@@ -7,6 +7,7 @@ import edu.sysu.lhfcws.mailplus.commons.db.sqlite.resultset.EmailListResultSetHa
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.resultset.EmailResultSetHandler;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.sql.BaseDao;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import org.apache.commons.dbutils.ResultSetHandler;
 
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public class EmailController {
 
-    private static Gson gson = new Gson();
+    private static Gson gson = CommonUtil.GSON;
     private BaseDao dao;
 
     public EmailController() {

@@ -1,9 +1,7 @@
 package edu.sysu.lhfcws.mailplus.client.cli;
 
-import edu.sysu.lhfcws.mailplus.client.background.communication.InternalClient;
-import edu.sysu.lhfcws.mailplus.client.background.launch.Launcher;
+import edu.sysu.lhfcws.mailplus.client.background.client.InternalClient;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.LoginWindow;
-import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvCli;
 import edu.sysu.lhfcws.mailplus.commons.util.CliRunner;
 import org.apache.commons.cli.CommandLine;
