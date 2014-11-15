@@ -104,7 +104,7 @@ public class ThreadMonitor {
         }
     }
 
-    public void asyncMonitor() {
+    public Thread asyncMonitor() {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -129,6 +129,7 @@ public class ThreadMonitor {
         };
         Thread thread = new Thread(runnable);
         thread.start();
+        return thread;
     }
 
     public int getWatchInterval() {

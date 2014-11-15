@@ -141,7 +141,14 @@ public class POP3JavaMailClient implements POP3Client {
 
         if (addresses != null)
             for (Address address : addresses) {
-                list.add(address.toString());
+                String addr = address.toString();
+                try {
+                    addr = CommonUtil.parseAddressName(addr);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                list.add(addr);
             }
 
         return list;
