@@ -13,25 +13,25 @@ import org.apache.commons.logging.LogFactory;
  * @author lhfcws
  * @time 14-11-3.
  */
-public class InternalClient {
-    private static Log LOG = LogFactory.getLog(InternalClient.class);
+public class MailPlusInternalClient {
+    private static Log LOG = LogFactory.getLog(MailPlusInternalClient.class);
 
     private ThreadMonitor threadMonitor;
     private ClientHubEnd clientHubEnd;
 
-    private static InternalClient _client = null;
+    private static MailPlusInternalClient _client = null;
 
-    public static InternalClient getInstance() {
+    public static MailPlusInternalClient getInstance() {
         if (_client == null) {
-            synchronized (InternalClient.class) {
+            synchronized (MailPlusInternalClient.class) {
                 if (_client == null)
-                    _client = new InternalClient();
+                    _client = new MailPlusInternalClient();
             }
         }
         return _client;
     }
 
-    private InternalClient() {
+    private MailPlusInternalClient() {
         this.clientHubEnd = new ClientHubEnd();
         this.threadMonitor = new ThreadMonitor();
         this.threadMonitor.register(new ClientRQWatcher(clientHubEnd));
@@ -47,5 +47,7 @@ public class InternalClient {
         clientHubEnd.pushRequest(req, callback);
     }
 
-
+    public ClientHubEnd getClientHubEnd() {
+        return clientHubEnd;
+    }
 }

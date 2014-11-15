@@ -1,6 +1,6 @@
 package edu.sysu.lhfcws.mailplus.client.background.executor;
 
-import edu.sysu.lhfcws.mailplus.client.background.client.InternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.SQLite;
@@ -28,9 +28,9 @@ public class TimingRecvUpdater extends AdvRunnable {
     public static final int UPDATE_INTERVAL = 10000;    // 10s
 
     private ReceiveRequest req;
-    private InternalClient client;
+    private MailPlusInternalClient client;
 
-    public TimingRecvUpdater(InternalClient client) {
+    public TimingRecvUpdater(MailPlusInternalClient client) {
         super(NAME);
         this.client = client;
     }

@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.client.background.launch;
 
 import edu.sysu.lhfcws.mailplus.client.background.running.Token;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.LoginWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.UserController;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
@@ -19,7 +20,13 @@ import java.sql.SQLException;
 public class Launcher {
     private static Log LOG = LogFactory.getLog(Launcher.class);
 
-    public boolean launch(Token token) {
+    public boolean launch() {
+        new ServerLauncher().launch();
+        LoginWindow.getInstance().start();
+        return true;
+    }
+
+    public boolean loginInit(Token token) {
         try {
             // verify user
             UserVerifier userVerifier = new UserVerifier();

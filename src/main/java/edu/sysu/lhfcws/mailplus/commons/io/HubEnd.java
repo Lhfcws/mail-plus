@@ -1,6 +1,5 @@
 package edu.sysu.lhfcws.mailplus.commons.io;
 
-import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
 
 /**
  * @author lhfcws

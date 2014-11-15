@@ -25,7 +25,7 @@ public class LogUtil {
      */
     public static void error(Log LOG, String msg) {
         LOG.error(msg);
-        System.err.println(msg);
+        System.err.println("[ERROR] " + msg);
     }
 
     /**
@@ -35,7 +35,7 @@ public class LogUtil {
      */
     public static void error(Log LOG, Throwable e) {
         LOG.error(e.getMessage(), e);
-        System.err.println(e.getMessage());
+        System.err.println("[ERROR] " + e.getMessage());
         e.printStackTrace();
     }
 
@@ -46,11 +46,11 @@ public class LogUtil {
      */
     public static void error(Log LOG, Throwable e, String msg) {
         LOG.error(msg, e);
-        System.err.println(msg);
+        System.err.println("[ERROR] " + msg);
         e.printStackTrace();
     }
 
     public static void debug(String msg) {
-        System.out.println("[DEBUG] >> " + msg);
+        System.out.println("[DEBUG] " + msg);
     }
 }

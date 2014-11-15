@@ -1,6 +1,6 @@
 package client.preparation;
 
-import edu.sysu.lhfcws.mailplus.client.background.client.InternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
 import edu.sysu.lhfcws.mailplus.server.serv.MailPlusServer;
 
 /**
@@ -9,12 +9,12 @@ import edu.sysu.lhfcws.mailplus.server.serv.MailPlusServer;
  */
 public class MailPlusStub {
     protected TestPreparation preparation;
-    protected InternalClient internalClient;
+    protected MailPlusInternalClient internalClient;
     protected MailPlusServer mailPlusServer;
 
     public void prepareTest() {
         this.preparation = new TestPreparation();
-        this.internalClient = InternalClient.getInstance();
+        this.internalClient = MailPlusInternalClient.getInstance();
         this.mailPlusServer = MailPlusServer.getInstance();
     }
 

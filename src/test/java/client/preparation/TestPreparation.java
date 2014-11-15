@@ -1,6 +1,7 @@
 package client.preparation;
 
-import edu.sysu.lhfcws.mailplus.client.background.client.InternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.launch.ServerLauncher;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.server.serv.MailPlusServer;
@@ -14,19 +15,16 @@ import server.test.TestConsts;
  */
 public class TestPreparation {
     public static Log LOG = LogFactory.getLog(TestPreparation.class);
+    public ServerLauncher serverLauncher;
 
     public TestPreparation() {
-
+        serverLauncher = new ServerLauncher();
     }
 
     public void prepare() {
-        MailPlusServer server = MailPlusServer.getInstance();
-        server.start();
+        serverLauncher.launch();
 
-        InternalClient client = InternalClient.getInstance();
-        client.start();
-
-        LogUtil.info(LOG, "MailPlusServer and InternalClient started.");
+        LogUtil.info(LOG, "MailPlusServer and MailPlusInternalClient started.");
     }
 
     public MailUser prepareMailUser() {

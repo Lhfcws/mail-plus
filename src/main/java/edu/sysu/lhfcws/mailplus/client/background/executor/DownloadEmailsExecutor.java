@@ -1,8 +1,7 @@
 package edu.sysu.lhfcws.mailplus.client.background.executor;
 
-import edu.sysu.lhfcws.mailplus.client.background.client.InternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.DownloadEmailsWindow;
-import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.SQLite;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.sql.BaseDao;
@@ -28,11 +27,11 @@ public class DownloadEmailsExecutor extends AdvRunnable {
 
     public static final String NAME = "downloadEmails";
     private MailUser mailUser;
-    private InternalClient client;
+    private MailPlusInternalClient client;
     private DownloadEmailsWindow parent;
 
     public DownloadEmailsExecutor(
-            MailUser mailUser, InternalClient client, DownloadEmailsWindow parent) {
+            MailUser mailUser, MailPlusInternalClient client, DownloadEmailsWindow parent) {
         super(NAME);
         this.mailUser = mailUser;
         this.client = client;

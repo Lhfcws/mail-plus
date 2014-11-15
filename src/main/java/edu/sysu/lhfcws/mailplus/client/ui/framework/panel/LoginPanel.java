@@ -10,8 +10,6 @@ import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 /**
@@ -64,7 +62,7 @@ public class LoginPanel extends JPanel {
                     return;
                 }
 
-                boolean res = new Launcher().launch(token);
+                boolean res = new Launcher().loginInit(token);
                 if (res) {
                     LoginWindow.getInstance().close();
                 }
