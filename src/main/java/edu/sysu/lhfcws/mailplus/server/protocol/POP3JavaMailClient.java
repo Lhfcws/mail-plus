@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
+ * POP3 client JavaMail implement.
  * @author lhfcws
  * @time 14-10-28.
  */

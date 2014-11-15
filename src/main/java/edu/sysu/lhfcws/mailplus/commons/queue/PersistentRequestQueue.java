@@ -2,14 +2,12 @@ package edu.sysu.lhfcws.mailplus.commons.queue;
 
 
 import com.google.common.base.Preconditions;
-import com.google.gson.Gson;
-import com.sun.tools.javac.util.Pair;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDB;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
+import edu.sysu.lhfcws.mailplus.commons.util.Pair;
 
-import java.util.HashMap;
 
 /**
  * Persistent queue for request, the acronym for RQ.
@@ -40,9 +38,9 @@ public class PersistentRequestQueue {
         if (pair == null)
             return null;
 
-        bdb.delete(pair.fst);
+        bdb.delete(pair.first);
 
-        String reqJson = pair.snd;
+        String reqJson = pair.second;
         if (reqJson == null)
             return null;
 

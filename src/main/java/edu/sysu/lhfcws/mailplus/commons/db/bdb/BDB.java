@@ -14,8 +14,8 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
-import com.sun.tools.javac.util.Pair;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
+import edu.sysu.lhfcws.mailplus.commons.util.Pair;
 
 /**
  * Berkeley DB 数据库操作类

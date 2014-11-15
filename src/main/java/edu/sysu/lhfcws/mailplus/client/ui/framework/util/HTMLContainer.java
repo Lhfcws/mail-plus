@@ -1,5 +1,6 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.util;
 
+
 import javax.swing.*;
 
 /**
@@ -8,13 +9,21 @@ import javax.swing.*;
  */
 public class HTMLContainer extends JEditorPane {
 
-    private String information;
+    protected String information;
+    protected String html;
+
+    protected HTMLContainer() {}
 
     public HTMLContainer(String html) {
         super("text/html", html);
+        this.html = html;
         this.setEditable(false);
         this.setAutoscrolls(false);
         this.setVisible(true);
+    }
+
+    public String getHtml() {
+        return html;
     }
 
     public String getInformation() {
@@ -24,4 +33,5 @@ public class HTMLContainer extends JEditorPane {
     public void setInformation(String information) {
         this.information = information;
     }
+
 }

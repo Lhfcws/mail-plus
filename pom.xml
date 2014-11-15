@@ -8,6 +8,10 @@
     <artifactId>mail-plus</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <!--from apache && apache-commons-->
         <dependency>
@@ -69,17 +73,6 @@
             <artifactId>junit</artifactId>
             <version>4.10</version>
         </dependency>
-        <!--SWT-->
-        <dependency>
-            <groupId>org.eclipse.swt.org.eclipse.swt.cocoa.macosx.x86_64.4.3.swt</groupId>
-            <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
-            <version>4.3</version>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.swt.org.eclipse.swt.win32.win32.x86_64.4.3.swt</groupId>-->
-            <!--<artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>-->
-            <!--<version>4.3</version>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>

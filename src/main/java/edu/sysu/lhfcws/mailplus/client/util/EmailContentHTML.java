@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.client.util;
 
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.StringTruncator;
 
 
@@ -18,6 +19,10 @@ public class EmailContentHTML {
     public EmailContentHTML() {
     }
 
+    public String getEmailString() {
+        return CommonUtil.GSON.toJson(email);
+    }
+
     public Email getEmail() {
         return email;
     }
@@ -32,8 +37,8 @@ public class EmailContentHTML {
 
         String template = TemplateLoader.getInstance().get(ClientConsts.EMAIL_CONTENT_TEMPLATE);
         return String.format(template,
-                email.getFrom(), email.getDate(),
-                email.getSubject(), email.getContent());
+                rmTag(email.getFrom()), email.getDate(),
+                rmTag(email.getSubject()), rmTag(email.getContent()));
     }
 
     public String toListItemHTML() {
@@ -43,14 +48,17 @@ public class EmailContentHTML {
         String template = TemplateLoader.getInstance().get(ClientConsts.LIST_ITEM_TEMPLATE);
         try {
             return String.format(template,
-                    email.getFrom(), email.getDate(),
-                    StringTruncator.truncate(email.getSubject(), 30),
-                    StringTruncator.truncate(email.getContent(), 60));
+                    rmTag(email.getFrom()), email.getDate(),
+                    rmTag(StringTruncator.truncate(email.getSubject(), 30) + "..."));
         } catch (Exception e) {
             e.printStackTrace();
             return String.format(template,
-                    email.getFrom(), email.getDate(),
-                    email.getSubject(), email.getContent());
+                    rmTag(email.getFrom()), email.getDate(),
+                    rmTag(email.getSubject()));
         }
+    }
+
+    private String rmTag(String raw) {
+        return raw.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
     }
 }

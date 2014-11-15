@@ -94,7 +94,7 @@ public class MainWindow extends AbstractWindow {
     }
 
     public void refreshListPanel(List<Email> emailList) {
-        LogUtil.debug("refreshListPanel" + emailList);
+//        LogUtil.debug("refreshListPanel" + emailList);
         // ListPanel Reload DB.
         listPanel.setVisible(false);
         listPanel.clear();
@@ -117,6 +117,7 @@ public class MainWindow extends AbstractWindow {
         List<Email> list = new LinkedList<Email>();
         try {
             list = new EmailController().getEmailListByStatus(conditions);
+            LogUtil.debug("Email size: " + list.size());
         } catch (SQLException e) {
             e.printStackTrace();
         }
