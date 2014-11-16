@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Callback;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.util.HTMLContainer;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
@@ -41,6 +42,7 @@ public class ListPanel extends JPanel {
                 Email email = CommonUtil.GSON.fromJson(item.getInformation(), Email.class);
 
                 LogUtil.debug("Selected email is : " + email.getSubject());
+                MainWindow.getInstance().refreshContentPanel(email);
             }
         });
 

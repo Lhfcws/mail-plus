@@ -16,6 +16,10 @@ public class ContentPanel extends JPanel {
         this.setBackground(Color.DARK_GRAY);
     }
 
+    public void clear() {
+        this.removeAll();
+    }
+
     public void addContentBox(HTMLContainer contentBox) {
         this.add(contentBox);
     }

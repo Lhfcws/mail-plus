@@ -93,6 +93,28 @@ public class MainWindow extends AbstractWindow {
         _window = null;
     }
 
+    // ===== Private
+    private void initMenuBar() {
+        this.setJMenuBar(new MenuBar());
+    }
+
+    private void setSize() {
+        leftPanel.setSize(new Dimension(180, 700));
+        listPanel.setSize(new Dimension(300, 700));
+    }
+
+    // ===== Callbacks
+    public void refreshContentPanel(Email email) {
+        EmailContentHTML emailContentHTML = new EmailContentHTML(email);
+        HTMLContainer container = new HTMLContainer(emailContentHTML.toHTML());
+        container.setInformation(emailContentHTML.getEmailString());
+
+        contentPanel.setVisible(false);
+        contentPanel.clear();
+        contentPanel.addContentBox(container);
+        contentPanel.setVisible(true);
+    }
+
     public void refreshListPanel(List<Email> emailList) {
 //        LogUtil.debug("refreshListPanel" + emailList);
         // ListPanel Reload DB.
@@ -164,14 +186,7 @@ public class MainWindow extends AbstractWindow {
         this.refreshListPanel(list);
     }
 
-    private void initMenuBar() {
-        this.setJMenuBar(new MenuBar());
-    }
 
-    private void setSize() {
-        leftPanel.setSize(new Dimension(180, 700));
-        listPanel.setSize(new Dimension(300, 700));
-    }
 
     // ===== Main Test
     public static void main(String[] args) {
