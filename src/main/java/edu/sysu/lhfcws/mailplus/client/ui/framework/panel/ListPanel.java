@@ -22,17 +22,30 @@ public class ListPanel extends JPanel {
 
     private JList jList;
     private JScrollPane scrollPane;
-    private Vector<ListItemPanel> list;
+    private Vector<ListPanelItem> list;
 
     public ListPanel() {
-        this.list = new Vector<ListItemPanel>();
-        this.jList = new JList<ListItemPanel>(list);
-        this.jList.setCellRenderer(ListItemPanel.getCellRenderer());
+        this.list = new Vector<ListPanelItem>();
+        this.jList = new JList<ListPanelItem>(list);
+        this.jList.setCellRenderer(ListPanelItem.getCellRenderer());
         this.jList.setBackground(Color.WHITE);
         this.jList.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.jList.setEnabled(true);
+        this.jList.setBorder(BorderFactory.createEmptyBorder());
+        this.jList.setFixedCellWidth(250);
+
+        Events.onClick(this.jList, new Callback() {
+            @Override
+            public void callback(AWTEvent _event) {
+                ListPanelItem item = (ListPanelItem) jList.getSelectedValue();
+                Email email = CommonUtil.GSON.fromJson(item.getInformation(), Email.class);
+
+                LogUtil.debug("Selected email is : " + email.getSubject());
+            }
+        });
 
         this.scrollPane = new JScrollPane(jList);
+        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
         this.scrollPane.createVerticalScrollBar();
         this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
@@ -42,62 +55,53 @@ public class ListPanel extends JPanel {
     }
 
     public void clear() {
-        for (ListItemPanel listItemPanel : list) {
-            listItemPanel.setVisible(false);
+        for (ListPanelItem listPanelItem : list) {
+            listPanelItem.setVisible(false);
         }
-        list = new Vector<ListItemPanel>();
+        list = new Vector<ListPanelItem>();
         this.jList.setListData(list);
     }
 
     public void addItem(HTMLContainer container) {
 //        container.setSize(300, 100);
-        ListItemPanel listItemPanel = new ListItemPanel(container);
-        this.list.add(listItemPanel);
+        ListPanelItem listPanelItem = new ListPanelItem(container);
+        this.list.add(listPanelItem);
     }
 
     /**
      * Panel for list item.
      */
-    public static class ListItemPanel extends HTMLContainer implements ListCellRenderer<ListItemPanel> {
+    public static class ListPanelItem extends HTMLContainer implements ListCellRenderer<ListPanelItem> {
         private static final Border SAFE_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
         private static final Border DEFAULT_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
         protected static Border noFocusBorder = DEFAULT_NO_FOCUS_BORDER;
 
 
-        protected ListItemPanel() {}
+        protected ListPanelItem() {
+        }
 
-        public ListItemPanel(HTMLContainer htmlContainer) {
+        public ListPanelItem(HTMLContainer htmlContainer) {
             super(htmlContainer.getHtml());
 
             this.setInformation(htmlContainer.getInformation());
             this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
             this.setBackground(Color.WHITE);
-            this.setBorder(BorderFactory.createLineBorder(new Color(10, 10, 10)));
-//            this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//            this.setBorder(BorderFactory.createEmptyBorder(1,0,1,0));
+            this.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(10, 10, 10)));
             this.add(htmlContainer);
             this.setOpaque(true);
 
             final HTMLContainer param = htmlContainer;
 
-            Events.onClick(this, new Callback() {
-                @Override
-                public void callback(AWTEvent _event) {
-                    // Reduct to Email object
-                    Email email = CommonUtil.GSON.fromJson(
-                            param.getInformation(), Email.class);
 
-                    // Refresh MainWindow:ContentPanel
-                    LogUtil.debug("Click Email subject: " + email.getSubject());
-                }
-            });
         }
 
-        public static ListItemPanel getCellRenderer() {
-            return new ListItemPanel();
+        public static ListPanelItem getCellRenderer() {
+            return new ListPanelItem();
         }
 
         @Override
-        public Component getListCellRendererComponent(JList<? extends ListItemPanel> list, ListItemPanel value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<? extends ListPanelItem> list, ListPanelItem value, int index, boolean isSelected, boolean cellHasFocus) {
             value.setComponentOrientation(list.getComponentOrientation());
 
             Color bg = null;
@@ -117,8 +121,7 @@ public class ListPanel extends JPanel {
             if (isSelected) {
                 value.setBackground(bg == null ? list.getSelectionBackground() : bg);
                 value.setForeground(fg == null ? list.getSelectionForeground() : fg);
-            }
-            else {
+            } else {
                 value.setBackground(list.getBackground());
                 value.setForeground(list.getForeground());
             }
@@ -138,6 +141,9 @@ public class ListPanel extends JPanel {
 //                border = getNoFocusBorder();
 //            }
 //            value.setBorder(border);
+
+            value.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             return value;
         }

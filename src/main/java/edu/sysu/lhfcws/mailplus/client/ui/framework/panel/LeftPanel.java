@@ -2,6 +2,7 @@ package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
+import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.util.ConditionSwitcher;
 
 import javax.swing.*;
@@ -24,7 +25,8 @@ public class LeftPanel extends JPanel {
     }
 
     public void addMailbox(String email) {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(String.format(" Mailbox (%s) ", email));
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(email);
+        DefaultMutableTreeNode mailboxNode = new DefaultMutableTreeNode(" Mailbox");
         DefaultMutableTreeNode inboxNode = new DefaultMutableTreeNode(" Inbox ");
         DefaultMutableTreeNode sendboxNode = new DefaultMutableTreeNode(" Sendbox ");
         DefaultMutableTreeNode sendedNode = new DefaultMutableTreeNode(" Sended Mails ");
@@ -57,15 +59,17 @@ public class LeftPanel extends JPanel {
             }
         });
 
-        root.add(inboxNode);
-        root.add(sendboxNode);
-        root.add(sendedNode);
-        root.add(draftNode);
-        root.add(binNode);
+        mailboxNode.add(inboxNode);
+        mailboxNode.add(sendboxNode);
+        mailboxNode.add(sendedNode);
+        mailboxNode.add(draftNode);
+        mailboxNode.add(binNode);
+        root.add(mailboxNode);
 
         DefaultTreeModel model = new DefaultTreeModel(root);
 
         final JTree tree = new JTree(model);
+        tree.setToolTipText(email);
         tree.setBorder(BorderFactory.createEmptyBorder());
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override

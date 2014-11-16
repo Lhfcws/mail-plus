@@ -83,7 +83,7 @@ public class MainWindow extends AbstractWindow {
         this.pack();
         this.setVisible(true);
 
-        internalSplitPane.setDividerLocation(0.5);
+        internalSplitPane.setDividerLocation(0.45);
         splitPane.setDividerLocation(0.38);
     }
 
@@ -102,6 +102,7 @@ public class MainWindow extends AbstractWindow {
         for (Email email : emailList) {
             EmailContentHTML emailContentHTML = new EmailContentHTML(email);
             HTMLContainer container = new HTMLContainer(emailContentHTML.toListItemHTML());
+            container.setInformation(emailContentHTML.getEmailString());
             listPanel.addItem(container);
         }
 
