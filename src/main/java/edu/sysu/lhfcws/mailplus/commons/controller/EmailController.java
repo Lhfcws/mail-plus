@@ -8,6 +8,7 @@ import edu.sysu.lhfcws.mailplus.commons.db.sqlite.resultset.EmailResultSetHandle
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.sql.BaseDao;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import org.apache.commons.dbutils.ResultSetHandler;
 
 import java.sql.ResultSet;
@@ -36,16 +37,15 @@ public class EmailController {
             email.setSignature(email.getFrom());
 
         long now = System.currentTimeMillis();
-        dao.batchExecute(sql, email.getFrom(),
+        int id =dao.insertWithKey(sql, email.getFrom(),
                 gson.toJson(email.getTo()), gson.toJson(email.getCc()),
                 email.getSubject(), email.getContent(),
                 gson.toJson(email.getAttachments()), Email.EmailStatus.DRAFT.getValue(),
                 now, email.getSignature());
-        Email e = getEmailByEmailNTimestamp(email, now);
-        email.setId(e.getId());
+        email.setId(id);
     }
 
-    public void sendEmail(Email email) throws SQLException {
+    public void saveSendEmail(Email email) throws SQLException {
         if (email.getSignature() == null)
             email.setSignature(email.getFrom());
 
@@ -54,13 +54,12 @@ public class EmailController {
                     "('from','to','cc','subject','content','attachment','status','timestamp', 'signature') " +
                     "VALUES (?,?,?,?,?,?,?,?,?)", Consts.TBL_EMAIL);
             long now = System.currentTimeMillis();
-            dao.batchExecute(sql, email.getFrom(),
+            int id =dao.insertWithKey(sql, email.getFrom(),
                     gson.toJson(email.getTo()), gson.toJson(email.getCc()),
                     email.getSubject(), email.getContent(),
                     gson.toJson(email.getAttachments()), Email.EmailStatus.SENDING.getValue(),
                     now, email.getSignature());
-            Email e = getEmailByEmailNTimestamp(email, now);
-            email.setId(e.getId());
+            email.setId(id);
         } else {
             changeEmailStatus(email, Email.EmailStatus.SENDING);
         }
@@ -71,20 +70,20 @@ public class EmailController {
                 "('mail_id', 'from','to','cc','subject','content','attachment','status','timestamp', 'signature') " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?)", Consts.TBL_EMAIL);
         long now = System.currentTimeMillis();
-        dao.batchExecute(sql, email.getMailID(), email.getFrom(),
+        int id =dao.insertWithKey(sql, email.getMailID(), email.getFrom(),
                 gson.toJson(email.getTo()), gson.toJson(email.getCc()),
                 email.getSubject(), email.getContent(),
                 gson.toJson(email.getAttachments()), Email.EmailStatus.UNREAD.getValue(),
                 now, email.getSignature());
-        Email e = getEmailByEmailNTimestamp(email, now);
-        email.setId(e.getId());
+        email.setId(id);
     }
 
     public void changeEmailStatus(Email email, Email.EmailStatus status) throws SQLException {
-        String sql = String.format("UPDATE FROM %s SET status=%s WHERE id=%s",
+        String sql = String.format("UPDATE %s SET status=%s WHERE id=%s",
                 Consts.TBL_EMAIL, status.getValue(), email.getId());
 
-        dao.batchExecute(sql, status.getValue(), email.getId());
+        dao.batchExecute(sql);
+        email.setStatus(status);
     }
 
     public Email getEmailByID(int id) throws SQLException {
@@ -124,20 +123,19 @@ public class EmailController {
         }
     }
 
-    public Email getEmailByEmailNTimestamp(Email email, long timestamp) throws SQLException {
-        StringBuilder sb = new StringBuilder("SELECT * FROM ");
-        sb.append(Consts.TBL_EMAIL).append(" WHERE ");
-
-        sb.append("'from'='").append(email.getFrom()).append("' AND ");
-        sb.append("'to'='").append(gson.toJson(email.getTo())).append("' AND ");
-        sb.append("'cc'='").append(gson.toJson(email.getCc())).append("' AND ");
-        sb.append("'signature'='").append(email.getSignature()).append("' AND ");
-        sb.append("'timestamp'=").append(timestamp);
-
-        String sql = sb.toString();
-        Email e = dao.querySingleObj(sql, new EmailResultSetHandler());
-        return e;
-    }
+//    public Email getEmailByEmailNTimestamp(Email email, long timestamp) throws SQLException {
+//        StringBuilder sb = new StringBuilder("SELECT * FROM ");
+//        sb.append(Consts.TBL_EMAIL).append(" WHERE ");
+//
+//        sb.append("'subject'='").append(email.getSubject()).append("' AND ");
+//        sb.append("'signature'='").append(email.getSignature()).append("' AND ");
+//        sb.append("'timestamp'=").append(timestamp);
+//
+//        String sql = sb.toString();
+//        LogUtil.debug(sql);
+//        Email e = dao.querySingleObj(sql, new EmailResultSetHandler());
+//        return e;
+//    }
 
     public int getLatestMailID(String signature) throws SQLException {
         String sql = String.format("SELECT MAX(mail_id) FROM %s " +

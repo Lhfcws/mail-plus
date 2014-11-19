@@ -1,5 +1,6 @@
 package client.test;
 
+import client.preparation.TestPreparation;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import javax.swing.*;
  */
 public class MainWindowTest {
     public static void start() {
-        MainWindow.getInstance().addMailbox("lhfcws@163.com");
+        MainWindow.getInstance().addMailbox(new TestPreparation().prepareToken());
         MainWindow.getInstance().start();
     }
 

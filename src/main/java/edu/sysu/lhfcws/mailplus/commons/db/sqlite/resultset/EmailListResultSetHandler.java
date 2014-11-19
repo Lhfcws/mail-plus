@@ -28,6 +28,7 @@ public class EmailListResultSetHandler implements ResultSetHandler<List<Email>> 
 
             email.setId(rs.getInt("id"));
             email.setFrom(rs.getString("from"));
+            email.setMailID(rs.getInt("mail_id"));
 
             List<String> list = gson.fromJson(rs.getString("to"),
                     new TypeToken<List<String>>() {}.getType());
@@ -45,6 +46,7 @@ public class EmailListResultSetHandler implements ResultSetHandler<List<Email>> 
 
             email.setStatus(Email.EmailStatus.fromValue(rs.getInt("status")));
             email.setDate(new Date(rs.getLong("timestamp")));
+            email.setSignature(rs.getString("signature"));
 
             result.add(email);
         }

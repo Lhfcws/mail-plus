@@ -1,5 +1,6 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.window;
 
+import edu.sysu.lhfcws.mailplus.client.background.running.Token;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.menu.MenuBar;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.ContentPanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.LeftPanel;
@@ -9,6 +10,8 @@ import edu.sysu.lhfcws.mailplus.client.util.EmailContentHTML;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.swing.*;
 import java.awt.Dimension;
@@ -23,11 +26,14 @@ import java.util.*;
  */
 public class MainWindow extends AbstractWindow {
 
+    private static Log LOG = LogFactory.getLog(MainWindow.class);
+
     private JMenuBar menuBar;
     private JSplitPane splitPane;
     private LeftPanel leftPanel;
     private ListPanel listPanel;
     private ContentPanel contentPanel;
+    private Token token;
 
     private static MainWindow _window = null;
 
@@ -47,8 +53,13 @@ public class MainWindow extends AbstractWindow {
         super("MailPlus");
     }
 
-    public void addMailbox(String email) {
-        leftPanel.addMailbox(email);
+    public void addMailbox(Token token) {
+        this.token = token;
+        leftPanel.addMailbox(token.getEmail());
+    }
+
+    public Token getToken() {
+        return token;
     }
 
     @Override
@@ -118,7 +129,7 @@ public class MainWindow extends AbstractWindow {
     public void refreshListPanel(List<Email> emailList) {
 //        LogUtil.debug("refreshListPanel" + emailList);
         // ListPanel Reload DB.
-        listPanel.setVisible(false);
+//        listPanel.setVisible(false);
         listPanel.clear();
 
         for (Email email : emailList) {
@@ -129,7 +140,7 @@ public class MainWindow extends AbstractWindow {
         }
 
         listPanel.repaint();
-        listPanel.setVisible(true);
+//        listPanel.setVisible(true);
     }
 
     public void refreshInbox() {
@@ -155,7 +166,7 @@ public class MainWindow extends AbstractWindow {
         try {
             list = new EmailController().getEmailListByStatus(conditions);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtil.error(LOG, e);
         }
         this.refreshListPanel(list);
     }
@@ -168,7 +179,7 @@ public class MainWindow extends AbstractWindow {
         try {
             list = new EmailController().getEmailListByStatus(conditions);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtil.error(LOG, e);
         }
         this.refreshListPanel(list);
     }
@@ -181,7 +192,7 @@ public class MainWindow extends AbstractWindow {
         try {
             list = new EmailController().getEmailListByStatus(conditions);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LogUtil.error(LOG, e);
         }
         this.refreshListPanel(list);
     }

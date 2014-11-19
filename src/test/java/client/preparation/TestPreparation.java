@@ -2,6 +2,7 @@ package client.preparation;
 
 import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
 import edu.sysu.lhfcws.mailplus.client.background.launch.ServerLauncher;
+import edu.sysu.lhfcws.mailplus.client.background.running.Token;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.server.serv.MailPlusServer;
@@ -25,6 +26,14 @@ public class TestPreparation {
         serverLauncher.launch();
 
         LogUtil.info(LOG, "MailPlusServer and MailPlusInternalClient started.");
+    }
+
+    public Token prepareToken() {
+        Token token = new Token();
+        token.setEmail(TestConsts.mail);
+        token.setPassword(TestConsts.password);
+        token.setTimestamp(System.currentTimeMillis());
+        return token;
     }
 
     public MailUser prepareMailUser() {

@@ -59,7 +59,8 @@ public class DownloadEmailsWindow extends AbstractWindow {
 
     @Override
     public void close() {
-        _window.dispose();
+        if (_window != null)
+            _window.dispose();
         _window = null;
     }
 

@@ -4,6 +4,7 @@ import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Callback;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.util.HTMLContainer;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
+import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
@@ -13,6 +14,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.Vector;
 
 /**
@@ -43,6 +45,8 @@ public class ListPanel extends JPanel {
 
                 LogUtil.debug("Selected email is : " + email.getSubject());
                 MainWindow.getInstance().refreshContentPanel(email);
+
+
             }
         });
 
@@ -57,11 +61,8 @@ public class ListPanel extends JPanel {
     }
 
     public void clear() {
-        for (ListPanelItem listPanelItem : list) {
-            listPanelItem.setVisible(false);
-        }
-        list = new Vector<ListPanelItem>();
-        this.jList.setListData(list);
+        this.jList.removeAll();
+        this.list.clear();
     }
 
     public void addItem(HTMLContainer container) {
@@ -104,6 +105,7 @@ public class ListPanel extends JPanel {
 
         @Override
         public Component getListCellRendererComponent(JList<? extends ListPanelItem> list, ListPanelItem value, int index, boolean isSelected, boolean cellHasFocus) {
+            Email email = CommonUtil.GSON.fromJson(value.getInformation(), Email.class);
             value.setComponentOrientation(list.getComponentOrientation());
 
             Color bg = null;
@@ -123,6 +125,14 @@ public class ListPanel extends JPanel {
             if (isSelected) {
                 value.setBackground(bg == null ? list.getSelectionBackground() : bg);
                 value.setForeground(fg == null ? list.getSelectionForeground() : fg);
+                if (email.getStatus().equals(Email.EmailStatus.UNREAD)) {
+                    try {
+                        new EmailController().changeEmailStatus(email, Email.EmailStatus.READED);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    value.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(10, 10, 10)));
+                }
             } else {
                 value.setBackground(list.getBackground());
                 value.setForeground(list.getForeground());
@@ -143,6 +153,10 @@ public class ListPanel extends JPanel {
 //                border = getNoFocusBorder();
 //            }
 //            value.setBorder(border);
+            if (email.getStatus().equals(Email.EmailStatus.UNREAD)) {
+                Border border = DefaultLookup.getBorder(this, ui, "List.focusCellHighlightBorder");
+                value.setBorder(border);
+            }
 
             value.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

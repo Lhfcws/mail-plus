@@ -21,7 +21,6 @@ public class Launcher {
     private static Log LOG = LogFactory.getLog(Launcher.class);
 
     public boolean launch() {
-        new ServerLauncher().launch();
         LoginWindow.getInstance().start();
         return true;
     }
@@ -42,7 +41,8 @@ public class Launcher {
             userController.updateUser(token.getEmail(), token.getPassword());
 
             // pass the token to main window
-            MainWindow.getInstance().addMailbox(token.getEmail());
+            MainWindow.getInstance().addMailbox(token);
+            new ServerLauncher().launch();
             MainWindow.getInstance().start();
 
             return true;

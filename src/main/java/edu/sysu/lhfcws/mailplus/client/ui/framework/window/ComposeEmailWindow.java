@@ -2,6 +2,7 @@ package edu.sysu.lhfcws.mailplus.client.ui.framework.window;
 
 
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.ComposeEmailPanel;
+import edu.sysu.lhfcws.mailplus.commons.model.Email;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +42,7 @@ public class ComposeEmailWindow extends AbstractWindow {
         if (!hasStart) {
             this.pack();
             this.setVisible(true);
+            MainWindow.getInstance().setEnabled(false);
         }
     }
 
@@ -49,6 +51,11 @@ public class ComposeEmailWindow extends AbstractWindow {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
+                close();
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
                 close();
             }
         });
@@ -61,9 +68,14 @@ public class ComposeEmailWindow extends AbstractWindow {
         this.setBackground(new Color(235, 235, 235));
     }
 
+    public void setReplyEmail(Email email) {
+        composeEmailPanel.setReplyEmail(email);
+    }
+
     @Override
     public void close() {
-        _window.dispose();
+        if (_window != null)
+            _window.dispose();
         _window = null;
         MainWindow.getInstance().setEnabled(true);
     }

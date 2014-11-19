@@ -5,6 +5,7 @@ import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import server.test.TestConsts;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  * @author lhfcws
@@ -38,7 +39,11 @@ public class SQLTest {
         Email email = initEmail();
 
         try {
+            email = emailController.getEmailByID(446);
+            System.out.println("[Email1] " + email.getSubject());
+            email.setDate(new Date());
             emailController.saveDraft(email);
+            System.out.println("[Email2]" + email.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,12 +1,16 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 
+import edu.sysu.lhfcws.mailplus.client.background.running.MailPlusMailOperator;
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Function;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.ComposeEmailWindow;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
+import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -28,6 +32,12 @@ public class ComposeEmailPanel extends JPanel {
         addSubjectLine();
         addContentLine();
         addButtons();
+    }
+
+    public void setReplyEmail(Email email) {
+        subject.setText("Re: " + email.getSubject());
+        content.setText("\n\n\n\n" + "===========Original Mail============\n\n" + email.getContent());
+        to.setText(email.getFromString());
     }
 
     private void addToLine() {
@@ -59,7 +69,7 @@ public class ComposeEmailPanel extends JPanel {
         contentLine.add(new JLabel("Content: "));
         content = new JTextArea(100, 42);
         content.setBorder(BorderFactory.createEtchedBorder());
-        contentLine.add(content);
+        contentLine.add(new JScrollPane(content));
         this.add(contentLine);
     }
 
@@ -72,13 +82,20 @@ public class ComposeEmailPanel extends JPanel {
             @Override
             public void callback(AWTEvent _event) {
                 Email email = new Email();
-//                email.setFrom();
 
+                email.setFrom(MainWindow.getInstance().getToken().getEmail());
+                email.setSignature(MainWindow.getInstance().getToken().getEmail());
                 email.setTo(Arrays.asList(to.getText().split(";")));
                 email.setCc(Arrays.asList(cc.getText().split(";")));
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
                 email.setDate(new Date());
+
+                try {
+                    new EmailController().saveDraft(email);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
 
                 ComposeEmailWindow.getInstance().close();
             }
@@ -88,13 +105,16 @@ public class ComposeEmailPanel extends JPanel {
             @Override
             public void callback(AWTEvent _event) {
                 Email email = new Email();
-//                email.setFrom();
 
+                email.setFrom(MainWindow.getInstance().getToken().getEmail());
+                email.setSignature(MainWindow.getInstance().getToken().getEmail());
                 email.setTo(Arrays.asList(to.getText().split(";")));
                 email.setCc(Arrays.asList(cc.getText().split(";")));
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
                 email.setDate(new Date());
+
+                new MailPlusMailOperator().sendEmail(email);
 
                 ComposeEmailWindow.getInstance().close();
             }

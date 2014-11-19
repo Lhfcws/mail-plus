@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Model to describe a email object.
+ *
  * @author lhfcws
  * @time 14-10-21.
  */
@@ -59,6 +60,10 @@ public class Email implements Serializable {
         this.from = from;
     }
 
+    public String getFromString() {
+        return this.from + ";";
+    }
+
     public List<String> getTo() {
         return to;
     }
@@ -74,6 +79,14 @@ public class Email implements Serializable {
         this.to.add(toAddr);
     }
 
+    public String getToString() {
+        StringBuilder sb = new StringBuilder();
+        for (String s : this.to) {
+            sb.append(s).append(";");
+        }
+        return sb.toString();
+    }
+
     public List<String> getCc() {
         return cc;
     }
@@ -87,6 +100,14 @@ public class Email implements Serializable {
         Preconditions.checkArgument(this.cc != null);
 
         this.cc.add(ccAddr);
+    }
+
+    public String getCcString() {
+        StringBuilder sb = new StringBuilder();
+        for (String s : this.cc) {
+            sb.append(s).append(";");
+        }
+        return sb.toString();
     }
 
     public String getSubject() {
@@ -198,6 +219,7 @@ public class Email implements Serializable {
         PLAIN("plain"), HTML("html");
 
         private String value;
+
         private EmailType(String v) {
             this.value = v;
         }
@@ -214,6 +236,7 @@ public class Email implements Serializable {
         WRITINIG(2), DRAFT(3), SENDING(4), SENDED(5);   // Written emails
 
         private int value;
+
         private EmailStatus(int v) {
             this.value = v;
         }
@@ -224,13 +247,20 @@ public class Email implements Serializable {
 
         public static EmailStatus fromValue(int v) {
             switch (v) {
-                case 0: return UNREAD;
-                case 1: return READED;
-                case 2: return WRITINIG;
-                case 3: return DRAFT;
-                case 4: return SENDING;
-                case 5: return SENDED;
-                default: return ERROR;
+                case 0:
+                    return UNREAD;
+                case 1:
+                    return READED;
+                case 2:
+                    return WRITINIG;
+                case 3:
+                    return DRAFT;
+                case 4:
+                    return SENDING;
+                case 5:
+                    return SENDED;
+                default:
+                    return ERROR;
             }
         }
     }

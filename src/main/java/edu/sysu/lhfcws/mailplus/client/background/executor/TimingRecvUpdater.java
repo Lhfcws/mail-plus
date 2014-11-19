@@ -6,6 +6,7 @@ import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.SQLite;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.sql.BaseDao;
 import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
+import edu.sysu.lhfcws.mailplus.commons.io.req.RequestFactory;
 import edu.sysu.lhfcws.mailplus.commons.io.res.EmailResponse;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseCallback;
@@ -36,9 +37,7 @@ public class TimingRecvUpdater extends AdvRunnable {
     }
 
     public void initReceiveRequest() {
-        this.req = new ReceiveRequest();
-        this.req.setReceiveRequestType(ReceiveRequest.ReceiveRequestType.LATEST);
-        this.req.generateAuthCode();
+        this.req = RequestFactory.createLatestReceiveRequest();
     }
 
     @Override
