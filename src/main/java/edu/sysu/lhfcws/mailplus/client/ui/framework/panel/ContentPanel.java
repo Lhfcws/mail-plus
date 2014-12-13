@@ -40,6 +40,7 @@ public class ContentPanel extends JPanel {
 
         JButton replyBtn = new JButton("reply");
         JButton deleteBtn = new JButton("delete");
+        JButton forwardBtn = new JButton("forward");
 
         Events.onClick(deleteBtn, new Callback() {
             @Override
@@ -59,6 +60,15 @@ public class ContentPanel extends JPanel {
             @Override
             public void callback(AWTEvent _event) {
                 ComposeEmailWindow.getInstance().setReplyEmail(email);
+                ComposeEmailWindow.getInstance().start();
+            }
+        });
+
+        Events.onClick(forwardBtn, new Callback() {
+            @Override
+            public void callback(AWTEvent _event) {
+                Email e = Email.clone(email);
+                ComposeEmailWindow.getInstance().setForwardEmail(e);
                 ComposeEmailWindow.getInstance().start();
             }
         });

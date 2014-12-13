@@ -40,6 +40,11 @@ public class ComposeEmailPanel extends JPanel {
         to.setText(email.getFromString());
     }
 
+    public void setForwardEmail(Email email) {
+        subject.setText("Fw: " + email.getSubject());
+        content.setText("\n\n\n\n" + "===========Original Mail============\n\n" + email.getContent());
+    }
+
     private void addToLine() {
         LinePanel linePanel = new LinePanel();
         linePanel.add(new JLabel("To:   "));

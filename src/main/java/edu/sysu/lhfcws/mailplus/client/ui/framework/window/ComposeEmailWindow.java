@@ -42,6 +42,7 @@ public class ComposeEmailWindow extends AbstractWindow {
         if (!hasStart) {
             this.pack();
             this.setVisible(true);
+            hasStart = true;
             MainWindow.getInstance().setEnabled(false);
         }
     }
@@ -72,11 +73,16 @@ public class ComposeEmailWindow extends AbstractWindow {
         composeEmailPanel.setReplyEmail(email);
     }
 
+    public void setForwardEmail(Email email) {
+        composeEmailPanel.setForwardEmail(email);
+    }
+
     @Override
     public void close() {
         if (_window != null)
             _window.dispose();
         _window = null;
+        hasStart = false;
         MainWindow.getInstance().setEnabled(true);
     }
 

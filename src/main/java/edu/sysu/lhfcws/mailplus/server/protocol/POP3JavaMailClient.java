@@ -3,11 +3,15 @@ package edu.sysu.lhfcws.mailplus.server.protocol;
 import edu.sysu.lhfcws.mailplus.commons.base.ProtocolConsts;
 import edu.sysu.lhfcws.mailplus.commons.io.CommonSocket;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
+import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
+import org.apache.commons.codec.binary.Base64;
+import sun.misc.BASE64Decoder;
 
 import javax.mail.*;
 import javax.mail.internet.AddressException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +19,7 @@ import java.util.Properties;
 
 /**
  * POP3 client JavaMail implement.
+ *
  * @author lhfcws
  * @time 14-10-28.
  */
@@ -52,9 +57,9 @@ public class POP3JavaMailClient implements POP3Client {
                     email.setTo(parseAddress(msg.getRecipients(Message.RecipientType.TO)));
                     email.setCc(parseAddress(msg.getRecipients(Message.RecipientType.CC)));
                     email.setSubject(msg.getSubject());
-                    email.setContent(CommonUtil.toUTF8(msg.getContent().toString()));
                     email.setDate(msg.getSentDate());
                     email.setStatus(Email.EmailStatus.UNREAD);
+                    parseAttachment(email, msg);
 
                     list.add(email);
                 }
@@ -100,7 +105,7 @@ public class POP3JavaMailClient implements POP3Client {
             email.setSubject(msg.getSubject());
             email.setDate(msg.getSentDate());
             email.setStatus(Email.EmailStatus.READED);
-            email.setContent(msg.getContent().toString());
+            parseAttachment(email, msg);
         } catch (UnsupportedEncodingException e) {
             email.setContent(CommonUtil.inputStream2String(msg.getInputStream()));
         }
@@ -153,6 +158,36 @@ public class POP3JavaMailClient implements POP3Client {
             }
 
         return list;
+    }
+
+    private Email parseAttachment(Email email, Message message) throws MessagingException, IOException {
+        BodyPart part;
+        String disposition;
+        StringBuilder sb = new StringBuilder();
+
+        Multipart mp = (Multipart) message.getContent();
+        int mpCount = mp.getCount();
+
+        for (int m = 0; m < mpCount; m++) {
+            part = mp.getBodyPart(m);
+            disposition = part.getDisposition();
+
+            if (Part.ATTACHMENT.equals(disposition)) {
+                Attachment attachment = new Attachment();
+                String s = part.getFileName();
+                s = s.substring(8, s.indexOf("?="));
+                s = new String(Base64.decodeBase64(s));
+                attachment.setFilename(s);
+                String content = CommonUtil.inputStream2String(part.getInputStream());
+                attachment.setContent(content);
+
+                email.addAttachment(attachment);
+            } else
+                sb.append(CommonUtil.toUTF8(part.getContent().toString())).append("\n");
+        }
+
+        email.setContent(sb.toString());
+        return email;
     }
 
     /**

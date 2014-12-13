@@ -2,6 +2,7 @@ package edu.sysu.lhfcws.mailplus.commons.model;
 
 import com.google.common.base.Preconditions;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.validate.PatternValidater;
 import org.apache.commons.codec.binary.Base64;
 
@@ -40,6 +41,11 @@ public class Email implements Serializable {
         this.attachments = new LinkedList<Attachment>();
         this.emailType = EmailType.PLAIN;
         this.encoding = "utf-8";
+    }
+
+    public static Email clone(Email email) {
+        String json = CommonUtil.GSON.toJson(email);
+        return CommonUtil.GSON.fromJson(json, Email.class);
     }
 
     public int getId() {
