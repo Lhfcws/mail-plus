@@ -1,10 +1,8 @@
 package swing_learn;
 
-import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.LinePanel;
-import sun.awt.OrientableFlowLayout;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.util.LinePanel;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author lhfcws

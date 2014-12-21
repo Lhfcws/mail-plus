@@ -39,7 +39,7 @@ public class EmailResultSetHandler implements ResultSetHandler<Email> {
             email.setContent(rs.getString("content"));
 
             List<Attachment> attachments = gson.fromJson(rs.getString("attachment"),
-                    new TypeToken<List<String>>() {}.getType());
+                    new TypeToken<List<Attachment>>() {}.getType());
             email.setAttachments(attachments);
 
             email.setStatus(Email.EmailStatus.fromValue(rs.getInt("status")));

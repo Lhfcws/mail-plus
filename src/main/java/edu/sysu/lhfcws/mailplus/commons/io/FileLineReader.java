@@ -35,6 +35,15 @@ public class FileLineReader {
         return lines;
     }
 
+    public String readAll() throws IOException {
+        List<String> list = this.readLines();
+        StringBuilder sb = new StringBuilder();
+        for (String s : list) {
+            sb.append(s).append("\n");
+        }
+        return sb.toString();
+    }
+
     public void close() throws IOException {
         bufferedReader.close();
         inputStreamReader.close();

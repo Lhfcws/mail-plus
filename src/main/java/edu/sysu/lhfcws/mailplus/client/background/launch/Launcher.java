@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.client.background.launch;
 
 import edu.sysu.lhfcws.mailplus.client.background.running.Token;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.DownloadEmailsWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.LoginWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.UserController;
@@ -43,6 +44,8 @@ public class Launcher {
             // pass the token to main window
             MainWindow.getInstance().addMailbox(token);
             new ServerLauncher().launch();
+
+            DownloadEmailsWindow.getInstance().start();
             MainWindow.getInstance().start();
 
             return true;

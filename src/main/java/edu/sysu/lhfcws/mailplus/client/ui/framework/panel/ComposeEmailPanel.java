@@ -2,17 +2,28 @@ package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 
 import edu.sysu.lhfcws.mailplus.client.background.running.MailPlusMailOperator;
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
+import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Callback;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Function;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.util.LinePanel;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.util.MultiLinePanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.ComposeEmailWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
+import edu.sysu.lhfcws.mailplus.commons.io.FileLineReader;
+import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
+import edu.sysu.lhfcws.mailplus.commons.util.FileChooser;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.AWTEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author lhfcws
@@ -21,17 +32,24 @@ import java.util.Date;
 public class ComposeEmailPanel extends JPanel {
     private JTextField to, cc, subject;
     private JTextArea content;
+    private java.util.List<File> attachmentFiles;
+    private JPanel panel;
 
     public ComposeEmailPanel() {
+//        this.panel = new JPanel();
         this.setBorder(BorderFactory.createTitledBorder("Compose Email"));
-//        this.setLayout(new FlowLayout());
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         addToLine();
         addCcLine();
         addSubjectLine();
         addContentLine();
+        addAttachmentArea();
         addButtons();
+
+//        JScrollPane scrollPane = new JScrollPane(panel);
+//        scrollPane.createVerticalScrollBar();
+//        this.add(scrollPane);
     }
 
     public void setReplyEmail(Email email) {
@@ -72,10 +90,41 @@ public class ComposeEmailPanel extends JPanel {
     private void addContentLine() {
         LinePanel contentLine = new LinePanel();
         contentLine.add(new JLabel("Content: "));
-        content = new JTextArea(100, 42);
+        content = new JTextArea(60, 42);
         content.setBorder(BorderFactory.createEtchedBorder());
         contentLine.add(new JScrollPane(content));
         this.add(contentLine);
+    }
+
+    private void addAttachmentArea() {
+        attachmentFiles = new LinkedList<File>();
+        JButton attachBtn = new JButton("attach");
+        final ComposeEmailPanel _this = this;
+        final MultiLinePanel multiLinePanel = new MultiLinePanel();
+        multiLinePanel.setBorder(BorderFactory.createTitledBorder("Attachments"));
+        LinePanel linePanel = new LinePanel();
+        linePanel.add(new JLabel("Attach your files here."));
+        linePanel.add(attachBtn);
+        LinePanel linePanel1 = new LinePanel();
+        linePanel.add(new JLabel("Attachments:  "));
+
+        Events.onClick(attachBtn, new Callback() {
+            @Override
+            public void callback(AWTEvent _event) {
+                FileChooser fileChooser = new FileChooser();
+                File f = fileChooser.getSelectedFile(_this);
+                attachmentFiles.add(f);
+                multiLinePanel.setVisible(false);
+                multiLinePanel.addLine(new JLabel(f.getAbsolutePath()));
+                multiLinePanel.setVisible(true);
+            }
+        });
+        multiLinePanel.add(linePanel);
+        multiLinePanel.add(linePanel1);
+
+        LinePanel lp = new LinePanel();
+        lp.add(multiLinePanel);
+        this.add(lp);
     }
 
     private void addButtons() {
@@ -94,6 +143,7 @@ public class ComposeEmailPanel extends JPanel {
                 email.setCc(Arrays.asList(cc.getText().split(";")));
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
+                email.setAttachments(getAttachments());
                 email.setDate(new Date());
 
                 try {
@@ -117,6 +167,7 @@ public class ComposeEmailPanel extends JPanel {
                 email.setCc(Arrays.asList(cc.getText().split(";")));
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
+                email.setAttachments(getAttachments());
                 email.setDate(new Date());
 
                 new MailPlusMailOperator().sendEmail(email);
@@ -128,5 +179,25 @@ public class ComposeEmailPanel extends JPanel {
         buttonPanel.add(save);
         buttonPanel.add(send);
         this.add(buttonPanel);
+    }
+
+    private java.util.List<Attachment> getAttachments() {
+        List<Attachment> list = new LinkedList<Attachment>();
+        for (File f : attachmentFiles) {
+            Attachment attachment = new Attachment();
+            attachment.setFilepath(f.getAbsolutePath());
+            attachment.setFilename(f.getName());
+            try {
+                FileLineReader reader = new FileLineReader(attachment.getFilepath());
+                attachment.setContent(reader.readAll());
+                reader.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            list.add(attachment);
+        }
+        return list;
     }
 }

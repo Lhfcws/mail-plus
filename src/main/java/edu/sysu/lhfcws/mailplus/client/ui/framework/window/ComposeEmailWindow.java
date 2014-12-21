@@ -62,7 +62,9 @@ public class ComposeEmailWindow extends AbstractWindow {
         });
 
         composeEmailPanel = new ComposeEmailPanel();
-        this.add(composeEmailPanel);
+        JScrollPane scrollPane = new JScrollPane(composeEmailPanel);
+        scrollPane.createVerticalScrollBar();
+        this.add(scrollPane);
 
         this.hasStart = false;
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));

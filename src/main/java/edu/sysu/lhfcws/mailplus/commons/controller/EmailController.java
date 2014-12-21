@@ -96,7 +96,7 @@ public class EmailController {
     public List<Email> getEmailListByStatus(Collection<Email.EmailStatus> conditions) throws SQLException {
         StringBuilder sb = new StringBuilder();
         if (!conditions.isEmpty()) {
-            sb.append(" WHERE ");
+            sb.append("WHERE ");
 
             boolean notFirst = false;
             for (Email.EmailStatus emailStatus : conditions) {
@@ -107,7 +107,8 @@ public class EmailController {
             }
         }
 
-        String sql = String.format("SELECT * FROM %s %s ORDER BY timestamp DESC", Consts.TBL_EMAIL, sb.toString()).trim();
+        String sql = String.format("SELECT * FROM %s %s ORDER BY timestamp DESC",
+                Consts.TBL_EMAIL, sb.toString()).trim();
         List<Email> list = dao.queryObjects(sql, new EmailListResultSetHandler());
         return list;
     }

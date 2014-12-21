@@ -1,4 +1,4 @@
-package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
+package edu.sysu.lhfcws.mailplus.client.ui.framework.util;
 
 import javax.swing.*;
 import java.awt.*;

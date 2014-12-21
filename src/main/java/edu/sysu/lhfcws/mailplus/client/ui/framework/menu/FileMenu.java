@@ -22,8 +22,6 @@ public class FileMenu extends Menu {
         addWirteEmail();
         addSeparator();
 
-        addImport();
-        addExport();
         addSeparator();
 
         addQuit();

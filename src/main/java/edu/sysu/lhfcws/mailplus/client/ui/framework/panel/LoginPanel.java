@@ -4,6 +4,7 @@ import edu.sysu.lhfcws.mailplus.client.background.launch.Launcher;
 import edu.sysu.lhfcws.mailplus.client.background.running.Token;
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Function;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.util.LinePanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.LoginWindow;
 import edu.sysu.lhfcws.mailplus.commons.validate.PatternValidater;
 import org.apache.commons.lang.StringUtils;
