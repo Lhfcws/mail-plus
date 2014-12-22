@@ -2,6 +2,7 @@ package edu.sysu.lhfcws.mailplus.client.background.client;
 
 import edu.sysu.lhfcws.mailplus.client.background.executor.ClientHubEnd;
 import edu.sysu.lhfcws.mailplus.client.background.executor.TimingRecvUpdater;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseCallback;
 import edu.sysu.lhfcws.mailplus.client.background.executor.ClientRQWatcher;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
@@ -35,7 +36,7 @@ public class MailPlusInternalClient {
         this.clientHubEnd = new ClientHubEnd();
         this.threadMonitor = new ThreadMonitor();
         this.threadMonitor.register(new ClientRQWatcher(clientHubEnd));
-        this.threadMonitor.register(new TimingRecvUpdater(this));
+//        this.threadMonitor.register(new TimingRecvUpdater(this));
     }
 
     public void start() {

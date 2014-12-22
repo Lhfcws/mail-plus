@@ -26,6 +26,7 @@ public class MultiPersistentRequestQueues {
     }
 
     public void enQueue(String key, Request req) {
+        Preconditions.checkArgument(key != null);
         Preconditions.checkArgument(req != null);
         Preconditions.checkArgument(req.getMailUser() != null);
 

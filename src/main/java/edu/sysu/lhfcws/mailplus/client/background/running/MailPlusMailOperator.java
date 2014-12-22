@@ -7,6 +7,7 @@ import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseCallback;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -22,6 +23,7 @@ public class MailPlusMailOperator {
         try {
             new EmailController().saveSendEmail(email);
             SendRequest req = RequestFactory.createSendRequest(email);
+            LogUtil.debug("send " + req.toString());
             MailPlusInternalClient.getInstance().sendRequest(req, new ResponseCallback() {
                 @Override
                 public void callback(Response res) {

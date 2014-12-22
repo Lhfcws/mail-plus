@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.client.background.executor;
 
 import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
+import edu.sysu.lhfcws.mailplus.client.background.running.Token;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.SQLite;
@@ -19,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import java.sql.SQLException;
 
 /**
+ * TODO: add token
  * Remind the RecvServer to receive new mails on a period.
  * @author lhfcws
  * @time 14-10-23.

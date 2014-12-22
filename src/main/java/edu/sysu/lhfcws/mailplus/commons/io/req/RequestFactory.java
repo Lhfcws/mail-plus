@@ -20,7 +20,7 @@ public class RequestFactory {
         SendRequest req = new SendRequest();
         req.setEmail(email);
         try {
-            req.setMailUser(new UserController().getUser(email.getSignature()));
+            req.setMailUser(new UserController().getFullUser(email.getSignature()));
         } catch (SQLException e) {
             LogUtil.error(LOG, e);
         }

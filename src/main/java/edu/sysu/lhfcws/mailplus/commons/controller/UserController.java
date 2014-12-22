@@ -41,4 +41,8 @@ public class UserController {
     public MailUser getUser(String email) throws SQLException {
         return QueryUtil.getUser(email);
     }
+
+    public MailUser getFullUser(String email) throws SQLException {
+        return QueryUtil.getFullMailUser(email);
+    }
 }

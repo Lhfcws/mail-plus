@@ -8,6 +8,7 @@ import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseCallback;
 import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseID;
 import edu.sysu.lhfcws.mailplus.commons.queue.PersistentRequestQueue;
 import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
@@ -38,6 +39,7 @@ public class ClientHubEnd extends HubEnd {
     }
 
     public void pushRequest(Request req, ResponseCallback callback) {
+        LogUtil.debug("hub send: " + callback);
         this.callbackPool.put(new ResponseID(req), callback);
         this.clientRQ.enQueue(req);
     }

@@ -35,9 +35,9 @@ public class ClientRQWatcher extends AdvRunnable {
             }
 
             Request req = clientRQ.deQueue();
-
             if (req == null)
                 continue;
+            LogUtil.debug("client: " + req.toString());
 
             this.clientHubEnd.send(CommonUtil.GSON.toJson(req));
         }
