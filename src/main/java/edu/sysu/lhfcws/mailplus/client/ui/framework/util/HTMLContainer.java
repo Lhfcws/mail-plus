@@ -9,13 +9,18 @@ import javax.swing.*;
  */
 public class HTMLContainer extends JEditorPane {
 
+    protected int id;
     protected String information;
     protected String html;
 
+    /**
+     * Only for inheritence.
+     */
     protected HTMLContainer() {}
 
     public HTMLContainer(String html) {
         super("text/html", html);
+        this.id = -1;
         this.html = html;
         this.setEditable(false);
         this.setAutoscrolls(false);
@@ -34,4 +39,20 @@ public class HTMLContainer extends JEditorPane {
         this.information = information;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "HTMLContainer{" +
+                "id=" + id +
+                ", information='" + information + '\'' +
+                ", html='" + html + '\'' +
+                "} " + super.toString();
+    }
 }

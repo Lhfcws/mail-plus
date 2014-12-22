@@ -3,6 +3,8 @@ package edu.sysu.lhfcws.mailplus.commons.model;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import org.apache.commons.codec.binary.Base64;
 
+import javax.activation.MimetypesFileTypeMap;
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -10,6 +12,8 @@ import java.io.Serializable;
  * @time 14-10-28.
  */
 public class Attachment implements Serializable {
+
+    static MimetypesFileTypeMap mimeTypes = new MimetypesFileTypeMap();
 
     private String filename;
     private String filepath;
@@ -36,6 +40,7 @@ public class Attachment implements Serializable {
 
     public void setFilepath(String filepath) {
         this.filepath = filepath;
+        this.setContentType(mimeTypes.getContentType(filepath));
     }
 
     public String getContent() {
@@ -54,6 +59,10 @@ public class Attachment implements Serializable {
         this.contentType = contentType;
     }
 
+    public void setContentType(File f) {
+        this.contentType = mimeTypes.getContentType(f);
+    }
+
     public String getEncoding() {
         return encoding;
     }
@@ -65,13 +74,15 @@ public class Attachment implements Serializable {
     public String generate() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(String.format("Content-Type: %s", this.contentType)).append(Consts.CRLF);
-        sb.append("Content-Disposition: attachment;").append(Consts.CRLF);
-        sb.append(String.format("filename=\"%s\"", this.filename)).append(Consts.CRLF);
-        sb.append(String.format("name=\"%s\"", this.filename)).append(Consts.CRLF);
+        sb.append(String.format("Content-Type: %s;name=\"%s\"",
+                this.contentType, this.filename.split("\\.")[0])).append(Consts.CRLF);
+        sb.append(String.format("Content-Disposition: attachment;filename=\"%s\"", this.filename))
+                .append(Consts.CRLF);
         sb.append(String.format("Content-Transfer-Encoding: %s", this.encoding)).append(Consts.CRLF);
         sb.append(Consts.CRLF);
         sb.append(Base64.encodeBase64String(this.content.getBytes()));
+        sb.append(Consts.CRLF);
+
         return sb.toString();
     }
 }

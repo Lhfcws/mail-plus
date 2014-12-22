@@ -1,8 +1,6 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 
-import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
-import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.util.ConditionSwitcher;
 
 import javax.swing.*;
@@ -19,8 +17,6 @@ import java.awt.*;
 public class LeftPanel extends JPanel {
 
     public LeftPanel() {
-//        BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-//        this.setLayout(layout);
         this.setBackground(Color.WHITE);
     }
 
@@ -29,7 +25,7 @@ public class LeftPanel extends JPanel {
         DefaultMutableTreeNode mailboxNode = new DefaultMutableTreeNode(" Mailbox");
         DefaultMutableTreeNode inboxNode = new DefaultMutableTreeNode(" Inbox ");
         DefaultMutableTreeNode sendboxNode = new DefaultMutableTreeNode(" Sendbox ");
-        DefaultMutableTreeNode sendedNode = new DefaultMutableTreeNode(" Sended Mails ");
+        DefaultMutableTreeNode sendedNode = new DefaultMutableTreeNode(" Sended ");
         DefaultMutableTreeNode draftNode = new DefaultMutableTreeNode(" Draft ");
         DefaultMutableTreeNode binNode = new DefaultMutableTreeNode(" Bin ");
 
@@ -79,7 +75,6 @@ public class LeftPanel extends JPanel {
                 switcher.decide(selectedNode.toString());
             }
         });
-//        tree.setSize(new Dimension(150, 230));
 
         JScrollPane scrollPane = new JScrollPane(tree);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());

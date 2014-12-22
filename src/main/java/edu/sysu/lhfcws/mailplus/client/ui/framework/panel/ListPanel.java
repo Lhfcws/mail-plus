@@ -15,6 +15,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -35,40 +36,51 @@ public class ListPanel extends JPanel {
         this.jList.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.jList.setEnabled(true);
         this.jList.setBorder(BorderFactory.createEmptyBorder());
-        this.jList.setFixedCellWidth(250);
+        this.jList.setFixedCellWidth(270);
+        this.jList.setAutoscrolls(true);
 
         Events.onClick(this.jList, new Callback() {
             @Override
             public void callback(AWTEvent _event) {
                 ListPanelItem item = (ListPanelItem) jList.getSelectedValue();
-                Email email = CommonUtil.GSON.fromJson(item.getInformation(), Email.class);
+                if (item != null) {
+                    Email email = CommonUtil.GSON.fromJson(item.getInformation(), Email.class);
 
-                LogUtil.debug("Selected email is : " + email.getSubject());
-                MainWindow.getInstance().refreshContentPanel(email);
-
-
+                    LogUtil.debug("Selected email ID is : " + email.getId());
+                    MainWindow.getInstance().refreshContentPanel(email);
+                }
             }
         });
 
-        this.scrollPane = new JScrollPane(jList);
-        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        this.scrollPane.createVerticalScrollBar();
-        this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+//        this.scrollPane = new JScrollPane(jList);
+//        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
+//        this.scrollPane.createVerticalScrollBar();
+//        this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         this.setBackground(Color.WHITE);
-        this.add(scrollPane);
-
+//        this.add(scrollPane);
+        this.add(jList);
     }
 
     public void clear() {
-        this.jList.removeAll();
         this.list.clear();
     }
 
     public void addItem(HTMLContainer container) {
-//        container.setSize(300, 100);
         ListPanelItem listPanelItem = new ListPanelItem(container);
         this.list.add(listPanelItem);
+    }
+
+    public void delItem(Email email) {
+        int size = this.list.size();
+        LogUtil.debug("del:" + email.getId());
+        for (int i = 0; i < size; i++) {
+            LogUtil.debug("traverse: " + this.list.get(i).getId());
+            if (this.list.get(i).getId() == email.getId()) {
+                this.list.remove(i);
+                break;
+            }
+        }
     }
 
     /**
@@ -87,9 +99,9 @@ public class ListPanel extends JPanel {
             super(htmlContainer.getHtml());
 
             this.setInformation(htmlContainer.getInformation());
+            this.setId(htmlContainer.getId());
             this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
             this.setBackground(Color.WHITE);
-//            this.setBorder(BorderFactory.createEmptyBorder(1,0,1,0));
             this.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(10, 10, 10)));
             this.add(htmlContainer);
             this.setOpaque(true);

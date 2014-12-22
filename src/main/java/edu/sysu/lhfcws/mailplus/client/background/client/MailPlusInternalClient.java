@@ -36,7 +36,7 @@ public class MailPlusInternalClient {
         this.clientHubEnd = new ClientHubEnd();
         this.threadMonitor = new ThreadMonitor();
         this.threadMonitor.register(new ClientRQWatcher(clientHubEnd));
-//        this.threadMonitor.register(new TimingRecvUpdater(this));
+//        this.threadMonitor.register(new TimingRecvUpdater());
     }
 
     public void start() {

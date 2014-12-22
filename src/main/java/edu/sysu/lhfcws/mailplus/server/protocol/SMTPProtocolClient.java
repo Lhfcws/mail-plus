@@ -1,5 +1,6 @@
 package edu.sysu.lhfcws.mailplus.server.protocol;
 
+import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.base.ProtocolConsts;
 import edu.sysu.lhfcws.mailplus.commons.io.CommonSocket;
 import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
@@ -148,6 +149,10 @@ public class SMTPProtocolClient implements SMTPClient {
                         email.getEmailType(), email.getEncoding())
         );
 
+        socketSend(
+                "", String.format("boundary=\"%s\"", email.getBoundary())
+        );
+
         // Send content
         socketSend(
                 "", ""
@@ -157,23 +162,6 @@ public class SMTPProtocolClient implements SMTPClient {
                 "", email.getContent()
         );
 
-        // Send attachments
-        if (email.hasAttachment()) {
-            socketSend(
-                    "", email.getBoundary()
-            );
-
-            for (Attachment attachment : email.getAttachments()) {
-                socketSend(
-                    "", attachment.generate()
-                );
-
-                socketSend(
-                        "", email.getBoundary()
-                );
-            }
-        }
-
         // END
         socketSend(
                 "", "."
@@ -182,6 +170,24 @@ public class SMTPProtocolClient implements SMTPClient {
         socketSend(
                 "", ""
         );
+
+        // Send attachments
+        if (email.hasAttachment()) {
+            for (Attachment attachment : email.getAttachments()) {
+                socketSend(
+                        Consts.CRLF, "--" + email.getBoundary()
+                );
+
+                socketSend(
+                        "", attachment.generate()
+                );
+
+            }
+
+            socketSend(
+                    Consts.CRLF, "--" + email.getBoundary() + "--"
+            );
+        }
 
         // Response
         response();

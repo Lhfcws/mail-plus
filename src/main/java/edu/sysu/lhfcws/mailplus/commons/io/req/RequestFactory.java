@@ -33,7 +33,7 @@ public class RequestFactory {
         req.setMailID(email.getMailID());
         req.setDeleteRequestType(DeleteRequest.DeleteRequestType.DELETE_ONE);
         try {
-            req.setMailUser(new UserController().getUser(email.getSignature()));
+            req.setMailUser(new UserController().getFullUser(email.getSignature()));
         } catch (SQLException e) {
             LogUtil.error(LOG, e);
         }
@@ -45,7 +45,7 @@ public class RequestFactory {
         ReceiveRequest req = new ReceiveRequest();
         req.setReceiveRequestType(ReceiveRequest.ReceiveRequestType.LATEST);
         try {
-            req.setMailUser(new UserController().getUser(
+            req.setMailUser(new UserController().getFullUser(
                     MainWindow.getInstance().getToken().getEmail()
             ));
         } catch (SQLException e) {

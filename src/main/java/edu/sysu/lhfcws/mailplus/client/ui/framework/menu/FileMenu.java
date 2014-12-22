@@ -1,7 +1,11 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.menu;
 
+import edu.sysu.lhfcws.mailplus.client.background.running.MailOperator;
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
+import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Callback;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.WindowExitCallback;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.ComposeEmailWindow;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +25,7 @@ public class FileMenu extends Menu {
     private void init() {
         addWirteEmail();
         addSeparator();
-
+        addReceive();
         addSeparator();
 
         addQuit();
@@ -30,10 +34,27 @@ public class FileMenu extends Menu {
     // ===== JMenuItems
 
     private void addWirteEmail() {
-        JMenuItem item = new JMenuItem("New Email");
+        JMenuItem item = new JMenuItem("Write Email");
         item.setMnemonic(KeyEvent.VK_N);
         item.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_N, InputEvent.CTRL_MASK));
+        Events.onClick(item, new Callback() {
+            @Override
+            public void callback(AWTEvent _event) {
+                ComposeEmailWindow.getInstance().start();
+            }
+        });
+        this.add(item);
+    }
+
+    private void addReceive() {
+        JMenuItem item = new JMenuItem("Get new mails");
+        Events.onClick(item, new Callback() {
+            @Override
+            public void callback(AWTEvent _event) {
+                new MailOperator().receiveLatest(MainWindow.getInstance().getToken());
+            }
+        });
         this.add(item);
     }
 

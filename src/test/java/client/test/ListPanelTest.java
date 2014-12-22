@@ -50,6 +50,7 @@ public class ListPanelTest {
             EmailContentHTML emailContentHTML = new EmailContentHTML(email);
             HTMLContainer container = new HTMLContainer(emailContentHTML.toListItemHTML());
             container.setInformation(emailContentHTML.getEmailString());
+            container.setId(email.getId());
             listPanel.addItem(container);
         }
 

@@ -94,7 +94,7 @@ public class MainWindow extends AbstractWindow {
         this.pack();
         this.setVisible(true);
 
-        internalSplitPane.setDividerLocation(0.45);
+        internalSplitPane.setDividerLocation(0.38);
         splitPane.setDividerLocation(0.38);
     }
 
@@ -115,10 +115,21 @@ public class MainWindow extends AbstractWindow {
     }
 
     // ===== Callbacks
+    public void refreshAfterDelete(Email email) {
+        contentPanel.setVisible(false);
+        contentPanel.clear();
+        contentPanel.setVisible(true);
+
+        listPanel.setVisible(false);
+        listPanel.delItem(email);
+        listPanel.setVisible(true);
+    }
+
     public void refreshContentPanel(Email email) {
         EmailContentHTML emailContentHTML = new EmailContentHTML(email);
         HTMLContainer container = new HTMLContainer(emailContentHTML.toHTML());
         container.setInformation(emailContentHTML.getEmailString());
+        container.setId(email.getId());
 
         contentPanel.setVisible(false);
         contentPanel.clear();
@@ -127,20 +138,20 @@ public class MainWindow extends AbstractWindow {
     }
 
     public void refreshListPanel(List<Email> emailList) {
-//        LogUtil.debug("refreshListPanel" + emailList);
         // ListPanel Reload DB.
-//        listPanel.setVisible(false);
+        listPanel.setVisible(false);
         listPanel.clear();
 
         for (Email email : emailList) {
             EmailContentHTML emailContentHTML = new EmailContentHTML(email);
             HTMLContainer container = new HTMLContainer(emailContentHTML.toListItemHTML());
             container.setInformation(emailContentHTML.getEmailString());
+            container.setId(email.getId());
+            LogUtil.debug(container.toString());
             listPanel.addItem(container);
         }
 
-        listPanel.repaint();
-//        listPanel.setVisible(true);
+        listPanel.setVisible(true);
     }
 
     public void refreshInbox() {

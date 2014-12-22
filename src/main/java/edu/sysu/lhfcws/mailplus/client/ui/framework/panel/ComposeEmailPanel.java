@@ -1,6 +1,6 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 
-import edu.sysu.lhfcws.mailplus.client.background.running.MailPlusMailOperator;
+import edu.sysu.lhfcws.mailplus.client.background.running.MailOperator;
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Callback;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Function;
@@ -170,7 +170,7 @@ public class ComposeEmailPanel extends JPanel {
                 email.setAttachments(getAttachments());
                 email.setDate(new Date());
 
-                new MailPlusMailOperator().sendEmail(email);
+                new MailOperator().sendEmail(email);
 
                 ComposeEmailWindow.getInstance().close();
             }
@@ -185,6 +185,7 @@ public class ComposeEmailPanel extends JPanel {
         List<Attachment> list = new LinkedList<Attachment>();
         for (File f : attachmentFiles) {
             Attachment attachment = new Attachment();
+            attachment.setContentType(f);
             attachment.setFilepath(f.getAbsolutePath());
             attachment.setFilename(f.getName());
             try {

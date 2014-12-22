@@ -1,5 +1,6 @@
 package edu.sysu.lhfcws.mailplus.client.ui.framework.panel;
 
+import edu.sysu.lhfcws.mailplus.client.background.running.MailOperator;
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Callback;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.util.HTMLContainer;
@@ -7,7 +8,7 @@ import edu.sysu.lhfcws.mailplus.client.ui.framework.util.LinePanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.util.MultiLinePanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.util.VScrollPane;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.ComposeEmailWindow;
-import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.io.FileOutputer;
 import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
@@ -17,7 +18,6 @@ import edu.sysu.lhfcws.mailplus.commons.util.FileChooser;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * @author lhfcws
@@ -89,14 +89,9 @@ public class ContentPanel extends JPanel {
         Events.onClick(deleteBtn, new Callback() {
             @Override
             public void callback(AWTEvent _event) {
-                EmailController emailController = new EmailController();
-                try {
-                    emailController.deleteEmail(email.getMailID());
-                    JOptionPane.showMessageDialog(null, "Email deleted successfully.");
-                    clear();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                new MailOperator().deleteEmail(email);
+                JOptionPane.showMessageDialog(null, "Mail is successfully deleted.");
+                MainWindow.getInstance().refreshAfterDelete(email);
             }
         });
 
@@ -111,13 +106,13 @@ public class ContentPanel extends JPanel {
         Events.onClick(forwardBtn, new Callback() {
             @Override
             public void callback(AWTEvent _event) {
-                Email e = Email.clone(email);
-                ComposeEmailWindow.getInstance().setForwardEmail(e);
+                ComposeEmailWindow.getInstance().setForwardEmail(email);
                 ComposeEmailWindow.getInstance().start();
             }
         });
 
         linePanel.add(replyBtn);
+        linePanel.add(forwardBtn);
         linePanel.add(deleteBtn);
         linePanel.setSize(400, 50);
 

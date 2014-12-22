@@ -110,16 +110,18 @@ public class EmailController {
         String sql = String.format("SELECT * FROM %s %s ORDER BY timestamp DESC",
                 Consts.TBL_EMAIL, sb.toString()).trim();
         List<Email> list = dao.queryObjects(sql, new EmailListResultSetHandler());
+        LogUtil.debug("List size: " + list.size());
         return list;
     }
 
-    public void deleteEmail(int mailID) throws SQLException {
-        String deleteSQL = String.format("DELETE FROM %s WHERE mail_id=%d", Consts.TBL_EMAIL, mailID);
+    public void deleteEmail(Email email) throws SQLException {
+        String deleteSQL = String.format("DELETE FROM %s WHERE id=%d", Consts.TBL_EMAIL, email.getId());
         int affectedRows = dao.batchExecute(deleteSQL);
 
-        if (affectedRows == 1) {
-            String updateSQL = String.format("UPDATE %s SET mail_id = mail_id - 1 WHERE mail_id>%d",
-                    Consts.TBL_EMAIL, mailID);
+        if (email.getMailID() > 0 && affectedRows == 1) {
+            String updateSQL = String.format("UPDATE %s SET mail_id = mail_id - 1 " +
+                            "WHERE signature='%s' ANDmail_id>%d",
+                    Consts.TBL_EMAIL, email.getSignature(), email.getMailID());
             dao.batchExecute(updateSQL);
         }
     }
