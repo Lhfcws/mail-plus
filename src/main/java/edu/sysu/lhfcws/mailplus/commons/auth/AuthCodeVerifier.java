@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.commons.auth;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 
 /**
+ * Verify the auth code with its object.
  * @author lhfcws
  * @time 14-10-24.
  */

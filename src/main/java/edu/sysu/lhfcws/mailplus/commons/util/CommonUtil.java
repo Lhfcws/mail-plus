@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Common util.
  * @author lhfcws
  * @time 14-10-21.
  */

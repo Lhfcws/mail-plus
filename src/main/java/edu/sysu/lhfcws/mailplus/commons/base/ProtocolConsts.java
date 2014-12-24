@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.commons.base;
 import java.util.HashMap;
 
 /**
+ * Constants for protocols.
  * Refer to <a href="http://tools.ietf.org/html/rfc821">RFC821</a>
  * @author lhfcws
  * @time 14-10-21.

@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.client.ui.framework.window;
 import javax.swing.*;
 
 /**
+ * Abstract window.
  * @author lhfcws
  * @time 14-10-31.
  */

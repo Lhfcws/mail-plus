@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * The panel contains the components of writing emails.
  * @author lhfcws
  * @time 14-11-1.
  */

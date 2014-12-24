@@ -1,6 +1,5 @@
 package edu.sysu.lhfcws.mailplus.client.ui.event.callback;
 
-import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.client.util.ClientConsts;
 import edu.sysu.lhfcws.mailplus.client.util.TemplateLoader;
 
@@ -8,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * Menu about callback function.
  * @author lhfcws
  * @time 14-10-31.
  */

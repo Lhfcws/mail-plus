@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Read file by lines.
  * @author lhfcws
  * @time 14-10-22.
  */

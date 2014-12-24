@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.commons.util;
 import org.apache.commons.logging.Log;
 
 /**
+ * Log util.
  * @author lhfcws
  * @time 14-10-27.
  */

@@ -13,6 +13,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 /**
+ * Menu file.
  * @author lhfcws
  * @time 14-10-21.
  */

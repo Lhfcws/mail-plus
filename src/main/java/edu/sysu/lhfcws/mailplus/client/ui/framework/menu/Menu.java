@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * Main menu.
  * @author lhfcws
  * @time 14-10-31.
  */

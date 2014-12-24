@@ -7,6 +7,7 @@ import edu.sysu.lhfcws.mailplus.commons.util.StringTruncator;
 
 
 /**
+ * A simple proxy for transform a email to corresponding html.
  * @author lhfcws
  * @time 14-10-29.
  */

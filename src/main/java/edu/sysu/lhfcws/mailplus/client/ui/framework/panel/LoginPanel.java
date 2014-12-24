@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /**
+ * The panel for login.
  * @author lhfcws
  * @time 14-11-1.
  */

@@ -2,6 +2,7 @@ package edu.sysu.lhfcws.mailplus.commons.io;
 
 
 /**
+ * The end of a hub.
  * @author lhfcws
  * @time 14-11-14.
  */

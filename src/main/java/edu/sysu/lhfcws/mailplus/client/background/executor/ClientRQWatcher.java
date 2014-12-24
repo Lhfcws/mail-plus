@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
+ * Watcher of client request queue.
  * @author lhfcws
  * @time 14-11-3.
  */

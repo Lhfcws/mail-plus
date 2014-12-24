@@ -81,7 +81,7 @@ public class Attachment implements Serializable {
         sb.append(String.format("Content-Transfer-Encoding: %s", this.encoding)).append(Consts.CRLF);
         sb.append(Consts.CRLF);
         sb.append(Base64.encodeBase64String(this.content.getBytes()));
-        sb.append(Consts.CRLF);
+//        sb.append(Consts.CRLF);
 
         return sb.toString();
     }

@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import java.sql.SQLException;
 
 /**
+ * Factory that creates some common request.
  * @author lhfcws
  * @time 14-11-17.
  */

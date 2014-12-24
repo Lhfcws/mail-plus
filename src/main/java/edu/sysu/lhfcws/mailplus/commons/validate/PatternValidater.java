@@ -5,6 +5,7 @@ import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import java.util.regex.Pattern;
 
 /**
+ * Validate some patterns.
  * @author lhfcws
  * @time 14-10-21.
  */

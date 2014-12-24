@@ -2,6 +2,11 @@ package edu.sysu.lhfcws.mailplus.commons.util;
 
 import java.io.Serializable;
 
+/**
+ * A pair tuple.
+ * @param <T1>
+ * @param <T2>
+ */
 public class Pair<T1, T2> implements Serializable{
 	public T1 first = null;
 	public T2 second = null;

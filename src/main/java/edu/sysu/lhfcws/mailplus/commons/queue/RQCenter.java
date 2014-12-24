@@ -1,10 +1,9 @@
 package edu.sysu.lhfcws.mailplus.commons.queue;
 
-import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDB;
-
 import java.util.HashMap;
 
 /**
+ * RQ proxy center.
  * @author lhfcws
  * @time 14-11-9.
  */

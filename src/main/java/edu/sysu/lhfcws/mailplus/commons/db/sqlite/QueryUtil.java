@@ -12,6 +12,7 @@ import edu.sysu.lhfcws.mailplus.commons.validate.PatternValidater;
 import java.sql.SQLException;
 
 /**
+ * Some common queries wrapper.
  * @author lhfcws
  * @time 14-10-23.
  */

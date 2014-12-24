@@ -9,7 +9,7 @@ import org.apache.commons.cli.ParseException;
 
 
 /**
- * Class for command line tools
+ * Class for command line tools.
  * @author Arber
  */
 public class AdvCli {

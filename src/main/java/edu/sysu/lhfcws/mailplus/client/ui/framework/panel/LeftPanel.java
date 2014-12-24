@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 
 /**
+ * The panel that contains mailbox.
  * @author lhfcws
  * @time 14-10-30.
  */

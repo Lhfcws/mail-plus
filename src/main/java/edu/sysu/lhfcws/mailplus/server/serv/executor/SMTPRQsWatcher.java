@@ -10,6 +10,7 @@ import edu.sysu.lhfcws.mailplus.commons.queue.MultiPersistentRequestQueues;
 import java.util.List;
 
 /**
+ * Watcher for SMTP request.
  * @author lhfcws
  * @time 14-10-25.
  */

@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.commons.base;
 
 /**
+ * Common constants.
  * @author lhfcws
  * @time 14-10-21.
  */

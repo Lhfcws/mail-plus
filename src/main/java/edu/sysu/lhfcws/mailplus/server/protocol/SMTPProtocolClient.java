@@ -162,20 +162,11 @@ public class SMTPProtocolClient implements SMTPClient {
                 "", email.getContent()
         );
 
-        // END
-        socketSend(
-                "", "."
-        );
-
-        socketSend(
-                "", ""
-        );
-
         // Send attachments
         if (email.hasAttachment()) {
             for (Attachment attachment : email.getAttachments()) {
                 socketSend(
-                        Consts.CRLF, "--" + email.getBoundary()
+                        "", "--" + email.getBoundary()
                 );
 
                 socketSend(
@@ -188,6 +179,15 @@ public class SMTPProtocolClient implements SMTPClient {
                     Consts.CRLF, "--" + email.getBoundary() + "--"
             );
         }
+
+        // END
+        socketSend(
+                "", "."
+        );
+
+        socketSend(
+                "", ""
+        );
 
         // Response
         response();

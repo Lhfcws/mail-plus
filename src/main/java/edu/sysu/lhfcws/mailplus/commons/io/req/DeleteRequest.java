@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.commons.io.req;
 
 /**
+ * Request to delete email.
  * @author lhfcws
  * @time 14-10-23.
  */

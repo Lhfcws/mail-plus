@@ -4,6 +4,7 @@ package edu.sysu.lhfcws.mailplus.commons.model;
 import java.io.Serializable;
 
 /**
+ * User information model.
  * @author lhfcws
  * @time 14-10-21.
  */

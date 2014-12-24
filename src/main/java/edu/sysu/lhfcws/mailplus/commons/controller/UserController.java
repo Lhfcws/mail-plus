@@ -1,6 +1,5 @@
 package edu.sysu.lhfcws.mailplus.commons.controller;
 
-import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.QueryUtil;
 import edu.sysu.lhfcws.mailplus.commons.db.sqlite.SQLite;
@@ -11,6 +10,7 @@ import org.apache.commons.codec.binary.Base64;
 import java.sql.SQLException;
 
 /**
+ * The database controller of user.
  * @author lhfcws
  * @time 14-11-2.
  */

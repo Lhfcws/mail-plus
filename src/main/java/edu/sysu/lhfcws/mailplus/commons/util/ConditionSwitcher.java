@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.commons.util;
 import java.util.HashMap;
 
 /**
+ * A simple way for multi-if condition flow.
  * @author lhfcws
  * @time 14-11-3.
  */

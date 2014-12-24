@@ -7,6 +7,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 
 /**
+ * Main entrance cli.
  * @author lhfcws
  * @time 14-10-28.
  */

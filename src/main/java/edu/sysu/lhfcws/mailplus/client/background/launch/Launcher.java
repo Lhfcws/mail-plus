@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 /**
+ * Main launcher of whole Mailplus.
  * @author lhfcws
  * @time 14-11-1.
  */

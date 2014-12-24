@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * Panel that contains multi lines.
  * @author lhfcws
  * @time 14-12-20.
  */

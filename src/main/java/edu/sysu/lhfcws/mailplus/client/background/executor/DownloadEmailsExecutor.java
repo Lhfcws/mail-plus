@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import java.sql.SQLException;
 
 /**
+ * Executor that downloads new mails at the beginning.
  * @author lhfcws
  * @time 14-11-6.
  */

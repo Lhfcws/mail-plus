@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 /**
+ * Truncate chinese string.
  * @author lhfcws
  * @time 14-10-30.
  */

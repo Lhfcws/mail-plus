@@ -9,6 +9,7 @@ import java.io.*;
 import java.util.HashMap;
 
 /**
+ * HTML templates loader.
  * @author lhfcws
  * @time 14-10-30.
  */

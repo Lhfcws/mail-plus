@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * The databast controller of email.
  * @author lhfcws
  * @time 14-10-31.
  */

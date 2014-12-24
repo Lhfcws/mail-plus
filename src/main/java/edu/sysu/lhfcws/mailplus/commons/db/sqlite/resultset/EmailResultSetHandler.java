@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * The resultset handler of Email.
  * @author lhfcws
  * @time 14-11-1.
  */

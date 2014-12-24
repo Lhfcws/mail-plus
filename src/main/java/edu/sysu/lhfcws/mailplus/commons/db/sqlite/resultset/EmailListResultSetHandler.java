@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * The resultset handler of List<Email>.
  * @author lhfcws
  * @time 14-11-3.
  */

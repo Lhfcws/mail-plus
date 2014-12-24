@@ -10,6 +10,7 @@ import java.awt.*;
 
 
 /**
+ * The window that shows the progress of downloading emails.
  * @author lhfcws
  * @time 14-11-3.
  */

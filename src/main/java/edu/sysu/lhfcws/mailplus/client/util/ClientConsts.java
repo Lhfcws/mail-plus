@@ -1,6 +1,8 @@
 package edu.sysu.lhfcws.mailplus.client.util;
 
 /**
+ * Constants used in client.
+ *
  * @author lhfcws
  * @time 14-10-30.
  */

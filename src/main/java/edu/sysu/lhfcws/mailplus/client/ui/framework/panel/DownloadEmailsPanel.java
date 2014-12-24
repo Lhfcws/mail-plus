@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * The panel that contains components for downloading emails.
  * @author lhfcws
  * @time 14-11-3.
  */

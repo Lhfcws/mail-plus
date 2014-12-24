@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
+ * Internal client communicated with internal SMTP and POP3 server.
  * @author lhfcws
  * @time 14-11-3.
  */

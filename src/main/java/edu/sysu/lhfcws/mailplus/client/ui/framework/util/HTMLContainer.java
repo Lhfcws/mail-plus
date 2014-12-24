@@ -4,6 +4,7 @@ package edu.sysu.lhfcws.mailplus.client.ui.framework.util;
 import javax.swing.*;
 
 /**
+ * The component for rendering html.
  * @author lhfcws
  * @time 14-10-29.
  */

@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.commons.util;
 
 /**
+ * HTML util.
  * @author lhfcws
  * @time 14-11-16.
  */

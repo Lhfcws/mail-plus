@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * A kind of panel that flows in a line.
  * @author lhfcws
  * @time 14-10-31.
  */

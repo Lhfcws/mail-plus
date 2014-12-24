@@ -1,9 +1,9 @@
 package edu.sysu.lhfcws.mailplus.commons.io.res;
 
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
-import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 
 /**
+ * For identify each response and request.
  * @author lhfcws
  * @time 14-11-3.
  */

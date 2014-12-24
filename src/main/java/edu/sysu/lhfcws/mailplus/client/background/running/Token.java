@@ -2,6 +2,7 @@ package edu.sysu.lhfcws.mailplus.client.background.running;
 
 
 /**
+ * Token recording user email and password.
  * @author lhfcws
  * @time 14-11-1.
  */

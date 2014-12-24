@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * Hub end in client.
  * @author lhfcws
  * @time 14-11-14.
  */

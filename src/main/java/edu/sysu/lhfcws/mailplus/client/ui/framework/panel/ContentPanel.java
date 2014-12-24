@@ -20,6 +20,7 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
+ * The panel contains detailed email contents.
  * @author lhfcws
  * @time 14-10-30.
  */

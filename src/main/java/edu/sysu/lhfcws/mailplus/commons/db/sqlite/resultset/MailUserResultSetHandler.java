@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * The resultset handler of MailUser.
  * @author lhfcws
  * @time 14-10-27.
  */

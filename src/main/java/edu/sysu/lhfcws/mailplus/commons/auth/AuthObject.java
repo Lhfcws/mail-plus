@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.commons.auth;
 import java.io.Serializable;
 
 /**
+ * Abstract class for objects that needs authentication.
  * @author lhfcws
  * @time 14-10-22.
  */

@@ -6,6 +6,7 @@ import edu.sysu.lhfcws.mailplus.client.ui.event.callback.AboutCallback;
 import javax.swing.*;
 
 /**
+ * Menu help.
  * @author lhfcws
  * @time 14-10-31.
  */

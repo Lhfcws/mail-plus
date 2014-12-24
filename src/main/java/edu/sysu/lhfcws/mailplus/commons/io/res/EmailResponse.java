@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Response that carries emails.
  * @author lhfcws
  * @time 14-10-23.
  */

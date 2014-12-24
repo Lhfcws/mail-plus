@@ -11,6 +11,7 @@ import edu.sysu.lhfcws.mailplus.server.serv.handler.RequestHandler;
 import java.util.List;
 
 /**
+ * Watcher for pop3 request.
  * @author lhfcws
  * @time 14-10-28.
  */

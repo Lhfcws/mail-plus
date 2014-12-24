@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * The window for login.
  * @author lhfcws
  * @time 14-11-1.
  */

@@ -3,7 +3,6 @@ package edu.sysu.lhfcws.mailplus.client.background.running;
 import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
-import edu.sysu.lhfcws.mailplus.commons.db.sqlite.QueryUtil;
 import edu.sysu.lhfcws.mailplus.commons.io.req.DeleteRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.RequestFactory;
@@ -13,7 +12,6 @@ import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseCallback;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
-import edu.sysu.lhfcws.mailplus.commons.util.StringTruncator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

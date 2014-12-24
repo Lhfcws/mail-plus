@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
+ * Server launcher that launches internal servers.
  * @author lhfcws
  * @time 14-11-15.
  */

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 
 /**
+ * SQLite factory.
  * @author lhfcws
  * @time 14-10-26.
  */

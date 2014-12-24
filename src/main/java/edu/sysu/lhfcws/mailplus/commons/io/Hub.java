@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 
 
 /**
+ * A mediator between client and server.
  * @author lhfcws
  * @time 14-11-14.
  */

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 /**
+ * The panel that cotains a lis tof emails.
  * @author lhfcws
  * @time 14-10-30.
  */

@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.commons.io.req;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 
 /**
+ * Request to send emails.
  * @author lhfcws
  * @time 14-10-23.
  */

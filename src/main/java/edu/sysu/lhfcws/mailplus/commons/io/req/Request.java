@@ -1,11 +1,11 @@
 package edu.sysu.lhfcws.mailplus.commons.io.req;
 
-import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.auth.AuthObject;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 
 /**
+ * Abstract request.
  * @author lhfcws
  * @time 14-10-23.
  */
