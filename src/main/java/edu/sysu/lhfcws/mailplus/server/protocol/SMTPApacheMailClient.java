@@ -11,7 +11,7 @@ import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 
 /**
- * The real object that sends the email.
+ * Apache mail client for test.
  *
  * @author lhfcws
  * @time 14-10-21.
