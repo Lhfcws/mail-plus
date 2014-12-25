@@ -40,8 +40,8 @@ public class Email implements Serializable {
         this.cc = new LinkedList<String>();
         this.attachments = new LinkedList<Attachment>();
         this.emailType = EmailType.PLAIN;
-//        this.encoding = "utf-8";
-        this.encoding = "GBK";
+        this.encoding = "utf-8";
+//        this.encoding = "GBK";
     }
 
     public static Email clone(Email email) {

@@ -49,7 +49,6 @@ public class DownloadEmailsExecutor extends AdvRunnable {
             req.setMailID(latestID);
             req.setReceiveRequestType(ReceiveRequest.ReceiveRequestType.LATEST);
             req.setMailUser(mailUser);
-            req.setMailID(2700);
             req.generateAuthCode();
 
             // Push req and callback to clientRQ
@@ -65,7 +64,6 @@ public class DownloadEmailsExecutor extends AdvRunnable {
                     }
 
                     EmailResponse emailResponse = (EmailResponse) res;
-                    BaseDao dao = SQLite.getDao();
 
                     int size = emailResponse.getEmails().size();
                     int progress = 0;
@@ -78,8 +76,10 @@ public class DownloadEmailsExecutor extends AdvRunnable {
                             LogUtil.error(LOG, e);
                         }
                         progress++;
-                        double x = progress * 1.0 / size;
-                        parent.updateProgress((int)Math.floor(x));
+                        if (progress % 50 == 0 && progress < size) {
+                            double x = progress * 1.0 / size;
+                            parent.updateProgress((int) Math.floor(x));
+                        }
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {

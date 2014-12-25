@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.client.cli;
 
 import edu.sysu.lhfcws.mailplus.client.background.launch.Launcher;
+import edu.sysu.lhfcws.mailplus.client.background.running.Token;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvCli;
 import edu.sysu.lhfcws.mailplus.commons.util.CliRunner;
 import org.apache.commons.cli.CommandLine;
@@ -27,7 +28,15 @@ public class MailPlusCli implements CliRunner {
     public void start(CommandLine cmdLine) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new Launcher().launch();
+                // test
+                Token token = new Token();
+                token.setTimestamp(System.currentTimeMillis());
+                token.setPassword("lhfcws82283086");
+                token.setEmail("lhfcws@163.com");
+                new Launcher().loginInit(token);
+
+                // run
+//                new Launcher().launch();
             }
         });
     }

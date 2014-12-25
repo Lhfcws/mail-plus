@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import org.apache.commons.dbutils.ResultSetHandler;
 
 import java.sql.ResultSet;

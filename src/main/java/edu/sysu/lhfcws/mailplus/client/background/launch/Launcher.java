@@ -5,6 +5,7 @@ import edu.sysu.lhfcws.mailplus.client.ui.framework.window.DownloadEmailsWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.LoginWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.UserController;
+import edu.sysu.lhfcws.mailplus.commons.db.sqlite.QueryUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.commons.validate.UserVerifier;
 import org.apache.commons.logging.Log;
@@ -46,8 +47,7 @@ public class Launcher {
             MainWindow.getInstance().addMailbox(token);
             new ServerLauncher().launch();
 
-            DownloadEmailsWindow.getInstance().start();
-            MainWindow.getInstance().start();
+            DownloadEmailsWindow.getInstance().start(QueryUtil.getFullMailUser(token.getEmail()));
 
             return true;
         } catch (SQLException e) {
@@ -55,14 +55,5 @@ public class Launcher {
             JOptionPane.showMessageDialog(null, e.getMessage());
             return false;
         }
-//        } catch (InterruptedException e) {
-//            LogUtil.error(LOG, e);
-//            JOptionPane.showMessageDialog(null, e.getMessage());
-//            return false;
-//        } catch (InvocationTargetException e) {
-//            LogUtil.error(LOG, e);
-//            JOptionPane.showMessageDialog(null, e.getMessage());
-//            return false;
-//        }
     }
 }

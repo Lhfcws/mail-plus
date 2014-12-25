@@ -18,6 +18,7 @@ import java.util.List;
 
 /**
  * The databast controller of email.
+ *
  * @author lhfcws
  * @time 14-10-31.
  */
@@ -38,7 +39,7 @@ public class EmailController {
             email.setSignature(email.getFrom());
 
         long now = System.currentTimeMillis();
-        int id =dao.insertWithKey(sql, email.getFrom(),
+        int id = dao.insertWithKey(sql, email.getFrom(),
                 gson.toJson(email.getTo()), gson.toJson(email.getCc()),
                 email.getSubject(), email.getContent(),
                 gson.toJson(email.getAttachments()), Email.EmailStatus.DRAFT.getValue(),
@@ -55,7 +56,7 @@ public class EmailController {
                     "('from','to','cc','subject','content','attachment','status','timestamp', 'signature') " +
                     "VALUES (?,?,?,?,?,?,?,?,?)", Consts.TBL_EMAIL);
             long now = System.currentTimeMillis();
-            int id =dao.insertWithKey(sql, email.getFrom(),
+            int id = dao.insertWithKey(sql, email.getFrom(),
                     gson.toJson(email.getTo()), gson.toJson(email.getCc()),
                     email.getSubject(), email.getContent(),
                     gson.toJson(email.getAttachments()), Email.EmailStatus.SENDING.getValue(),
@@ -71,7 +72,7 @@ public class EmailController {
                 "('mail_id', 'from','to','cc','subject','content','attachment','status','timestamp', 'signature') " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?)", Consts.TBL_EMAIL);
         long now = System.currentTimeMillis();
-        int id =dao.insertWithKey(sql, email.getMailID(), email.getFrom(),
+        int id = dao.insertWithKey(sql, email.getMailID(), email.getFrom(),
                 gson.toJson(email.getTo()), gson.toJson(email.getCc()),
                 email.getSubject(), email.getContent(),
                 gson.toJson(email.getAttachments()), Email.EmailStatus.UNREAD.getValue(),
@@ -148,16 +149,14 @@ public class EmailController {
                 Consts.TBL_EMAIL, signature, Email.EmailStatus.READED.getValue(),
                 Email.EmailStatus.UNREAD.getValue());
 
-        int result = dao.querySingleObj(sql, new ResultSetHandler<Integer>() {
+        return dao.querySingleObj(sql, new ResultSetHandler<Integer>() {
             @Override
             public Integer handle(ResultSet rs) throws SQLException {
                 if (rs.next()) {
                     return rs.getInt(1);
-                }
-                return -1;
+                } else
+                    return -1;
             }
         });
-
-        return result;
     }
 }

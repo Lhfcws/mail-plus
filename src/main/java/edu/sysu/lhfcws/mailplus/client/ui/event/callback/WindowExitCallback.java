@@ -10,7 +10,6 @@ import java.awt.*;
 public class WindowExitCallback implements Callback {
     @Override
     public void callback(AWTEvent _event) {
-
         System.exit(0);
     }
 }

@@ -64,7 +64,6 @@ public class POP3Executor extends AdvRunnable {
 
                 if (receiveRequest.getReceiveRequestType()
                         .equals(ReceiveRequest.ReceiveRequestType.LATEST)) {
-                    LogUtil.debug("POP3Executor run latest: " + req);
                     List<Email> list = pop3Client.receiveLatest(receiveRequest.getMailID());
                     emailResponse.setEmails(list);
                 } else if (receiveRequest.getReceiveRequestType()

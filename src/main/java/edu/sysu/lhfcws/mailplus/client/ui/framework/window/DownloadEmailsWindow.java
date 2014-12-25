@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.client.ui.framework.window;
 import com.google.common.base.Preconditions;
 import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
 import edu.sysu.lhfcws.mailplus.client.background.executor.DownloadEmailsExecutor;
+import edu.sysu.lhfcws.mailplus.client.ui.event.callback.WindowLaunchCallback;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.DownloadEmailsPanel;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 
@@ -46,6 +47,11 @@ public class DownloadEmailsWindow extends AbstractWindow {
         this.add(downloadEmailsPanel);
     }
 
+    public void start(MailUser mailUser) {
+        this.setMailUser(mailUser);
+        this.start();
+    }
+
     @Override
     public void start() {
         if (mailUser != null) {
@@ -85,5 +91,8 @@ public class DownloadEmailsWindow extends AbstractWindow {
         Preconditions.checkArgument(x <= 100);
 
         this.downloadEmailsPanel.getProgressBar().setValue(x);
+
+        if (x == 100)
+            new WindowLaunchCallback().callback(null);
     }
 }

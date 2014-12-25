@@ -24,7 +24,6 @@ public class ServerHubEnd extends HubEnd {
 
     @Override
     public void onReceive(String msg) {
-        LogUtil.debug("hub recv: " + msg);
         Response response = requestHandler.handleRequest(msg);
         if (!Response.isAsync(response)) {
             this.sendResponse(response);

@@ -6,11 +6,12 @@ import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import org.apache.commons.codec.binary.Base64;
-import sun.misc.BASE64Decoder;
 
 import javax.mail.*;
 import javax.mail.internet.AddressException;
+import javax.mail.internet.ParseException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
@@ -59,7 +60,7 @@ public class POP3JavaMailClient implements POP3Client {
                     email.setSubject(msg.getSubject());
                     email.setDate(msg.getSentDate());
                     email.setStatus(Email.EmailStatus.UNREAD);
-                    parseAttachment(email, msg);
+                    parseBody(email, msg);
 
                     list.add(email);
                 }
@@ -105,7 +106,7 @@ public class POP3JavaMailClient implements POP3Client {
             email.setSubject(msg.getSubject());
             email.setDate(msg.getSentDate());
             email.setStatus(Email.EmailStatus.READED);
-            parseAttachment(email, msg);
+            parseBody(email, msg);
         } catch (UnsupportedEncodingException e) {
             email.setContent(CommonUtil.inputStream2String(msg.getInputStream()));
         }
@@ -160,33 +161,50 @@ public class POP3JavaMailClient implements POP3Client {
         return list;
     }
 
-    private Email parseAttachment(Email email, Message message) throws MessagingException, IOException {
-        BodyPart part;
-        String disposition;
-        StringBuilder sb = new StringBuilder();
+    private Email parseBody(Email email, Message message) throws MessagingException, IOException {
+        if (message.isMimeType("multipart/*")) {
+            BodyPart part;
+            String disposition;
+            StringBuilder sb = new StringBuilder();
 
-        Multipart mp = (Multipart) message.getContent();
-        int mpCount = mp.getCount();
+            Multipart mp = (Multipart) message.getContent();
+            int mpCount = mp.getCount();
 
-        for (int m = 0; m < mpCount; m++) {
-            part = mp.getBodyPart(m);
-            disposition = part.getDisposition();
+            for (int m = 0; m < mpCount; m++) {
+                part = mp.getBodyPart(m);
+                try {
+                    disposition = part.getDisposition();
+                } catch (ParseException e) {
+                    continue;
+                }
 
-            if (Part.ATTACHMENT.equals(disposition)) {
-                Attachment attachment = new Attachment();
-                String s = part.getFileName();
-                s = s.substring(8, s.indexOf("?="));
-                s = new String(Base64.decodeBase64(s));
-                attachment.setFilename(s);
-                byte[] content = CommonUtil.inputStream2Bytes(part.getInputStream());
-                attachment.setContent(content);
+                if (Part.ATTACHMENT.equals(disposition)) {
+                    Attachment attachment = new Attachment();
+                    String s = part.getFileName();
+                    try {
+                        s = s.substring(8, s.indexOf("?="));
+                    } catch (StringIndexOutOfBoundsException e) {
+                        if (s.startsWith("=?")) {
+                            s = s.substring(3, s.length() - 2);
+                            String encode = s.substring(0, s.indexOf("Q?"));
+                            s = s.substring(encode.length() + 2);
+                        }
+                    }
+                    s = new String(Base64.decodeBase64(s));
+                    attachment.setFilename(s);
+                    byte[] content = CommonUtil.inputStream2Bytes(part.getInputStream());
+                    attachment.setContent(content);
 
-                email.addAttachment(attachment);
-            } else
-                sb.append(CommonUtil.toUTF8(part.getContent().toString())).append("\n");
+                    email.addAttachment(attachment);
+                } else
+                    sb.append(CommonUtil.toUTF8(part.getContent().toString())).append("\n");
+            }
+
+            email.setContent(sb.toString());
+        } else if (message.isMimeType("text/*")) {
+            email.setContent((String) message.getContent());
         }
 
-        email.setContent(sb.toString());
         return email;
     }
 

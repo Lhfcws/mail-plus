@@ -30,7 +30,7 @@ public class PersistentRequestQueue {
 
         String key = Long.toString(System.currentTimeMillis());
         bdb.set(key, CommonUtil.GSON.toJson(req));
-        LogUtil.debug("enqueue: " + req.getReqID());
+//        LogUtil.debug("enqueue: " + req.getReqID());
     }
 
     public Request deQueue() {
@@ -46,7 +46,7 @@ public class PersistentRequestQueue {
         if (reqJson == null)
             return null;
 
-        LogUtil.debug("Dequeue: " + pair.getFirst());
+//        LogUtil.debug("Dequeue: " + pair.getFirst());
         return Request.deserialize(reqJson);
     }
 }
