@@ -40,7 +40,8 @@ public class Email implements Serializable {
         this.cc = new LinkedList<String>();
         this.attachments = new LinkedList<Attachment>();
         this.emailType = EmailType.PLAIN;
-        this.encoding = "utf-8";
+//        this.encoding = "utf-8";
+        this.encoding = "GBK";
     }
 
     public static Email clone(Email email) {
@@ -158,9 +159,12 @@ public class Email implements Serializable {
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+        if (!attachments.isEmpty())
+            this.setEmailType(EmailType.MULTI);
     }
 
     public void addAttachment(Attachment attachment) {
+        this.setEmailType(EmailType.MULTI);
         this.attachments.add(attachment);
     }
 
@@ -222,7 +226,7 @@ public class Email implements Serializable {
     // ==== EmailType
     public static enum EmailType {
 
-        PLAIN("plain"), HTML("html");
+        PLAIN("text/plain"), HTML("text/html"), MULTI("multipart/mixed");
 
         private String value;
 

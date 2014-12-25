@@ -178,7 +178,7 @@ public class POP3JavaMailClient implements POP3Client {
                 s = s.substring(8, s.indexOf("?="));
                 s = new String(Base64.decodeBase64(s));
                 attachment.setFilename(s);
-                String content = CommonUtil.inputStream2String(part.getInputStream());
+                byte[] content = CommonUtil.inputStream2Bytes(part.getInputStream());
                 attachment.setContent(content);
 
                 email.addAttachment(attachment);

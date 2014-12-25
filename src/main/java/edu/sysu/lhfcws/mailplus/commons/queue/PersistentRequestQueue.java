@@ -6,6 +6,7 @@ import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDB;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.Pair;
 
 
@@ -29,6 +30,7 @@ public class PersistentRequestQueue {
 
         String key = Long.toString(System.currentTimeMillis());
         bdb.set(key, CommonUtil.GSON.toJson(req));
+        LogUtil.debug("enqueue: " + req.getReqID());
     }
 
     public Request deQueue() {
@@ -44,6 +46,7 @@ public class PersistentRequestQueue {
         if (reqJson == null)
             return null;
 
+        LogUtil.debug("Dequeue: " + pair.getFirst());
         return Request.deserialize(reqJson);
     }
 }

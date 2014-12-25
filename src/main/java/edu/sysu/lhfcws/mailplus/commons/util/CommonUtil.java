@@ -2,6 +2,7 @@ package edu.sysu.lhfcws.mailplus.commons.util;
 
 import com.google.gson.Gson;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
+import edu.sysu.lhfcws.mailplus.commons.io.BinaryFileReader;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
@@ -32,21 +33,12 @@ public class CommonUtil {
     }
 
     public static String inputStream2String(InputStream inputStream) throws IOException {
-        DataInputStream dataInputStream = new DataInputStream(inputStream);
-        List<Byte> list = new LinkedList<Byte>();
-        while (dataInputStream.available() > 0) {
-            list.add(dataInputStream.readByte());
-        }
+        return new String(inputStream2Bytes(inputStream));
+    }
 
-        byte[] bytes = new byte[list.size()];
-        int i = 0;
-        for (byte b : list) {
-            bytes[i] = b;
-            i++;
-        }
-
-        String result = new String(bytes, "utf-8");
-        return result;
+    public static byte[] inputStream2Bytes(InputStream inputStream) throws IOException {
+        BinaryFileReader reader = new BinaryFileReader(inputStream);
+        return reader.readAllBytes();
     }
 
     public static boolean regMatch(Pattern pattern, String toMatch) {

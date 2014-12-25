@@ -38,7 +38,7 @@ public class ListPanel extends JPanel {
         this.jList.setEnabled(true);
         this.jList.setBorder(BorderFactory.createEmptyBorder());
         this.jList.setFixedCellWidth(270);
-        this.jList.setAutoscrolls(true);
+        this.jList.setVisibleRowCount(14);
 
         Events.onClick(this.jList, new Callback() {
             @Override
@@ -53,14 +53,14 @@ public class ListPanel extends JPanel {
             }
         });
 
-//        this.scrollPane = new JScrollPane(jList);
-//        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        this.scrollPane = new JScrollPane(jList);
+        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
 //        this.scrollPane.createVerticalScrollBar();
 //        this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         this.setBackground(Color.WHITE);
-//        this.add(scrollPane);
-        this.add(jList);
+        this.add(scrollPane);
+//        this.add(jList);
     }
 
     public void clear() {
@@ -74,14 +74,17 @@ public class ListPanel extends JPanel {
 
     public void delItem(Email email) {
         int size = this.list.size();
-        LogUtil.debug("del:" + email.getId());
         for (int i = 0; i < size; i++) {
-            LogUtil.debug("traverse: " + this.list.get(i).getId());
             if (this.list.get(i).getId() == email.getId()) {
                 this.list.remove(i);
                 break;
             }
         }
+    }
+
+    public void update() {
+        this.jList.updateUI();
+        this.setVisible(true);
     }
 
     /**

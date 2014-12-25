@@ -9,6 +9,7 @@ import edu.sysu.lhfcws.mailplus.client.ui.framework.util.MultiLinePanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.ComposeEmailWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
+import edu.sysu.lhfcws.mailplus.commons.io.BinaryFileReader;
 import edu.sysu.lhfcws.mailplus.commons.io.FileLineReader;
 import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
@@ -27,6 +28,7 @@ import java.util.List;
 
 /**
  * The panel contains the components of writing emails.
+ *
  * @author lhfcws
  * @time 14-11-1.
  */
@@ -62,6 +64,7 @@ public class ComposeEmailPanel extends JPanel {
     public void setForwardEmail(Email email) {
         subject.setText("Fw: " + email.getSubject());
         content.setText("\n\n\n\n" + "===========Original Mail============\n\n" + email.getContent());
+
     }
 
     private void addToLine() {
@@ -116,7 +119,8 @@ public class ComposeEmailPanel extends JPanel {
                 File f = fileChooser.getSelectedFile(_this);
                 attachmentFiles.add(f);
                 multiLinePanel.setVisible(false);
-                multiLinePanel.addLine(new JLabel(f.getAbsolutePath()));
+                if (f != null)
+                    multiLinePanel.addLine(new JLabel(f.getAbsolutePath()));
                 multiLinePanel.setVisible(true);
             }
         });
@@ -141,7 +145,8 @@ public class ComposeEmailPanel extends JPanel {
                 email.setFrom(MainWindow.getInstance().getToken().getEmail());
                 email.setSignature(MainWindow.getInstance().getToken().getEmail());
                 email.setTo(Arrays.asList(to.getText().split(";")));
-                email.setCc(Arrays.asList(cc.getText().split(";")));
+                if (cc.getText().trim().length() > 0)
+                    email.setCc(Arrays.asList(cc.getText().split(";")));
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
                 email.setAttachments(getAttachments());
@@ -165,7 +170,8 @@ public class ComposeEmailPanel extends JPanel {
                 email.setFrom(MainWindow.getInstance().getToken().getEmail());
                 email.setSignature(MainWindow.getInstance().getToken().getEmail());
                 email.setTo(Arrays.asList(to.getText().split(";")));
-                email.setCc(Arrays.asList(cc.getText().split(";")));
+                if (cc.getText().trim().length() > 0)
+                    email.setCc(Arrays.asList(cc.getText().split(";")));
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
                 email.setAttachments(getAttachments());
@@ -190,8 +196,8 @@ public class ComposeEmailPanel extends JPanel {
             attachment.setFilepath(f.getAbsolutePath());
             attachment.setFilename(f.getName());
             try {
-                FileLineReader reader = new FileLineReader(attachment.getFilepath());
-                attachment.setContent(reader.readAll());
+                BinaryFileReader reader = new BinaryFileReader(attachment.getFilepath());
+                attachment.setContent(reader.readAllBytes());
                 reader.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

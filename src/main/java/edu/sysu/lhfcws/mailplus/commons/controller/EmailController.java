@@ -112,6 +112,7 @@ public class EmailController {
                 Consts.TBL_EMAIL, sb.toString()).trim();
         List<Email> list = dao.queryObjects(sql, new EmailListResultSetHandler());
         LogUtil.debug("List size: " + list.size());
+        LogUtil.debug(sql);
         return list;
     }
 

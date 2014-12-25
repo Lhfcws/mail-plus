@@ -19,7 +19,8 @@ public class Events {
         ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                function.callback(e);
+                if (function != null && e != null)
+                    function.callback(e);
             }
         };
 

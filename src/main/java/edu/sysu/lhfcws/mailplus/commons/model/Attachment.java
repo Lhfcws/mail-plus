@@ -17,7 +17,7 @@ public class Attachment implements Serializable {
 
     private String filename;
     private String filepath;
-    private String content;
+    private byte[] content;
     private String contentType;
     private String encoding;
 
@@ -43,11 +43,11 @@ public class Attachment implements Serializable {
         this.setContentType(mimeTypes.getContentType(filepath));
     }
 
-    public String getContent() {
+    public byte[] getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(byte[] content) {
         this.content = content;
     }
 
@@ -74,13 +74,13 @@ public class Attachment implements Serializable {
     public String generate() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(String.format("Content-Type: %s;name=\"%s\"",
+        sb.append(String.format("Content-Type: %s; name=\"%s\"",
                 this.contentType, this.filename.split("\\.")[0])).append(Consts.CRLF);
-        sb.append(String.format("Content-Disposition: attachment;filename=\"%s\"", this.filename))
-                .append(Consts.CRLF);
         sb.append(String.format("Content-Transfer-Encoding: %s", this.encoding)).append(Consts.CRLF);
+        sb.append(String.format("Content-Disposition: attachment; filename=\"%s\"", this.filename))
+                .append(Consts.CRLF);
         sb.append(Consts.CRLF);
-        sb.append(Base64.encodeBase64String(this.content.getBytes()));
+        sb.append(Base64.encodeBase64String(this.content));
 //        sb.append(Consts.CRLF);
 
         return sb.toString();

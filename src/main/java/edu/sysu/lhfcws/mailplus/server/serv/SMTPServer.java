@@ -7,6 +7,7 @@ import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.ThreadMonitor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.SMTPExecutor;
 import edu.sysu.lhfcws.mailplus.server.serv.executor.SMTPRQsWatcher;
@@ -118,7 +119,7 @@ public class SMTPServer extends AdvRunnable {
      */
     public void dispatch(SendRequest req) {
         Preconditions.checkArgument(req != null);
-
+        LogUtil.debug("Dispatch new req: " + req.getReqID());
         this.multiPersistentRequestQueues.enQueue(req.getMailUser().getSmtpHost(), req);
     }
 

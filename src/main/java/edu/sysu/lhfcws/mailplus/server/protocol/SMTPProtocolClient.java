@@ -7,6 +7,7 @@ import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -123,20 +124,22 @@ public class SMTPProtocolClient implements SMTPClient {
         );
 
         // Send cc
-        sb = new StringBuilder("Cc:");
-        for (int i = 0; i < email.getCc().size(); i++) {
-            if (i > 0)
-                sb.append(",");
-            sb.append(email.getCc().get(i));
+        if (email.getCc().size() > 0) {
+            sb = new StringBuilder("Cc:");
+            for (int i = 0; i < email.getCc().size(); i++) {
+                if (i > 0)
+                    sb.append(",");
+                sb.append(email.getCc().get(i));
+            }
+            socketSend(
+                    "", sb.toString()
+            );
         }
-        socketSend(
-                "", sb.toString()
-        );
 
-        // Send date
-        socketSend(
-                "", String.format("Date:%s", getDateString())
-        );
+//        // Send date
+//        socketSend(
+//                "", String.format("Date:%s", getDateString())
+//        );
 
         // Send MIME-Version
         socketSend(
@@ -145,21 +148,51 @@ public class SMTPProtocolClient implements SMTPClient {
 
         // Send content-type
         socketSend(
-                "", String.format("Content-Type: text/%s;charset=\"%s\"",
-                        email.getEmailType(), email.getEncoding())
+                "", String.format("Content-Type: multipart/mixed; BOUNDARY=\"%s\"",
+                        email.getBoundary())
         );
 
         socketSend(
-                "", String.format("boundary=\"%s\"", email.getBoundary())
+                "", String.format("Content-Type: %s; charset=\"%s\"",
+                        Email.EmailType.PLAIN.getValue(), email.getEncoding())
         );
 
-        // Send content
+        socketSend(
+                "", "Content-Transfer-Encoding: base64"
+        );
+
+        socketSend(
+                "", "X-Priority: 3"
+        );
+
+        socketSend(
+                "", "X-Mailer: BlackFox Mail[Copyright(C) 2007 Sol]"
+        );
+
         socketSend(
                 "", ""
         );
 
         socketSend(
-                "", email.getContent()
+                "", "--" + email.getBoundary()
+        );
+
+        // Send content
+        socketSend(
+                "", String.format("Content-Type: %s; charset=\"%s\"",
+                        Email.EmailType.PLAIN.getValue(), email.getEncoding())
+        );
+
+        socketSend(
+                "", "Content-Transfer-Encoding: base64"
+        );
+
+        socketSend(
+                "", ""
+        );
+
+        socketSend(
+                "", Base64.encodeBase64String(email.getContent().getBytes())
         );
 
         // Send attachments
@@ -174,11 +207,11 @@ public class SMTPProtocolClient implements SMTPClient {
                 );
 
             }
-
-            socketSend(
-                    Consts.CRLF, "--" + email.getBoundary() + "--"
-            );
         }
+
+        socketSend(
+                "", "--" + email.getBoundary() + "--"
+        );
 
         // END
         socketSend(

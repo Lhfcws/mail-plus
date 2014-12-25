@@ -147,11 +147,10 @@ public class MainWindow extends AbstractWindow {
             HTMLContainer container = new HTMLContainer(emailContentHTML.toListItemHTML());
             container.setInformation(emailContentHTML.getEmailString());
             container.setId(email.getId());
-            LogUtil.debug(container.toString());
             listPanel.addItem(container);
         }
 
-        listPanel.setVisible(true);
+        listPanel.update();
     }
 
     public void refreshInbox() {
@@ -162,7 +161,6 @@ public class MainWindow extends AbstractWindow {
         List<Email> list = new LinkedList<Email>();
         try {
             list = new EmailController().getEmailListByStatus(conditions);
-            LogUtil.debug("Email size: " + list.size());
         } catch (SQLException e) {
             e.printStackTrace();
         }

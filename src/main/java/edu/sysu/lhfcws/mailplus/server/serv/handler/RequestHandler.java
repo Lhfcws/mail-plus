@@ -31,10 +31,10 @@ public class RequestHandler {
 
     public Response handleRequest(String json) {
         Request request = gson.fromJson(json, Request.class);
-//        LogUtil.debug("RequestHanlder handle: " + json);
         Response res = new Response();
         res.setResID(request.getReqID());
         res.setAuthCode(request.getAuthCode());
+        LogUtil.debug("handle request" + json);
 
         if (isRequestType(request, Request.RequestType.SEND))
             return handleSendRequest(gson.fromJson(json, SendRequest.class), res);
