@@ -29,9 +29,11 @@ public class POP3JavaMailClient implements POP3Client {
     private Properties props;
     private Request req;
     private CommonSocket socket;
+    private String signature;
 
     public POP3JavaMailClient(Request req) {
         this.req = req;
+        this.signature = req.getMailUser().getMailAddr();
         this.socket = new CommonSocket();
         this.props = new Properties();
         this.props.setProperty("mail.store.protocol", "pop3");
@@ -59,6 +61,7 @@ public class POP3JavaMailClient implements POP3Client {
                     email.setCc(parseAddress(msg.getRecipients(Message.RecipientType.CC)));
                     email.setSubject(msg.getSubject());
                     email.setDate(msg.getSentDate());
+                    email.setSignature(this.signature);
                     email.setStatus(Email.EmailStatus.UNREAD);
                     parseBody(email, msg);
 
@@ -105,6 +108,7 @@ public class POP3JavaMailClient implements POP3Client {
             email.setCc(parseAddress(msg.getRecipients(Message.RecipientType.CC)));
             email.setSubject(msg.getSubject());
             email.setDate(msg.getSentDate());
+            email.setSignature(this.signature);
             email.setStatus(Email.EmailStatus.READED);
             parseBody(email, msg);
         } catch (UnsupportedEncodingException e) {

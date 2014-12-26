@@ -31,8 +31,8 @@ public class MailPlusCli implements CliRunner {
                 // test
                 Token token = new Token();
                 token.setTimestamp(System.currentTimeMillis());
-                token.setPassword("lhfcws82283086");
-                token.setEmail("lhfcws@163.com");
+                token.setPassword("82283086");
+                token.setEmail("lhfcws@126.com");
                 new Launcher().loginInit(token);
 
                 // run
