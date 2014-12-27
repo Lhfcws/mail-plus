@@ -14,6 +14,7 @@ import java.util.List;
  * @author lhfcws
  * @time 14-11-3.
  */
+@Deprecated
 public class NewMailCallback implements ResponseCallback {
     @Override
     public void callback(Response res) {

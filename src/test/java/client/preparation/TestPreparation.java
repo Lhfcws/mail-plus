@@ -41,9 +41,9 @@ public class TestPreparation {
 
         mailUser.setMailAddr(TestConsts.mail);
         mailUser.setPassword(TestConsts.password);
-        mailUser.setImapHost("imap.163.com");
-        mailUser.setSmtpHost("smtp.163.com");
-        mailUser.setPop3Host("pop3.163.com");
+        mailUser.setImapHost("imap.126.com");
+        mailUser.setSmtpHost("smtp.126.com");
+        mailUser.setPop3Host("pop3.126.com");
 
         return mailUser;
     }

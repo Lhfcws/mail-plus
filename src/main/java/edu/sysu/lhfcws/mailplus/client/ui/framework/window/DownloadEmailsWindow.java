@@ -92,7 +92,9 @@ public class DownloadEmailsWindow extends AbstractWindow {
 
         this.downloadEmailsPanel.getProgressBar().setValue(x);
 
-        if (x == 100)
+        if (x == 100) {
             new WindowLaunchCallback().callback(null);
+            this.close();
+        }
     }
 }

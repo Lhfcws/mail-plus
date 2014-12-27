@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author lhfcws
  * @time 14-11-1.
  */
+@Deprecated
 public class ComposeEmailWindowCallback implements Callback {
     @Override
     public void callback(AWTEvent _event) {

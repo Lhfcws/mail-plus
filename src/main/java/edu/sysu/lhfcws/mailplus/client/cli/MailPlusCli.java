@@ -29,14 +29,14 @@ public class MailPlusCli implements CliRunner {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 // test
-                Token token = new Token();
-                token.setTimestamp(System.currentTimeMillis());
-                token.setPassword("82283086");
-                token.setEmail("lhfcws@126.com");
-                new Launcher().loginInit(token);
+//                Token token = new Token();
+//                token.setTimestamp(System.currentTimeMillis());
+//                token.setPassword("");
+//                token.setEmail("lhfcws@126.com");
+//                new Launcher().loginInit(token);
 
                 // run
-//                new Launcher().launch();
+                new Launcher().launch();
             }
         });
     }

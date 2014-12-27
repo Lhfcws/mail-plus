@@ -26,6 +26,13 @@ public class RemoteHost implements Serializable {
         this.pop3Host = pop3Host;
     }
 
+    public RemoteHost(String smtpHost, String imapHost, String pop3Host) {
+        this();
+        this.smtpHost = smtpHost;
+        this.imapHost = imapHost;
+        this.pop3Host = pop3Host;
+    }
+
     public String getPop3Host() {
         return pop3Host;
     }

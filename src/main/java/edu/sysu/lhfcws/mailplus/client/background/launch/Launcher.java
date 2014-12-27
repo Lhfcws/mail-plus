@@ -12,11 +12,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.Enumeration;
 
 /**
  * Main launcher of whole Mailplus.
+ *
  * @author lhfcws
  * @time 14-11-1.
  */
@@ -24,6 +28,7 @@ public class Launcher {
     private static Log LOG = LogFactory.getLog(Launcher.class);
 
     public boolean launch() {
+        updateGlobalFont();
         LoginWindow.getInstance().start();
         return true;
     }
@@ -54,6 +59,16 @@ public class Launcher {
             LogUtil.error(LOG, e);
             JOptionPane.showMessageDialog(null, e.getMessage());
             return false;
+        }
+    }
+
+    private static void updateGlobalFont() {
+        FontUIResource fontRes = new FontUIResource(Font.getFont("sans-serif"));
+        for (Enumeration keys = UIManager.getDefaults().keys(); keys.hasMoreElements(); ) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof FontUIResource)
+                UIManager.put(key, fontRes);
         }
     }
 }

@@ -102,26 +102,46 @@
 
             <!-- copy dependency -->
             <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-dependency-plugin</artifactId>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>copy-dependencies</id>-->
-            <!--<phase>package</phase>-->
-            <!--<goals>-->
-            <!--<goal>copy-dependencies</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-            <!--<includeScope>compile</includeScope>-->
-            <!--<excludeScope>test</excludeScope>-->
-            <!--<outputDirectory>${project.build.directory}/lib</outputDirectory>-->
-            <!--<overWriteReleases>false</overWriteReleases>-->
-            <!--<overWriteSnapshots>false</overWriteSnapshots>-->
-            <!--<overWriteIfNewer>true</overWriteIfNewer>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--</executions>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-dependency-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>copy-dependencies</id>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>copy-dependencies</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<includeScope>compile</includeScope>-->
+                            <!--<excludeScope>test</excludeScope>-->
+                            <!--<outputDirectory>${project.build.directory}/lib</outputDirectory>-->
+                            <!--<overWriteReleases>false</overWriteReleases>-->
+                            <!--<overWriteSnapshots>false</overWriteSnapshots>-->
+                            <!--<overWriteIfNewer>true</overWriteIfNewer>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
             <!--</plugin>-->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
 
             <!-- copy resources -->
             <plugin>
@@ -137,7 +157,7 @@
                         </goals>
                         <configuration>
                             <encoding>UTF-8</encoding>
-                            <outputDirectory>${project.build.directory}/
+                            <outputDirectory>${project.build.directory}
                             </outputDirectory>
                             <!-- 把配置文件拷到和jar包同一个路径下 -->
                             <resources>
@@ -162,7 +182,7 @@
                         </goals>
                         <configuration>
                             <encoding>UTF-8</encoding>
-                            <outputDirectory>${project.build.directory}/</outputDirectory>
+                            <outputDirectory>${project.build.directory}/../bin/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/bin/</directory>
@@ -181,7 +201,6 @@
                 <version>2.8</version>
                 <configuration>
                     <skipTests>true</skipTests>
-                    <!-- 不跳过测试，@qiaoan -->
                 </configuration>
             </plugin>
         </plugins>
