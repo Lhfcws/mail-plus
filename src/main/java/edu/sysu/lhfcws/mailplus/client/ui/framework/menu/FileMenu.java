@@ -3,9 +3,14 @@ package edu.sysu.lhfcws.mailplus.client.ui.framework.menu;
 import edu.sysu.lhfcws.mailplus.client.background.running.MailOperator;
 import edu.sysu.lhfcws.mailplus.client.ui.event.Events;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Callback;
+import edu.sysu.lhfcws.mailplus.client.ui.event.callback.NewMailResponseCallback;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.WindowExitCallback;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.ComposeEmailWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
+import edu.sysu.lhfcws.mailplus.commons.io.res.EmailResponse;
+import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
+import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseCallback;
+import edu.sysu.lhfcws.mailplus.commons.model.Email;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +19,7 @@ import java.awt.event.KeyEvent;
 
 /**
  * Menu file.
+ *
  * @author lhfcws
  * @time 14-10-21.
  */
@@ -53,7 +59,8 @@ public class FileMenu extends Menu {
         Events.onClick(item, new Callback() {
             @Override
             public void callback(AWTEvent _event) {
-                new MailOperator().receiveLatest(MainWindow.getInstance().getToken());
+                new MailOperator().receiveLatest(
+                        MainWindow.getInstance().getToken(), new NewMailResponseCallback());
             }
         });
         this.add(item);

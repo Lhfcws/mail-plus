@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
  * @author lhfcws
  * @time 14-10-27.
  */
-public class POP3Server extends AdvRunnable {
+public class POP3Server extends AdvRunnable implements AbstractProtocolServer {
     public static final String NAME = "POP3Server";
     private static Log LOG = LogFactory.getLog(POP3Server.class);
 
@@ -68,7 +68,7 @@ public class POP3Server extends AdvRunnable {
         } else {
             POP3Executor executor = new POP3Executor(pop3Host, this);
             executor.init(req);
-            this.scheduler.put(pop3Host, executor);
+            this.scheduler.put("pop3_exec_" + String.valueOf(System.currentTimeMillis()), executor);
             // start the sending thread
             this.threadPool.execute(executor);
         }

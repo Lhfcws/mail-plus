@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.client.background.running;
 
 import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
+import edu.sysu.lhfcws.mailplus.client.ui.event.callback.Callback;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.io.req.DeleteRequest;
@@ -49,7 +50,7 @@ public class MailOperator {
         }
     }
 
-    public void receiveLatest(Token token) {
+    public void receiveLatest(Token token, final ResponseCallback callback) {
         ReceiveRequest req = RequestFactory.createLatestReceiveRequest();
         MailPlusInternalClient.getInstance().sendRequest(req, new ResponseCallback() {
             @Override
@@ -67,6 +68,8 @@ public class MailOperator {
 
                 if (emailResponse.getEmails().size() > 0)
                     MainWindow.getInstance().refreshInbox();
+
+                callback.callback(emailResponse);
             }
         });
     }

@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.server.serv;
 import com.google.common.base.Preconditions;
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDBCounter;
+import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
@@ -31,7 +32,7 @@ import java.util.concurrent.*;
  * @author lhfcws
  * @time 14-10-24.
  */
-public class SMTPServer extends AdvRunnable {
+public class SMTPServer extends AdvRunnable implements AbstractProtocolServer {
     public static final String NAME = "SMTPServer";
 
     // key: smtpHost ; value: execute thread
@@ -78,7 +79,8 @@ public class SMTPServer extends AdvRunnable {
             // put into corresponding smtp queue
             this.multiPersistentRequestQueues.enQueue(smtpHost, req);
         } else {
-            SMTPExecutor executor = new SMTPExecutor(smtpHost, this);
+            SMTPExecutor executor = new SMTPExecutor(
+                    "smtp_exec_" + String.valueOf(System.currentTimeMillis()), this);
             executor.init(req);
             this.scheduler.put(smtpHost, executor);
             // start the sending thread
@@ -107,7 +109,7 @@ public class SMTPServer extends AdvRunnable {
      *
      * @param req
      */
-    public void repushRequest(SendRequest req) {
+    public void repushRequest(Request req) {
         this.multiPersistentRequestQueues.nap(req.getMailUser().getSmtpHost());
         this.dispatch(req);
     }
@@ -117,7 +119,7 @@ public class SMTPServer extends AdvRunnable {
      *
      * @param req
      */
-    public void dispatch(SendRequest req) {
+    public void dispatch(Request req) {
         Preconditions.checkArgument(req != null);
         LogUtil.debug("Dispatch new req: " + req.getReqID());
         this.multiPersistentRequestQueues.enQueue(req.getMailUser().getSmtpHost(), req);

@@ -1,5 +1,7 @@
 package edu.sysu.lhfcws.mailplus.server.serv.executor;
 
+import edu.sysu.lhfcws.mailplus.commons.base.Consts;
+import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDB;
 import edu.sysu.lhfcws.mailplus.commons.io.req.DeleteRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
@@ -7,6 +9,7 @@ import edu.sysu.lhfcws.mailplus.commons.io.res.EmailResponse;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.server.protocol.POP3Client;
 import edu.sysu.lhfcws.mailplus.server.protocol.POP3JavaMailClient;
@@ -30,6 +33,7 @@ public class POP3Executor extends AdvRunnable {
 
     private Request req;
     private POP3Server pop3Server;
+    private static final String POP3_WORKING_Q = "POP3WorkingQ";
 
     public POP3Executor(String name, POP3Server pop3Server) {
         super(name);
@@ -51,6 +55,9 @@ public class POP3Executor extends AdvRunnable {
 //        LogUtil.debug("POP3Executor run: " + req);
 
         try {
+//            BDB bdb = BDB.getInstance(Consts.BDB_PATH + POP3_WORKING_Q);
+//            bdb.set(name, CommonUtil.GSON.toJson(req));
+
             if (req.getRequestType().equals(Request.RequestType.DELETE)) {
                 DeleteRequest deleteRequest = (DeleteRequest) req;
                 pop3Client.delete(deleteRequest.getMailID());
@@ -72,6 +79,7 @@ public class POP3Executor extends AdvRunnable {
                     emailResponse.addEmail(email);
                 }
 
+//                bdb.delete(name);
                 pop3Server.finish(req.getMailUser().getPop3Host(), emailResponse);
             }
         } catch (SocketTimeoutException e) {

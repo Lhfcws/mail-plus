@@ -1,8 +1,13 @@
 package edu.sysu.lhfcws.mailplus.server.serv.executor;
 
+import edu.sysu.lhfcws.mailplus.commons.base.Consts;
+import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDB;
 import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
+import edu.sysu.lhfcws.mailplus.commons.queue.PersistentRequestQueue;
+import edu.sysu.lhfcws.mailplus.commons.queue.RQCenter;
 import edu.sysu.lhfcws.mailplus.commons.util.AdvRunnable;
+import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.server.protocol.SMTPClient;
 import edu.sysu.lhfcws.mailplus.server.protocol.SMTPProtocolClient;
@@ -23,6 +28,7 @@ public class SMTPExecutor extends AdvRunnable {
 
     private SMTPServer SMTPServer;
     private SendRequest req;
+    private static final String SMTP_WORKING_Q = "SMTPWorkingQ";
 
     public SMTPExecutor(String name, SMTPServer SMTPServer) {
         super(name);
@@ -41,11 +47,14 @@ public class SMTPExecutor extends AdvRunnable {
 
         try {
             SMTPClient smtpClient = new SMTPProtocolClient(req.getEmail(), req.getMailUser());
+//            BDB bdb = BDB.getInstance(Consts.BDB_PATH + SMTP_WORKING_Q);
 
             System.out.println("Sending...");
+//            bdb.set(name, CommonUtil.GSON.toJson(req));
             boolean ret = smtpClient.send();
             Response.ResponseStatus status = ret ?
                     Response.ResponseStatus.SUCCEED : Response.ResponseStatus.FAIL;
+//            bdb.delete(name);
             System.out.println("Email sended.");
             res.setStatus(status);
         } catch (SocketTimeoutException e) {

@@ -19,8 +19,6 @@ public class DownloadEmailsWindowTest {
 
         DownloadEmailsWindow.getInstance().setMailUser(mailUser);
         DownloadEmailsWindow.getInstance().start();
-
-
     }
 
     public static void main(String[] args) {
