@@ -182,7 +182,7 @@ public class POP3JavaMailClient implements POP3Client {
                     continue;
                 }
 
-                if (Part.ATTACHMENT.equals(disposition)) {
+                if (disposition != null) {
                     Attachment attachment = new Attachment();
                     String s = part.getFileName();
                     try {
@@ -194,7 +194,8 @@ public class POP3JavaMailClient implements POP3Client {
                             s = s.substring(encode.length() + 2);
                         }
                     }
-                    s = new String(Base64.decodeBase64(s));
+                    if (s.endsWith("="))
+                        s = new String(Base64.decodeBase64(s));
                     attachment.setFilename(s);
                     byte[] content = CommonUtil.inputStream2Bytes(part.getInputStream());
                     attachment.setContent(content);

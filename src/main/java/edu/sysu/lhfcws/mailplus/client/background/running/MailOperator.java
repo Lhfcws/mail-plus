@@ -82,6 +82,10 @@ public class MailOperator {
             MailPlusInternalClient.getInstance().sendRequest(req, new ResponseCallback() {
                 @Override
                 public void callback(Response res) {
+                    if (res.getStatus().equals(Response.ResponseStatus.SUCCEED))
+                        JOptionPane.showMessageDialog(null, "Email deleted.");
+                    else if (res.getStatus().equals(Response.ResponseStatus.FAIL))
+                        JOptionPane.showMessageDialog(null, "Delete email failed.");
                 }
             });
         }

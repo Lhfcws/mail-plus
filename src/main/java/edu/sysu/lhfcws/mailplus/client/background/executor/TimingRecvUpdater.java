@@ -3,6 +3,7 @@ package edu.sysu.lhfcws.mailplus.client.background.executor;
 import edu.sysu.lhfcws.mailplus.client.background.running.MailOperator;
 import edu.sysu.lhfcws.mailplus.client.background.running.Token;
 import edu.sysu.lhfcws.mailplus.client.ui.event.callback.NewMailResponseCallback;
+import edu.sysu.lhfcws.mailplus.client.ui.framework.window.DownloadEmailsWindow;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.io.res.Response;
 import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseCallback;
@@ -34,14 +35,23 @@ public class TimingRecvUpdater extends AdvRunnable {
         MailOperator mailOperator = new MailOperator();
         Token token = MainWindow.getInstance().getToken();
 
-        while (true) {
-            mailOperator.receiveLatest(token, new NewMailResponseCallback());
+        sleep(10000);
 
-            try {
-                Thread.sleep(UPDATE_INTERVAL);
-            } catch (InterruptedException e) {
-                LogUtil.error(LOG, e);
-            }
+        while (!DownloadEmailsWindow.isClosed()) {
+            sleep(10000);
+        }
+
+        while (true) {
+            sleep(UPDATE_INTERVAL);
+            mailOperator.receiveLatest(token, new NewMailResponseCallback());
+        }
+    }
+
+    private void sleep(long time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            LogUtil.error(LOG, e);
         }
     }
 }

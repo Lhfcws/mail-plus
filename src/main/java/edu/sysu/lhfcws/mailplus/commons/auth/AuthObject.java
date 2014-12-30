@@ -19,8 +19,9 @@ public abstract class AuthObject implements Serializable {
         this.authCode = authCode;
     }
 
-    public void generateAuthCode() {
+    public String generateAuthCode() {
         this.authCode = new AuthCodeGenerator().generateCode(this);
+        return this.authCode;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package edu.sysu.lhfcws.mailplus.commons.io.req;
 
 import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
+import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.controller.UserController;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
@@ -43,12 +44,14 @@ public class RequestFactory {
     }
 
     public static ReceiveRequest createLatestReceiveRequest() {
+        String signature = MainWindow.getInstance().getToken().getEmail();
         ReceiveRequest req = new ReceiveRequest();
         req.setReceiveRequestType(ReceiveRequest.ReceiveRequestType.LATEST);
         try {
-            req.setMailUser(new UserController().getFullUser(
-                    MainWindow.getInstance().getToken().getEmail()
-            ));
+            req.setMailUser(new UserController().getFullUser(signature));
+            req.setMailID(
+                    new EmailController().getLatestMailID(signature)
+            );
         } catch (SQLException e) {
             LogUtil.error(LOG, e);
         }

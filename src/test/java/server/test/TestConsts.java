@@ -6,6 +6,6 @@ package server.test;
  */
 public class TestConsts {
 
-    public static final String mail = "lhfcws@126.com";
-    public static final String password = "";
+    public static final String mail = "lhfcws_oop@126.com";
+    public static final String password = "lhfcws123456";
 }

@@ -34,6 +34,10 @@ public class DownloadEmailsWindow extends AbstractWindow {
         return _window;
     }
 
+    public static boolean isClosed() {
+        return _window == null;
+    }
+
     private DownloadEmailsWindow() {
         super("Email synchronizing...");
     }

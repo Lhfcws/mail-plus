@@ -11,14 +11,14 @@ import edu.sysu.lhfcws.mailplus.commons.util.StringTruncator;
  * @author lhfcws
  * @time 14-10-29.
  */
-public class EmailContentHTML {
+public class EmailHTMLProxy {
     private Email email = null;
 
-    public EmailContentHTML(Email email) {
+    public EmailHTMLProxy(Email email) {
         this.email = email;
     }
 
-    public EmailContentHTML() {
+    public EmailHTMLProxy() {
     }
 
     public String getEmailString() {

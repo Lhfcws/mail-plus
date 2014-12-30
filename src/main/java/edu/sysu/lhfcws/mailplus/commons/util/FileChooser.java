@@ -20,7 +20,17 @@ public class FileChooser {
         fileChooser.setDialogTitle("Select path to save");
         int result = fileChooser.showSaveDialog(parent);
         if (result == JFileChooser.APPROVE_OPTION) {
-            return fileChooser.getSelectedFile().getAbsolutePath();
+            File file = fileChooser.getSelectedFile();
+            if (file.exists())
+                return file.getAbsolutePath();
+            else {
+                String fpath = file.getAbsolutePath();
+                if (fpath.lastIndexOf("/") >= 0)
+                    fpath = fpath.substring(0, fpath.lastIndexOf("/"));
+                else if (fpath.lastIndexOf("\\") >= 0)
+                    fpath =fpath.substring(0, fpath.lastIndexOf("\\"));
+                return fpath;
+            }
         }
 
         // Error
@@ -39,5 +49,10 @@ public class FileChooser {
         }
 
         return null;
+    }
+
+    public static void main(String[] args) {
+        FileChooser fc = new FileChooser();
+        System.out.println(fc.getSavePathByUser(null));
     }
 }

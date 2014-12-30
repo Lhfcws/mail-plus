@@ -3,6 +3,10 @@ package client.preparation;
 import edu.sysu.lhfcws.mailplus.client.background.client.MailPlusInternalClient;
 import edu.sysu.lhfcws.mailplus.client.background.launch.ServerLauncher;
 import edu.sysu.lhfcws.mailplus.client.background.running.Token;
+import edu.sysu.lhfcws.mailplus.commons.io.req.ReceiveRequest;
+import edu.sysu.lhfcws.mailplus.commons.io.req.RequestFactory;
+import edu.sysu.lhfcws.mailplus.commons.io.req.SendRequest;
+import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.model.MailUser;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
 import edu.sysu.lhfcws.mailplus.server.serv.MailPlusServer;
@@ -22,7 +26,7 @@ public class TestPreparation {
         serverLauncher = new ServerLauncher();
     }
 
-    public void prepare() {
+    public void prepareLaunch() {
         serverLauncher.launch();
 
         LogUtil.info(LOG, "MailPlusServer and MailPlusInternalClient started.");
@@ -46,5 +50,25 @@ public class TestPreparation {
         mailUser.setPop3Host("pop3.126.com");
 
         return mailUser;
+    }
+
+    public Email prepareEmail() {
+        Email email = new Email();
+        email.setSignature(TestConsts.mail);
+        email.setStatus(Email.EmailStatus.DRAFT);
+        email.setSubject("Auto Test");
+        email.setContent("If you can see me, that is fine.");
+        email.addTo(TestConsts.mail);
+        email.setFrom(TestConsts.mail);
+
+        return email;
+    }
+
+    public SendRequest prepareSendRequest() {
+        return RequestFactory.createSendRequest(prepareEmail());
+    }
+
+    public ReceiveRequest prepareReceiveRequest() {
+        return RequestFactory.createLatestReceiveRequest();
     }
 }

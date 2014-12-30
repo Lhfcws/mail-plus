@@ -129,20 +129,6 @@ public class EmailController {
         }
     }
 
-//    public Email getEmailByEmailNTimestamp(Email email, long timestamp) throws SQLException {
-//        StringBuilder sb = new StringBuilder("SELECT * FROM ");
-//        sb.append(Consts.TBL_EMAIL).append(" WHERE ");
-//
-//        sb.append("'subject'='").append(email.getSubject()).append("' AND ");
-//        sb.append("'signature'='").append(email.getSignature()).append("' AND ");
-//        sb.append("'timestamp'=").append(timestamp);
-//
-//        String sql = sb.toString();
-//        LogUtil.debug(sql);
-//        Email e = dao.querySingleObj(sql, new EmailResultSetHandler());
-//        return e;
-//    }
-
     public int getLatestMailID(String signature) throws SQLException {
         String sql = String.format("SELECT MAX(mail_id) FROM %s " +
                         "WHERE signature='%s' AND (status=%d OR status=%d)",

@@ -2,7 +2,7 @@ package client.test;
 
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.ListPanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.util.HTMLContainer;
-import edu.sysu.lhfcws.mailplus.client.util.EmailContentHTML;
+import edu.sysu.lhfcws.mailplus.client.util.EmailHTMLProxy;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
@@ -47,9 +47,9 @@ public class ListPanelTest {
 
         for (int i = list.size() - 1; i >= 0; i--) {
             Email email = list.get(i);
-            EmailContentHTML emailContentHTML = new EmailContentHTML(email);
-            HTMLContainer container = new HTMLContainer(emailContentHTML.toListItemHTML());
-            container.setInformation(emailContentHTML.getEmailString());
+            EmailHTMLProxy emailHTMLProxy = new EmailHTMLProxy(email);
+            HTMLContainer container = new HTMLContainer(emailHTMLProxy.toListItemHTML());
+            container.setInformation(emailHTMLProxy.getEmailString());
             container.setId(email.getId());
             listPanel.addItem(container);
         }

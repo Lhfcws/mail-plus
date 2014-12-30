@@ -46,7 +46,7 @@ public class PersistentRequestQueue {
         if (reqJson == null)
             return null;
 
-//        LogUtil.debug("Dequeue: " + pair.getFirst());
+//        LogUtil.debug("Dequeue: " + reqJson);
         return Request.deserialize(reqJson);
     }
 }

@@ -204,22 +204,15 @@
                 </configuration>
             </plugin>
 
-            <!--<plugin>-->
-                <!--<artifactId>maven-javadoc-plugin</artifactId>-->
-                <!--<version>2.9</version>-->
-                <!--<configuration>-->
-                    <!--<charset>UTF-8</charset>-->
-                    <!--<docencoding>UTF-8</docencoding>-->
-                <!--</configuration>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>attach-javadocs</id>-->
-                        <!--<goals>-->
-                            <!--<goal>jar</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.1</version>
+                <configuration>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

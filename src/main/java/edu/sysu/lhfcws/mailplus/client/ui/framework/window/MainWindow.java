@@ -6,7 +6,7 @@ import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.ContentPanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.LeftPanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.panel.ListPanel;
 import edu.sysu.lhfcws.mailplus.client.ui.framework.util.HTMLContainer;
-import edu.sysu.lhfcws.mailplus.client.util.EmailContentHTML;
+import edu.sysu.lhfcws.mailplus.client.util.EmailHTMLProxy;
 import edu.sysu.lhfcws.mailplus.commons.controller.EmailController;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
@@ -126,9 +126,9 @@ public class MainWindow extends AbstractWindow {
     }
 
     public void refreshContentPanel(Email email) {
-        EmailContentHTML emailContentHTML = new EmailContentHTML(email);
-        HTMLContainer container = new HTMLContainer(emailContentHTML.toHTML());
-        container.setInformation(emailContentHTML.getEmailString());
+        EmailHTMLProxy emailHTMLProxy = new EmailHTMLProxy(email);
+        HTMLContainer container = new HTMLContainer(emailHTMLProxy.toHTML());
+        container.setInformation(emailHTMLProxy.getEmailString());
         container.setId(email.getId());
 
         contentPanel.setVisible(false);
@@ -143,9 +143,9 @@ public class MainWindow extends AbstractWindow {
         listPanel.clear();
 
         for (Email email : emailList) {
-            EmailContentHTML emailContentHTML = new EmailContentHTML(email);
-            HTMLContainer container = new HTMLContainer(emailContentHTML.toListItemHTML());
-            container.setInformation(emailContentHTML.getEmailString());
+            EmailHTMLProxy emailHTMLProxy = new EmailHTMLProxy(email);
+            HTMLContainer container = new HTMLContainer(emailHTMLProxy.toListItemHTML());
+            container.setInformation(emailHTMLProxy.getEmailString());
             container.setId(email.getId());
             listPanel.addItem(container);
         }

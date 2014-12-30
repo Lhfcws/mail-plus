@@ -14,6 +14,9 @@ import edu.sysu.lhfcws.mailplus.commons.model.Attachment;
 import edu.sysu.lhfcws.mailplus.commons.model.Email;
 import edu.sysu.lhfcws.mailplus.commons.util.CommonUtil;
 import edu.sysu.lhfcws.mailplus.commons.util.FileChooser;
+import edu.sysu.lhfcws.mailplus.commons.util.LogUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +28,8 @@ import java.io.IOException;
  * @time 14-10-30.
  */
 public class ContentPanel extends JPanel {
+    private static Log LOG = LogFactory.getLog(ContentPanel.class);
+
     public ContentPanel() {
         BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(layout);
@@ -65,7 +70,9 @@ public class ContentPanel extends JPanel {
                         FileOutputer fileOutputer = new FileOutputer(path + "/" + attachment.getFilename());
                         fileOutputer.write(attachment.getContent());
                         fileOutputer.close();
+                        JOptionPane.showMessageDialog(_this, "Save file successfully.");
                     } catch (IOException e) {
+                        LogUtil.error(LOG, e);
                         JOptionPane.showMessageDialog(_this, "Cannot save file.");
                     }
                 }

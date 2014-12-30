@@ -29,7 +29,7 @@ public class POP3ClientStub {
         ReceiveRequest req = new ReceiveRequest();
         req.setMailUser(new TestPreparation().prepareMailUser());
         req.generateAuthCode();
-        req.setMailID(2488);
+        req.setMailID(2);
         POP3JavaMailClient client = new POP3JavaMailClient(req);
         Email email = client.receive(req.getMailID());
         System.out.println(email);

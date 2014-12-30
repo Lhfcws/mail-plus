@@ -14,7 +14,7 @@ public class DownloadEmailsWindowTest {
 
     public static void start() {
         TestPreparation preparation = new TestPreparation();
-        preparation.prepare();
+        preparation.prepareLaunch();
         MailUser mailUser = preparation.prepareMailUser();
 
         DownloadEmailsWindow.getInstance().setMailUser(mailUser);

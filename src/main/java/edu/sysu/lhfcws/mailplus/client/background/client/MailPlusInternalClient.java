@@ -6,6 +6,7 @@ import edu.sysu.lhfcws.mailplus.client.ui.framework.window.MainWindow;
 import edu.sysu.lhfcws.mailplus.commons.io.res.ResponseCallback;
 import edu.sysu.lhfcws.mailplus.client.background.executor.ClientRQWatcher;
 import edu.sysu.lhfcws.mailplus.commons.io.req.Request;
+import edu.sysu.lhfcws.mailplus.commons.queue.PersistentRequestQueue;
 import edu.sysu.lhfcws.mailplus.commons.util.ThreadMonitor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,4 +53,6 @@ public class MailPlusInternalClient {
     public ClientHubEnd getClientHubEnd() {
         return clientHubEnd;
     }
+
+
 }

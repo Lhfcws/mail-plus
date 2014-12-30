@@ -28,7 +28,6 @@ public class Launcher {
     private static Log LOG = LogFactory.getLog(Launcher.class);
 
     public boolean launch() {
-        updateGlobalFont();
         LoginWindow.getInstance().start();
         return true;
     }
@@ -59,16 +58,6 @@ public class Launcher {
             LogUtil.error(LOG, e);
             JOptionPane.showMessageDialog(null, e.getMessage());
             return false;
-        }
-    }
-
-    private static void updateGlobalFont() {
-        FontUIResource fontRes = new FontUIResource(Font.getFont("sans-serif"));
-        for (Enumeration keys = UIManager.getDefaults().keys(); keys.hasMoreElements(); ) {
-            Object key = keys.nextElement();
-            Object value = UIManager.get(key);
-            if (value instanceof FontUIResource)
-                UIManager.put(key, fontRes);
         }
     }
 }

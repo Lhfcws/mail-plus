@@ -29,12 +29,14 @@ public class BDBCounter {
     public void dec(String key) {
         synchronized (this) {
             String v = this.bdb.get(key);
-            long cnt = Long.valueOf(v);
-            cnt--;
-            if (cnt > 0)
-                this.bdb.set(key, String.valueOf(cnt));
-            else
-                this.bdb.delete(key);
+            if (v != null) {
+                long cnt = Long.valueOf(v);
+                cnt--;
+                if (cnt > 0)
+                    this.bdb.set(key, String.valueOf(cnt));
+                else
+                    this.bdb.delete(key);
+            }
         }
     }
 
