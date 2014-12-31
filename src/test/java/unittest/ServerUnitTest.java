@@ -1,4 +1,4 @@
-package client.unittest;
+package unittest;
 
 import client.preparation.MailPlusStub;
 import com.google.gson.Gson;

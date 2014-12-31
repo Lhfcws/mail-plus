@@ -1,4 +1,4 @@
-package client.unittest;
+package unittest;
 
 import edu.sysu.lhfcws.mailplus.commons.base.Consts;
 import edu.sysu.lhfcws.mailplus.commons.db.bdb.BDB;
@@ -16,6 +16,12 @@ import java.util.TreeMap;
  */
 public class UtilUnitTest {
 //    @Test
+
+    /**
+     * Do not get this method involved in all test, just run it alone.
+     * As BDB will be locked by one process.
+     * @throws InterruptedException
+     */
     public void berkeleyDBTest() throws InterruptedException {
         BDB bdb = BDB.getInstance(Consts.BDB_PATH + "test");
         bdb.start();

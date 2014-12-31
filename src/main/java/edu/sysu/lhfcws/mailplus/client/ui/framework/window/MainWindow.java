@@ -116,13 +116,11 @@ public class MainWindow extends AbstractWindow {
 
     // ===== Callbacks
     public void refreshAfterDelete(Email email) {
-        contentPanel.setVisible(false);
         contentPanel.clear();
-        contentPanel.setVisible(true);
+        contentPanel.updateUI();
 
-        listPanel.setVisible(false);
         listPanel.delItem(email);
-        listPanel.setVisible(true);
+        listPanel.updateUI();
     }
 
     public void refreshContentPanel(Email email) {
@@ -131,15 +129,13 @@ public class MainWindow extends AbstractWindow {
         container.setInformation(emailHTMLProxy.getEmailString());
         container.setId(email.getId());
 
-        contentPanel.setVisible(false);
         contentPanel.clear();
         contentPanel.addContentBox(container);
-        contentPanel.setVisible(true);
+        contentPanel.updateUI();
     }
 
     public void refreshListPanel(List<Email> emailList) {
         // ListPanel Reload DB.
-        listPanel.setVisible(false);
         listPanel.clear();
 
         for (Email email : emailList) {

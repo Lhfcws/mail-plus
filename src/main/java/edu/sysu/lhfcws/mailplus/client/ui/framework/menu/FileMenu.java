@@ -41,7 +41,7 @@ public class FileMenu extends Menu {
     // ===== JMenuItems
 
     private void addWirteEmail() {
-        JMenuItem item = new JMenuItem("Write Email");
+        JMenuItem item = new JMenuItem("Write");
         item.setMnemonic(KeyEvent.VK_N);
         item.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_N, InputEvent.CTRL_MASK));
@@ -55,7 +55,7 @@ public class FileMenu extends Menu {
     }
 
     private void addReceive() {
-        JMenuItem item = new JMenuItem("Get new mails");
+        JMenuItem item = new JMenuItem("Recv");
         Events.onClick(item, new Callback() {
             @Override
             public void callback(AWTEvent _event) {

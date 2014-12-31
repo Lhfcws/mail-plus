@@ -144,9 +144,9 @@ public class ComposeEmailPanel extends JPanel {
 
                 email.setFrom(MainWindow.getInstance().getToken().getEmail());
                 email.setSignature(MainWindow.getInstance().getToken().getEmail());
-                email.setTo(Arrays.asList(to.getText().split(";")));
+                email.setTo(asList(to.getText().split(";")));
                 if (cc.getText().trim().length() > 0)
-                    email.setCc(Arrays.asList(cc.getText().split(";")));
+                    email.setCc(asList(cc.getText().split(";")));
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
                 email.setAttachments(getAttachments());
@@ -169,9 +169,9 @@ public class ComposeEmailPanel extends JPanel {
 
                 email.setFrom(MainWindow.getInstance().getToken().getEmail());
                 email.setSignature(MainWindow.getInstance().getToken().getEmail());
-                email.setTo(Arrays.asList(to.getText().split(";")));
+                email.setTo(asList(to.getText().split(";")));
                 if (cc.getText().trim().length() > 0)
-                    email.setCc(Arrays.asList(cc.getText().split(";")));
+                    email.setCc(asList(cc.getText().split(";")));
                 email.setSubject(subject.getText());
                 email.setContent(content.getText());
                 email.setAttachments(getAttachments());
@@ -205,6 +205,16 @@ public class ComposeEmailPanel extends JPanel {
                 e.printStackTrace();
             }
             list.add(attachment);
+        }
+        return list;
+    }
+
+    private LinkedList<String> asList(String[] ss) {
+        LinkedList<String> list = new LinkedList<String>();
+        for (String s : ss) {
+            s = s.trim();
+            if (s.length() > 0)
+                list.add(s);
         }
         return list;
     }

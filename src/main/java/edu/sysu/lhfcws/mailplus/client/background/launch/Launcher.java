@@ -28,6 +28,9 @@ public class Launcher {
     private static Log LOG = LogFactory.getLog(Launcher.class);
 
     public boolean launch() {
+        JOptionPane.showMessageDialog(null,
+                "Sorry that now we only support 126, 163 and yeah.net."
+        );
         LoginWindow.getInstance().start();
         return true;
     }
