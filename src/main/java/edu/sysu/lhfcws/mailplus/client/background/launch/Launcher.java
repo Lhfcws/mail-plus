@@ -29,7 +29,8 @@ public class Launcher {
 
     public boolean launch() {
         JOptionPane.showMessageDialog(null,
-                "Sorry that now we only support 126, 163 and yeah.net."
+                "Sorry that now we only support 126, 163 and yeah.net. \n" +
+                        "Please click `OK` to continue using MailPlus."
         );
         LoginWindow.getInstance().start();
         return true;
